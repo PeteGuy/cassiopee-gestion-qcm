@@ -40,17 +40,18 @@ def parse_QCM(q_lines):
     return q
 
 
-qtest = """\\element{gr1}{
-\\begin{questionmult}{DefConvexFunc}
-  \\AMCnoCompleteMulti
-  A function $f:\\RR^n\\to\\RR\\cup{+\\infty}$ (with $f(x)=+\\infty$ for $x\\notin \\dom f$) is convex if and only if:
-  \\begin{reponses}
-    \\bonne{$-f$ is concave.}
-    \\mauvaise{$\\theta f(x) + (1-\\theta)f(y) \\leq f(\\theta x + (1-\\theta) y)$ for any $x,y$ and $\\theta\\in [0,1]$.}
-    \\mauvaise{$\\theta f(x) + (1-\\theta)f(y) \\leq f(\\theta x + (1-\\theta) y)$ for any $x,y$ and $\\theta\\in \RR_+$.}
-      \\bonne{$f(\\theta x + (1-\\theta) y) \\leq \\theta f(x) + (1-\\theta)f(y)$ for any $x,y$ and $\\theta\\in [0,1]$.}
-  \\end{reponses}
-\\end{questionmult}
-}"""
+if __name__ == "__main__":
+    qtest = """\\element{gr1}{
+    \\begin{questionmult}{DefConvexFunc}
+      \\AMCnoCompleteMulti
+      A function $f:\\RR^n\\to\\RR\\cup{+\\infty}$ (with $f(x)=+\\infty$ for $x\\notin \\dom f$) is convex if and only if:
+      \\begin{reponses}
+        \\bonne{$-f$ is concave.}
+        \\mauvaise{$\\theta f(x) + (1-\\theta)f(y) \\leq f(\\theta x + (1-\\theta) y)$ for any $x,y$ and $\\theta\\in [0,1]$.}
+        \\mauvaise{$\\theta f(x) + (1-\\theta)f(y) \\leq f(\\theta x + (1-\\theta) y)$ for any $x,y$ and $\\theta\\in \RR_+$.}
+          \\bonne{$f(\\theta x + (1-\\theta) y) \\leq \\theta f(x) + (1-\\theta)f(y)$ for any $x,y$ and $\\theta\\in [0,1]$.}
+      \\end{reponses}
+    \\end{questionmult}
+    }"""
 
-print(parse_QCM(qtest.splitlines()))
+    print(parse_QCM(qtest.splitlines()))
