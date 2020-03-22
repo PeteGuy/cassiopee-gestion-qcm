@@ -3,7 +3,7 @@ import string
 import QCM
 
 
-def parse_QCM(q_lines):
+def parse_qcm(q_lines):
     lines_iter = iter(q_lines)
     q_type = None
     q_name = ""
@@ -34,7 +34,6 @@ def parse_QCM(q_lines):
         elif line.strip().startswith("\\mauvaise"):
             q.reponses.append(QCM.Reponse(False, line.split('{')[1].rstrip('} ')))
 
-
         elif record_enonce:
             q_enonc += line.strip() + "\n"
 
@@ -55,4 +54,4 @@ if __name__ == "__main__":
     \\end{questionmult}
     }"""
 
-    print(parse_QCM(qtest.splitlines()))
+    print(parse_qcm(qtest.splitlines()))
