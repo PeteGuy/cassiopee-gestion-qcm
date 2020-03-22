@@ -28,11 +28,16 @@ class Reponse:
 
 class Question:
 
-    def __init__(self, type_qcm, nom, enonce, reponses):
+    def __init__(self, type_qcm, nom, enonce, reponses=None, tags=None):
+        if tags is None:
+            tags = []
+        if reponses is None:
+            reponses = []
         self.type = type_qcm
         self.nom = nom
         self.enonce = enonce
         self.reponses = reponses
+        self.tags = tags
 
     def __str__(self):
         res = self.nom + "\n"

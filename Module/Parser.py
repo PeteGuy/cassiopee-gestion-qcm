@@ -17,7 +17,11 @@ def parse_QCM(q_lines):
         if line.startswith("\\element"):
             pass
 
-        elif line.startswith("\\begin"):
+        elif line.strip().startswith("\\begin{reponses}"):
+            record_enonce = False
+            q = QCM.Question(q_type, q_name, q_enonc)
+
+        elif line.strip().startswith("\\begin"):
             q_decl = line.split('{')
             q_type = QCM.type_from_str(q_decl[1].rstrip('} '))
             q_name = q_decl[2].rstrip('} ')
@@ -30,9 +34,6 @@ def parse_QCM(q_lines):
         elif line.strip().startswith("\\mauvaise"):
             q.reponses.append(QCM.Reponse(False, line.split('{')[1].rstrip('} ')))
 
-        elif line.strip().startswith("\\begin{reponses}"):
-            record_enonce = False
-            q = QCM.Question(q_type, q_name, q_enonc, [])
 
         elif record_enonce:
             q_enonc += line.strip() + "\n"
