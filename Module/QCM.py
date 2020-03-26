@@ -41,8 +41,8 @@ class Question:
 
     def __str__(self):
         res = self.nom + "\n"
-        res += "  " + str(self.type) + "\n"
-        res += "  " + self.enonce + "\n"
+        res += str(self.type) + "\n"
+        res += self.enonce
         for r in self.reponses:
             res += "    " + str(r) + "\n"
         return res
