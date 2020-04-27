@@ -1,5 +1,3 @@
-import string
-
 import QCM
 
 
@@ -23,16 +21,16 @@ def parse_qcm(q_lines):
 
         elif line.strip().startswith("\\begin{question"):
             q_decl = line.split('{')
-            q_type = QCM.type_from_str(q_decl[1].rstrip('} '))
-            q_name = q_decl[2].rstrip('} ')
+            q_type = QCM.type_from_str(q_decl[1].strip('} \n'))
+            q_name = q_decl[2].split('}')[0]
 
             record_enonce = True
 
         elif line.strip().startswith("\\bonne"):
-            q.reponses.append(QCM.Reponse(True, line.split('{')[1].rstrip('} ')))
+            q.reponses.append(QCM.Reponse(True, line.split('{')[1].strip('} \n')))
 
         elif line.strip().startswith("\\mauvaise"):
-            q.reponses.append(QCM.Reponse(False, line.split('{')[1].rstrip('} ')))
+            q.reponses.append(QCM.Reponse(False, line.split('{')[1].strip('} \n')))
 
         elif record_enonce:
             q_enonc += line.strip() + "\n"

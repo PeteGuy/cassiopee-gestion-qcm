@@ -47,6 +47,16 @@ class Question:
             res += "    " + str(r) + "\n"
         return res
 
+    def to_dict(self):
+        res = {
+            "type": self.type,
+            "nom": self.nom,
+            "enonce": self.enonce,
+            "reponses": [rep.__dict__ for rep in self.reponses],
+            "tags": self.tags
+        }
+        return res
+
     def get_answers(self):
         return self.reponses
 
@@ -63,3 +73,4 @@ class Question:
             if not reponse.est_correcte:
                 res.append(reponse)
         return res
+
