@@ -1,4 +1,25 @@
 import json
+import QCM
+
+
+def tag_check(tags, required):
+    for tag in required:
+        if tag not in tags:
+            return False
+    return True
+
+
+def reponse_from_dict(rdict):
+    return QCM.Reponse(rdict["est_correcte"], rdict["enonce"])
+
+
+def question_from_dict(qdict):
+    reponses = [reponse_from_dict(rdict) for rdict in qdict["reponses"]]
+    return QCM.Question(QCM.type_from_str(qdict["type"]),
+                        qdict["nom"],
+                        qdict["enonce"],
+                        reponses,
+                        qdict["tags"])
 
 
 class Base:
@@ -32,3 +53,17 @@ class Base:
 
     def update_question(self, index, question):
         self.data[index] = question.to_dict()
+
+    def select_question_by_name(self, name):
+        sel = []
+        for index in self.data:
+            if self.data[index]["nom"] == name:
+                sel.append((index, question_from_dict(self.data[index])))
+        return sel
+
+    def select_question_by_tag(self, tags):
+        sel = []
+        for index in self.data:
+            if tag_check(self.data[index]["tags"], tags):
+                sel.append((index, question_from_dict(self.data[index])))
+        return sel
