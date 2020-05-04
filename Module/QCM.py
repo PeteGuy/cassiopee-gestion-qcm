@@ -23,6 +23,14 @@ def str_from_type(type_qcm):
         return "questionmult"
 
 
+def moodle_from_type(type_qcm):
+    """Exports the type to moodle LaTeX"""
+    if type_qcm == TypeQCM.QUESTION:
+        return "single"
+    elif type_qcm == TypeQCM.QUESTION_MULT:
+        return "multiple"
+
+
 class Reponse:
     """Class representing an answer"""
 
@@ -41,6 +49,12 @@ class Reponse:
             return "\\bonne{" + self.enonce + "}"
         else:
             return "\\mauvaise{" + self.enonce + "}"
+
+    def to_moodle_latex(self):
+        if self.est_correcte:
+            return "\\item* " + self.enonce
+        else:
+            return "\\item " + self.enonce
 
 
 class Question:
@@ -67,6 +81,10 @@ class Question:
         res += "tags = " + str(self.tags)
         return res
 
+    def short_str(self):
+        """returns a short descriptive string of the question"""
+        return self.nom + " {" + str(self.type) + "} " + "tags : " + str(self.tags)
+
     def to_dict(self):
         """creates a dictionnary representing the object
         all the fields correspond to a key in the resulting dictionnary
@@ -82,6 +100,8 @@ class Question:
         return res
 
     def to_latex(self):
+        """Creates LaTeX code to represent the question using the AMC LaTeX package"""
+
         res = "\\begin{" + str_from_type(self.type) + "}{" + self.nom + "}\n"
         res += "  " + self.enonce.replace("\n", "\n  ") + "\n"
         res += "  \\begin{reponses}\n"
@@ -91,22 +111,24 @@ class Question:
         res += "\\end{" + str_from_type(self.type) + "}"
         return res
 
+    def to_moodle_latex(self):
+        """Creates LaTeX code to represent the question using the Moodle LaTeX package"""
+
+        res = "\\begin{multi}[" + moodle_from_type(self.type) + "]{" + self.nom + "}\n"
+        res += "  " + self.enonce.replace("\n", "\n  ") + "\n"
+        for reponse in self.reponses:
+            res += "  " + reponse.to_moodle_latex() + "\n"
+        res += "\\end{multi}"
+        return res
+
     def get_answers(self):
         return self.reponses
 
     def get_right_answers(self):
-        res = []
-        for reponse in self.reponses:
-            if reponse.est_correcte:
-                res.append(reponse)
-        return res
+        return [reponse for reponse in self.reponses if reponse.est_correcte]
 
     def get_wrong_answers(self):
-        res = []
-        for reponse in self.reponses:
-            if not reponse.est_correcte:
-                res.append(reponse)
-        return res
+        return [reponse for reponse in self.reponses if not reponse.est_correcte]
 
     def add_tag(self, tag):
         if tag not in self.tags:

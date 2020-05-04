@@ -32,7 +32,7 @@ class Base:
         while self.nextindex in self.data:
             self.nextindex += 1
 
-    def close(self):
+    def persist(self):
         with open(self.filename, "w") as file:
             json.dump(self.data, file)
 
