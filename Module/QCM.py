@@ -60,13 +60,14 @@ class Reponse:
 class Question:
     """Class representing a full QCM"""
 
-    def __init__(self, type_qcm, nom, enonce, reponses=None, tags=None):
+    def __init__(self, type_qcm, nom, options, enonce, reponses=None, tags=None):
         if tags is None:
             tags = []
         if reponses is None:
             reponses = []
         self.type = type_qcm
         self.nom = nom
+        self.amc_options = options
         self.enonce = enonce.strip()
         self.reponses = reponses
         self.tags = tags
@@ -78,6 +79,7 @@ class Question:
         res += self.enonce + "\n"
         for r in self.reponses:
             res += "  " + str(r) + "\n"
+        res += "options = " + str(self.amc_options) + "\n"
         res += "tags = " + str(self.tags)
         return res
 
@@ -93,6 +95,7 @@ class Question:
         res = {
             "type": str_from_type(self.type),
             "nom": self.nom,
+            "amc_options" : self.amc_options,
             "enonce": self.enonce,
             "reponses": [rep.__dict__ for rep in self.reponses],
             "tags": self.tags
@@ -103,6 +106,8 @@ class Question:
         """Creates LaTeX code to represent the question using the AMC LaTeX package"""
 
         res = "\\begin{" + str_from_type(self.type) + "}{" + self.nom + "}\n"
+        for option in self.amc_options:
+            res += "  " + option + "\n"
         res += "  " + self.enonce.replace("\n", "\n  ") + "\n"
         res += "  \\begin{reponses}\n"
         for reponse in self.reponses:
