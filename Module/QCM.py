@@ -113,7 +113,7 @@ class Question:
         for reponse in self.reponses:
             res += "    " + reponse.to_latex() + "\n"
         res += "  \\end{reponses}\n"
-        res += "\\end{" + str_from_type(self.type) + "}"
+        res += "\\end{" + str_from_type(self.type) + "}" + "\n"
         return res
 
     def to_moodle_latex(self):
@@ -123,7 +123,7 @@ class Question:
         res += "  " + self.enonce.replace("\n", "\n  ") + "\n"
         for reponse in self.reponses:
             res += "  " + reponse.to_moodle_latex() + "\n"
-        res += "\\end{multi}"
+        res += "\\end{multi}" + "\n"
         return res
 
     def get_answers(self):

@@ -24,6 +24,7 @@ Liste des commandes :
     - clear(clearb) : Remet à zéro la sélection (le buffer) sans sauvegarder
     - tag(tagb) <tag>... : applique un tag à la sélection (au buffer)
     - selectbytag, selectbyname <arg>... : sélectionne dans la base suivant un critère
+    - exportlatex (exportmoodle) <fichier> : exporte la sélection au format LaTeX (Moodle LaTeX) dans le fichier
     - exit : enregistre la base et ferme l'application
 """
 
