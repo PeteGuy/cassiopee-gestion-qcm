@@ -19,6 +19,7 @@ Liste des commandes :
     - parsef <fichier>... : ouvre le(s) fichier(s) spécifié(s) et recherche les QCM écrites en LaTeX
     - print(printb) <?index>... : affiche les questions de la sélection (du buffer) ou seulement les indexs spécifiés
     - latex(latexb) <?index>... : affiche le code LaTeX des questions sélectionnées (du buffer) spécifiées
+    - moodle(moodleb) <?index>... : affiche le code LaTeX moodle des questions sélectionnées (du buffer) spécifiées
     - save(saveb) : enregistre les modifications sur la sélection (enregistre le buffer) dans la base
     - clear(clearb) : Remet à zéro la sélection (le buffer) sans sauvegarder
     - tag(tagb) <tag>... : applique un tag à la sélection (au buffer)
@@ -65,6 +66,9 @@ def main():
 
         elif command == "latexb":
             print_latex_buffer(args)
+
+        elif command == "moodleb":
+            print_moodle_buffer(args)
 
         elif command == "clearb":
             buffer = []
@@ -129,6 +133,7 @@ def main():
         args = command_and_args[1:]
 
     db.persist()
+    print("base de donnée sauvegardée, arrêt...")
 
 
 def parse(arg):
@@ -188,6 +193,24 @@ Si des indexs sont passés en argument n'affiche que ces derniers.
         for index in args:
             try:
                 print(buffer[int(index)].to_latex())
+            except IndexError:
+                print("Index invalide")
+
+
+def print_moodle_buffer(args):
+    """Affiche le code LaTeX Moodle des QCM du buffer
+Si aucun argument n'est spécifié, affiche toutes les QCM.
+Si des indexs sont passés en argument n'affiche que ces derniers.
+    """
+
+    global buffer
+    if len(args) == 0:
+        for question in buffer:
+            print(question.to_moodle_latex())
+    else:
+        for index in args:
+            try:
+                print(buffer[int(index)].to_moodle_latex())
             except IndexError:
                 print("Index invalide")
 
@@ -363,6 +386,9 @@ si des commandes sont spécifiées, affiche leurs messages d'aide respectifs à 
 
             elif command == "latexb":
                 print(print_latex_buffer.__doc__)
+
+            elif command == "moodleb":
+                print(print_moodle_buffer.__doc__)
 
             elif command == "clearb":
                 print("Efface le contenu du buffer.\nLe contenu effacé est définitivement perdu.")
