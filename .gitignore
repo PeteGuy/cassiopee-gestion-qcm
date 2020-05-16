@@ -1,6 +1,7 @@
 # Custom ignores
 .idea/
 Ex-QCM/
+Module/db.jso
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

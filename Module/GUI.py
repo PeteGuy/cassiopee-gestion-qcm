@@ -6,6 +6,7 @@ import DB
 import CL
 
 db = None
+buffer = []
 master = Tk()
 
 # Ajout des 3 frames
@@ -46,6 +47,7 @@ def import_tex():
     for question in CL.buffer:
         db.add_question(question)
         list_base.insert(END, question.nom)
+    CL.buffer = []
     list_base.pack(expand=YES, fill=BOTH)
 
 
@@ -80,11 +82,23 @@ def set_gui():
     return
 
 
+# Fonction permettant de sauvegarder la base de donnée au moment de quitter l'application
+def exit_protocol():
+    global db
+    if messagebox.askyesno("Quitter", "Voulez-vous sauvegarder la BDD ?"):
+        db.persist()
+        master.destroy()
+    else:
+        master.destroy()
+
+
 master.geometry("800x300")
 load_db_label = Label(master, text="Chargement de la BDD...")
 
 load_db_label.pack()
 load_db()
 master.after(100, set_gui)
+
+master.wm_protocol("WM_DELETE_WINDOW", exit_protocol)
 
 master.mainloop()
