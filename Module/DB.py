@@ -17,6 +17,7 @@ def question_from_dict(qdict):
     reponses = [reponse_from_dict(rdict) for rdict in qdict["reponses"]]
     return QCM.Question(QCM.type_from_str(qdict["type"]),
                         qdict["nom"],
+                        qdict["amc_options"],
                         qdict["enonce"],
                         reponses,
                         qdict["tags"])
