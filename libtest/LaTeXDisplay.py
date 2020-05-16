@@ -26,7 +26,7 @@ class Root():
         the_color = "{" + self.master.cget('bg')[1:].upper() + "}"
         preamble = r"\newcommand{\pathSrcStyleFiles}{/home/ollix/Travail/cassiopee-gestion-qcm/libtest/src_styles}"
         preamble += r"\documentclass{article}"
-        preamble += r"\usepackage{pagecolor}"
+        #preamble += r"\usepackage{pagecolor}"
         preamble += r"\usepackage[utf8x]{inputenc}"
         preamble += r"\usepackage[T1]{fontenc}"
         preamble += r"\usepackage{automultiplechoice}"
