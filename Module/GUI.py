@@ -19,6 +19,7 @@ selection_frame = LabelFrame(master, text="Selection")
 
 # Ajout de la liste
 list_base = Listbox(base_frame, selectmode=SINGLE)
+last_id = 0
 
 # Ajout des composants frame détail
 detail_frame.columnconfigure(1, weight=10)
@@ -33,14 +34,16 @@ question_enonce_entry = Entry(detail_frame, textvariable=question_enonce_var)
 question_enonce_entry.grid(row=1, column=1, ipadx=150)
 
 Label(detail_frame, text="Question à choix multiple ?").grid(row=2, column=0, sticky="W")
-question_type_check = Checkbutton(detail_frame)
+question_type_var = IntVar()
+question_type_check = Checkbutton(detail_frame, variable=question_type_var, onvalue=2, offvalue=1)
 question_type_check.grid(row=2, column=1)
 
 
 reponses_labels= [Label(detail_frame, text="Réponse " + str(i+1) + ":").grid(row=3+i, column=0, sticky="W") for i in range(6)]
 reponses_var = [StringVar() for i in range(6)]
 reponses_entry = [Entry(detail_frame, textvariable=reponses_var[i]).grid(row=3+i, column=1, ipadx=150) for i in range(6)]
-reponses_vraies_checks = [Checkbutton(detail_frame) for i in range(6)]
+reponses_vraies_var = [IntVar() for i in range(6)]
+reponses_vraies_checks = [Checkbutton(detail_frame, variable=reponses_vraies_var[i]) for i in range(6)]
 for i in range(6):
     reponses_vraies_checks[i].grid(row=3+i, column=2)
 
@@ -65,10 +68,10 @@ def display_detail_question(question):
 
 # Permet de mettre à jour l'affichage de la question sur laquelle on travaille
 def base_onselect(event):
-    global db
+    global db, last_id
     selected = list_base.get(list_base.curselection())
-    id = selected[(selected.find(" id: ")+5):]
-    selected_question = db.get_question(id)
+    last_id = selected[(selected.find(" id: ")+5):]
+    selected_question = db.get_question(last_id)
     display_detail_question(selected_question)
 
 
@@ -76,14 +79,38 @@ list_base.bind('<<ListboxSelect>>', base_onselect)
 
 
 # Création des boutons de détail
+# Bouton de preview
 def button_preview():
-    selected = list_base.get(list_base.curselection())
-    id = selected[(selected.find(" id: ") + 5):]
-    selected_question = db.get_question(id)
+    selected_question = db.get_question(last_id)
     LaTeXDisplay.on_latex(master, DB.question_from_dict(selected_question).to_latex())
 
 
-Button(detail_frame, text="Prévisualiser la question", command=button_preview).grid(row=9, column=1)
+Button(detail_frame, text="Prévisualiser la question", command=button_preview).grid(row=9, column=0)
+
+
+# Bouton de mise à jour de la question
+def button_update():
+    global db, last_id
+    type_qcm = QCM.TypeQCM.QUESTION_MULT if question_type_var.get() == 2 else QCM.TypeQCM.QUESTION
+    options = db.get_question(last_id)["amc_options"]
+    reponses = []
+    bonnes_reponses = 0
+    for i in range(6):
+        if reponses_var[i].get() != "":
+            reponses.append(QCM.Reponse(bool(reponses_vraies_var[i]), reponses_var[i].get()))
+            bonnes_reponses += reponses_vraies_var[i].get()
+
+    if (type_qcm == QCM.TypeQCM.QUESTION_MULT and bonnes_reponses > 0) or (type_qcm == QCM.TypeQCM.QUESTION and bonnes_reponses == 1):
+        question = QCM.Question(type_qcm, question_nom_var.get(), options, question_enonce_var.get(), reponses, None)
+        db.update_question(last_id, question)
+    else:
+        messagebox.showerror("Mauvais nombre de bonnes réponses", "Veuillez mettre un nombre de réponse(s) approprié")
+
+    list_base.pack(expand=YES, fill=BOTH)
+
+
+Button(detail_frame, text="Mettre à jour", command=button_update).grid(row=9, column=1)
+
 
 # Charge la base de donnée au démarrage de l'app
 def load_db():
