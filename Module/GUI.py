@@ -5,6 +5,7 @@ from tkinter import filedialog
 import DB
 import CL
 import QCM
+from GUI_Module import LaTeXDisplay
 
 db = None
 buffer = []
@@ -75,8 +76,14 @@ list_base.bind('<<ListboxSelect>>', base_onselect)
 
 
 # Création des boutons de détail
+def button_preview():
+    selected = list_base.get(list_base.curselection())
+    id = selected[(selected.find(" id: ") + 5):]
+    selected_question = db.get_question(id)
+    LaTeXDisplay.on_latex(master, DB.question_from_dict(selected_question).to_latex())
 
 
+Button(detail_frame, text="Prévisualiser la question", command=button_preview).grid(row=9, column=1)
 
 # Charge la base de donnée au démarrage de l'app
 def load_db():
