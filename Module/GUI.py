@@ -20,19 +20,28 @@ selection_frame = LabelFrame(master, text="Selection")
 list_base = Listbox(base_frame, selectmode=SINGLE)
 
 # Ajout des composants frame détail
-Label(detail_frame, text="Nom :").grid(row=0, column=0)
+detail_frame.columnconfigure(1, weight=10)
+Label(detail_frame, text="Nom :").grid(row=0, column=0, sticky="W")
 question_nom_var = StringVar()
 question_nom_entry = Entry(detail_frame, textvariable=question_nom_var)
 question_nom_entry.grid(row=0, column=1)
 
-Label(detail_frame, text="Énoncé :").grid(row=1, column=0)
+Label(detail_frame, text="Énoncé :").grid(row=1, column=0, sticky="W")
 question_enonce_var = StringVar()
 question_enonce_entry = Entry(detail_frame, textvariable=question_enonce_var)
-question_enonce_entry.grid(row=1, column=1)
+question_enonce_entry.grid(row=1, column=1, ipadx=150)
 
-Label(detail_frame, text="Question à choix multiple ?").grid(row=2, column=0)
+Label(detail_frame, text="Question à choix multiple ?").grid(row=2, column=0, sticky="W")
 question_type_check = Checkbutton(detail_frame)
 question_type_check.grid(row=2, column=1)
+
+
+reponses_labels= [Label(detail_frame, text="Réponse " + str(i+1) + ":").grid(row=3+i, column=0, sticky="W") for i in range(6)]
+reponses_var = [StringVar() for i in range(6)]
+reponses_entry = [Entry(detail_frame, textvariable=reponses_var[i]).grid(row=3+i, column=1, ipadx=150) for i in range(6)]
+reponses_vraies_checks = [Checkbutton(detail_frame) for i in range(6)]
+for i in range(6):
+    reponses_vraies_checks[i].grid(row=3+i, column=2)
 
 
 # Gère l'affichages des détails d'une question
@@ -43,6 +52,14 @@ def display_detail_question(question):
         question_type_check.select()
     else:
         question_type_check.deselect()
+    nbr_reponses = 0
+    for reponse in question["reponses"]:
+        reponses_var[nbr_reponses].set(reponse["enonce"])
+        reponses_vraies_checks[nbr_reponses].select() if reponse["est_correcte"] else reponses_vraies_checks[nbr_reponses].deselect()
+        nbr_reponses += 1
+    for i in range(nbr_reponses, 6):
+        reponses_vraies_checks[i].deselect()
+        reponses_var[i].set("")
 
 
 # Permet de mettre à jour l'affichage de la question sur laquelle on travaille
@@ -55,6 +72,10 @@ def base_onselect(event):
 
 
 list_base.bind('<<ListboxSelect>>', base_onselect)
+
+
+# Création des boutons de détail
+
 
 
 # Charge la base de donnée au démarrage de l'app
