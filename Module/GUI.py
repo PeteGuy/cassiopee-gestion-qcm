@@ -97,7 +97,7 @@ def button_update():
     bonnes_reponses = 0
     for i in range(6):
         if reponses_var[i].get() != "":
-            reponses.append(QCM.Reponse(bool(reponses_vraies_var[i]), reponses_var[i].get()))
+            reponses.append(QCM.Reponse((reponses_vraies_var[i].get() == 1), reponses_var[i].get()))
             bonnes_reponses += reponses_vraies_var[i].get()
 
     if (type_qcm == QCM.TypeQCM.QUESTION_MULT and bonnes_reponses > 0) or (type_qcm == QCM.TypeQCM.QUESTION and bonnes_reponses == 1):
