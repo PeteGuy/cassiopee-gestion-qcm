@@ -1,3 +1,5 @@
+import os
+
 import sympy as sp
 from io import BytesIO
 from PIL import Image as PILImage, ImageTk
@@ -12,8 +14,10 @@ def on_latex(master, latex_str):
 
     expr = latex_str + "\\end{document}"
 
+    styles_location = os.path.dirname(os.path.realpath(__file__)) + "/src_styles"
+
     the_color = "{" + master.cget('bg')[1:].upper() + "}"
-    preamble = r"\newcommand{\pathSrcStyleFiles}{/home/ollix/Travail/cassiopee-gestion-qcm/libtest/src_styles}"
+    preamble = r"\newcommand{\pathSrcStyleFiles}{" + styles_location + "}"
     preamble += r"\documentclass{article}"
     preamble += r"\usepackage{pagecolor}"
     preamble += r"\usepackage[utf8x]{inputenc}"
