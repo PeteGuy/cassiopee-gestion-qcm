@@ -3,6 +3,12 @@ import QCM
 
 
 def tag_check(tags, required):
+    """Vérifie si les tags requis sont tous dans une liste de tags
+
+    :param tags: les tags à vérifier
+    :param required: les tags requis
+    :return:
+    """
     for tag in required:
         if tag not in tags:
             return False
@@ -30,7 +36,7 @@ class Base:
         with open(input_file, "r") as file:
             self.data = json.load(file)
         self.nextindex = 1
-        while self.nextindex in self.data:
+        while str(self.nextindex) in self.data:
             self.nextindex += 1
 
     def persist(self):
@@ -38,9 +44,9 @@ class Base:
             json.dump(self.data, file)
 
     def add_question(self, question):
-        while self.nextindex in self.data:
+        while str(self.nextindex) in self.data:
             self.nextindex += 1
-        self.data[self.nextindex] = question.to_dict()
+        self.data[str(self.nextindex)] = question.to_dict()
 
     def add_multiple(self, questions):
         for question in questions:
