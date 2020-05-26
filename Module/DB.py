@@ -68,3 +68,9 @@ class Base:
             if tag_check(self.data[index]["tags"], tags):
                 sel.append((index, question_from_dict(self.data[index])))
         return sel
+
+    def select_all_questions(self):
+        res = []
+        for index in self.data:
+            res.append((index, self.data[index]))
+        return res
