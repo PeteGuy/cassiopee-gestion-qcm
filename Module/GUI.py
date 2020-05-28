@@ -42,7 +42,6 @@ question_type_var = IntVar()
 question_type_check = Checkbutton(detail_frame, variable=question_type_var, onvalue=2, offvalue=1)
 question_type_check.grid(row=2, column=1)
 
-
 reponses_labels = [Label(detail_frame, text="Réponse " + str(i+1) + ":").grid(row=3+i, column=0, sticky="W") for i in range(6)]
 reponses_var = [StringVar() for i in range(6)]
 reponses_entry = [Entry(detail_frame, textvariable=reponses_var[i]).grid(row=3+i, column=1, ipadx=150) for i in range(6)]
@@ -50,6 +49,10 @@ reponses_vraies_var = [IntVar() for i in range(6)]
 reponses_vraies_checks = [Checkbutton(detail_frame, variable=reponses_vraies_var[i]) for i in range(6)]
 for i in range(6):
     reponses_vraies_checks[i].grid(row=3+i, column=2)
+
+button_preview = Button(detail_frame, text="Prévisualiser la question", state=DISABLED)
+button_update = Button(detail_frame, text="Mettre à jour", state=DISABLED)
+button_export = Button(detail_frame, text="Selectionner", state=DISABLED)
 
 
 # Gère l'affichages des détails d'une question
@@ -70,30 +73,19 @@ def display_detail_question(question):
         reponses_var[i].set("")
 
 
-# Permet de mettre à jour l'affichage de la question sur laquelle on travaille
-def base_onselect(event):
-    global db, last_id_base
-    selected = list_base.get(list_base.curselection())
-    last_id_base = selected[(selected.find(" id: ") + 5):]
-    selected_question = db.get_question(last_id_base)
-    display_detail_question(selected_question)
-
-
-list_base.bind('<<ListboxSelect>>', base_onselect)
-
-
-# Création des boutons de détail
+# Commande des boutons de détail
 # Bouton de preview
-def button_preview():
+def button_preview_command():
     selected_question = db.get_question(last_id_base)
     LaTeXDisplay.on_latex(master, DB.question_from_dict(selected_question).to_latex())
 
 
-Button(detail_frame, text="Prévisualiser la question", command=button_preview).grid(row=9, column=0)
+button_preview['command'] = button_preview_command
+button_preview.grid(row=9, column=0)
 
 
 # Bouton de mise à jour de la question
-def button_update():
+def button_update_command():
     global db, last_id_base
     type_qcm = QCM.TypeQCM.QUESTION_MULT if question_type_var.get() == 2 else QCM.TypeQCM.QUESTION
     options = db.get_question(last_id_base)["amc_options"]
@@ -113,16 +105,57 @@ def button_update():
     list_base.pack(expand=YES, fill=BOTH)
 
 
-Button(detail_frame, text="Mettre à jour", command=button_update).grid(row=9, column=1)
+button_update['command'] = button_update_command
+button_update.grid(row=9, column=1)
 
 
 # Bouton d'ajout dans la zone d'export
-def button_export():
+def button_export_command():
     list_selection.insert(END, list_base.get(int(last_id_base)-1))
     list_selection.pack(expand=YES, fill=BOTH)
 
 
-Button(detail_frame, text="Selectionner", command=button_export).grid(row=9, column=2)
+button_export['command'] = button_export_command
+button_export.grid(row=9, column=2)
+
+
+# Commande remplacant l'export quand on clique dans la liste de selection
+def button_export_retirer():
+    list_selection.delete(list_selection.curselection())
+    list_selection.pack(expand=YES, fill=BOTH)
+
+
+# Permet de mettre à jour l'affichage de la question sur laquelle on travaille
+def base_onselect(event):
+    global db, last_id_base
+    selected = list_base.get(list_base.curselection())
+    last_id_base = selected[(selected.find(" id: ") + 5):]
+    selected_question = db.get_question(last_id_base)
+    display_detail_question(selected_question)
+    button_preview["state"] = "normal"
+    button_update["state"] = "normal"
+    button_export["state"] = "normal"
+    button_export["text"] = "Selectionner"
+    button_export["command"] = button_export_command
+
+
+list_base.bind('<<ListboxSelect>>', base_onselect)
+
+
+def selection_onselect(event):
+    global db, last_id_selection
+    selected = list_selection.get(list_selection.curselection())
+    last_id_selection = selected[(selected.find(" id: ") + 5):]
+    selected_question = db.get_question(last_id_selection)
+    display_detail_question(selected_question)
+    button_preview["state"] = "disabled"
+    button_update["state"] = "disabled"
+    button_export["state"] = "normal"
+    button_export["text"] = "Retirer"
+    button_export["command"] = button_export_retirer
+
+
+list_selection.bind('<<ListboxSelect>>', selection_onselect)
 
 
 # Charge la base de donnée au démarrage de l'app
@@ -179,8 +212,6 @@ def export_tex():
                 question = db.get_question(id)
                 question = DB.question_from_dict(question)
                 file.write(question.to_latex())
-
-
 
 
 # Création du menu en top bar
