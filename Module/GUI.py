@@ -204,14 +204,35 @@ def export_tex():
                 id = question_str[(question_str.find(" id: ") + 5):]
                 question = db.get_question(id)
                 question = DB.question_from_dict(question)
-                file.write(question.to_latex())
+                file.write(question.to_latex() + "\n")
     except FileNotFoundError:
         with open(tex_file_name, "x") as file:
             for question_str in to_export:
                 id = question_str[(question_str.find(" id: ") + 5):]
                 question = db.get_question(id)
                 question = DB.question_from_dict(question)
-                file.write(question.to_latex())
+                file.write(question.to_latex() + "\n")
+
+
+def export_moodle():
+    global db
+    to_export = list_selection.get(0, END)
+    tex_file_name = filedialog.asksaveasfilename(title="Sauvegarder un fichier TeX Moodle",
+                                                 filetypes=(("fichiers TeX", "*.tex"), ("tous les fichiers", "*.*")))
+    try:
+        with open(tex_file_name, "w") as file:
+            for question_str in to_export:
+                id = question_str[(question_str.find(" id: ") + 5):]
+                question = db.get_question(id)
+                question = DB.question_from_dict(question)
+                file.write(question.to_moodle_latex() + "\n")
+    except FileNotFoundError:
+        with open(tex_file_name, "x") as file:
+            for question_str in to_export:
+                id = question_str[(question_str.find(" id: ") + 5):]
+                question = db.get_question(id)
+                question = DB.question_from_dict(question)
+                file.write(question.to_moodle_latex() + "\n")
 
 
 # Création du menu en top bar
@@ -222,12 +243,11 @@ def create_menu():
     menu_import = Menu(menu_bar, tearoff=0)
     menu_bar.add_cascade(label="Importer", menu=menu_import)
     menu_import.add_command(label="Importer un fichier TeX...", command=import_tex)
-    menu_import.add_command(label="Importer un fichier JSON...")
 
     menu_export = Menu(menu_bar, tearoff=0)
     menu_bar.add_cascade(label="Exporter", menu=menu_export)
     menu_export.add_command(label="Exporter un QCM...", command=export_tex)
-    menu_export.add_command(label="Exporter un fichier JSON...")
+    menu_export.add_command(label="Exporter un fichier Moodle...", command=export_moodle)
 
 
 def create_frames():
