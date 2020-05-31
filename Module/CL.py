@@ -1,12 +1,5 @@
-import DB
-import QCM
-import Parser
-import os
+import Gestion
 
-
-sel = []
-buffer = []
-db = None
 
 help_message_global = """Application de Gestion de QCMs
 Pour obtenir plus d'information sur une commande ">>help <commande>"
@@ -28,25 +21,12 @@ Liste des commandes :
     - exit : enregistre la base et ferme l'application
 """
 
-
 def main():
     """reads the data from db.json or creates it if missing
     then prompts the user for a command which is then executed
     """
 
-    global db
-    global buffer
-    global sel
-    location = os.path.dirname(os.path.realpath(__file__))
-    base_path = location + "/db.json"
-    try:
-        db = DB.Base(base_path)
-        print("Fichier db.json trouvé, base chargée")
-    except FileNotFoundError:
-        with open(base_path, "w") as file:
-            file.write("{}")
-        db = DB.Base(base_path)
-        print("Fichier db.json non trouvé, création d'une base vierge, base chargée")
+    Gestion.init()
 
     line = input("GestionQCM >> ")
     command_and_args = line.split()
@@ -59,7 +39,7 @@ def main():
             parse_file(args)
 
         elif command == "persist":
-            db.persist()
+            Gestion.persist_db()
             print("Le fichier de la base à été mis à jour.")
 
         elif command == "printb":
@@ -72,7 +52,7 @@ def main():
             print_moodle_buffer(args)
 
         elif command == "clearb":
-            buffer = []
+            Gestion.clear_buffer()
             print("Buffer cleared")
 
         elif command == "tagb":
@@ -84,21 +64,20 @@ def main():
             print("Tag applied!")
 
         elif command == "saveb":
-            db.add_multiple(buffer)
+            Gestion.save_bufer()
             print("Buffer saved!")
             if "-s" in args:
-                select_name(["-a"] + [question.nom for question in buffer])
+                Gestion.select_name(["-a"] + [question.nom for question in Gestion.buffer])
             if "-c" not in args:
-                buffer = []
+                Gestion.clear_buffer()
                 print("Buffer cleared")
 
         elif command == "save":
-            for index, question in sel:
-                db.update_question(index, question)
+            Gestion.save_sel()
             print("Modifications saved!")
 
         elif command == "clear":
-            sel = []
+            Gestion.clear_sel()
             print("Selection cleared!")
 
         elif command == "selectbyname":
@@ -106,6 +85,9 @@ def main():
 
         elif command == "selectbytag":
             select_tag(args)
+
+        elif command == "selectbykeyword":
+            select_keyword(args)
 
         elif command == "print":
             print_selection(args)
@@ -133,14 +115,8 @@ def main():
         command = command_and_args[0]
         args = command_and_args[1:]
 
-    db.persist()
+    Gestion.persist_db()
     print("base de donnée sauvegardée, arrêt...")
-
-
-def parse(arg):
-    global buffer
-    questions = Parser.parse_latex(arg)
-    buffer += questions
 
 
 def parse_file(args):
@@ -149,17 +125,14 @@ Les QCMs trouvées sont stockées dans le buffer et non directement ajoutées à
 Utilisez ">>saveb" pour sauvegarder les questions trouvées.
     """
 
-    global buffer
-    n = len(buffer)
     if len(args) == 0:
         print("Pas de fichier spécifié")
     else:
+        n = 0
         for filename in args:
-            with open(filename) as file:
-                buffer += Parser.parse_latex(file)
-        n = len(buffer) - n
+            n += Gestion.parse_file(filename)
         print(str(len(args)) + " fichier(s) parsé(s), " + str(n) + " questions trouvées")
-        print(str(len(buffer)) + " questions non sauvegardées")
+        print(str(len(Gestion.buffer)) + " questions non sauvegardées")
 
 
 def print_buffer(args):
@@ -168,14 +141,13 @@ Si aucun argument n'est spécifié, affiche une courte descrption de toutes les 
 Si des indexs sont passés en argument, affiche seulement les QCM(s) spécifiée(s) en détails.
     """
 
-    global buffer
     if len(args) == 0:
-        for question in buffer:
-            print(question.short_str())
+        for string in Gestion.get_all_short_buffer_str():
+            print(string)
     else:
         for index in args:
             try:
-                print(buffer[int(index)])
+                print(Gestion.get_buffer_str(index))
             except IndexError:
                 print("Index invalide")
 
@@ -186,14 +158,13 @@ Si aucun argument n'est spécifié, affiche toutes les QCM.
 Si des indexs sont passés en argument n'affiche que ces derniers.
     """
 
-    global buffer
     if len(args) == 0:
-        for question in buffer:
-            print(question.to_latex())
+        for question in Gestion.get_all_buffer_latex_str():
+            print(question)
     else:
         for index in args:
             try:
-                print(buffer[int(index)].to_latex())
+                print(Gestion.get_buffer_latex_str(index))
             except IndexError:
                 print("Index invalide")
 
@@ -204,14 +175,13 @@ Si aucun argument n'est spécifié, affiche toutes les QCM.
 Si des indexs sont passés en argument n'affiche que ces derniers.
     """
 
-    global buffer
     if len(args) == 0:
-        for question in buffer:
-            print(question.to_moodle_latex())
+        for question in Gestion.get_all_buffer_moodle_str():
+            print(question)
     else:
         for index in args:
             try:
-                print(buffer[int(index)].to_moodle_latex())
+                print(Gestion.get_buffer_moodle_str(index))
             except IndexError:
                 print("Index invalide")
 
@@ -222,14 +192,13 @@ Si aucun argument n'est spécifié, affiche une courte descrption de toutes les 
 Si des indexs sont passés en argument, affiche seulement les QCM(s) spécifiée(s) en détails.
     """
 
-    global sel
     if len(args) == 0:
-        for index, question in sel:
-            print(question.short_str())
+        for string in Gestion.get_all_short_sel_str():
+            print(string)
     else:
         for index in args:
             try:
-                print(sel[int(index)][1])
+                print(Gestion.get_sel_str(index))
             except IndexError:
                 print("Index invalide")
 
@@ -240,14 +209,13 @@ Si aucun argument n'est spécifié, affiche toutes les QCM.
 Si des indexs sont passés en argument n'affiche que ces derniers.
     """
 
-    global sel
     if len(args) == 0:
-        for index, question in sel:
-            print(question.to_latex())
+        for question in Gestion.get_all_latex_str():
+            print(question)
     else:
         for index in args:
             try:
-                print(sel[int(index)][1].to_latex())
+                print(Gestion.get_latex_str(index))
             except IndexError:
                 print("Index invalide")
 
@@ -258,32 +226,27 @@ def print_moodle(args):
     Si des indexs sont passés en argument n'affiche que ces derniers.
         """
 
-    global sel
     if len(args) == 0:
-        for index, question in sel:
-            print(question.to_moodle_latex())
+        for question in Gestion.get_all_moodle_str():
+            print(question)
     else:
         for index in args:
             try:
-                print(sel[int(index)][1].to_moodle_latex())
+                print(Gestion.get_moodle_str(index))
             except IndexError:
                 print("Index invalide")
 
 
 def tag_buffer(args):
     """Applique un ensemble ce tags à toutes les QCMs du buffer"""
-    global buffer
     for tag in args:
-        for question in buffer:
-            question.add_tag(tag)
+        Gestion.apply_tag_all_buffer(tag)
 
 
 def tag_selection(args):
     """Applique un ensemble de tags au questions de la sélection"""
-    global sel
     for tag in args:
-        for index, question in sel:
-            question.add_tag(tag)
+        Gestion.apply_tag_all(tag)
 
 
 def select_name(args):
@@ -294,19 +257,11 @@ Par défaut la sélection courante est remplacée par le résultat de la requêt
 pour ajouter le résultat à la sélection utilisez l'option "-a".
     """
 
-    global sel
-    global db
-    nsel = []
-    replace = True
     if "-a" in args:
         args.remove("-a")
-        replace = False
+        Gestion.clear_sel()
     for name in args:
-        nsel += db.select_question_by_name(name)
-    if replace:
-        sel = nsel
-    else:
-        sel += nsel
+        Gestion.select_name(name)
 
 
 def select_tag(args):
@@ -317,52 +272,43 @@ Par défaut la sélection courante est remplacée par le résultat de la requêt
 pour ajouter le résultat à la sélection utilisez l'option "-a".
     """
 
-    global sel
-    global db
-    replace = True
     if "-a" in args:
         args.remove("-a")
-        replace = False
-    nsel = db.select_question_by_tag(args)
-    if replace:
-        sel = nsel
-    else:
-        sel += nsel
+        Gestion.clear_sel()
+    Gestion.select_tags(args)
+
+
+def select_keyword(args):
+    """recherche des QCMs dans la base qui possèdent l'ensemble des mots-clefs passés en argument dans leur énoncé
+et les ajountent à la sélection.
+
+Par défaut la sélection courante est remplacée par le résultat de la requête,
+pour ajouter le résultat à la sélection utilisez l'option "-a".
+    """
+
+    if "-a" in args:
+        args.remove("-a")
+        Gestion.clear_sel()
+    Gestion.select_keywords(args)
 
 
 def export_latex(args):
     """Exporte le code LaTeX des QCMs sélectionnées dans le fichier ppassé en argument"""
 
-    global sel
     if len(args) == 0:
         print("Veuillez spécifier un fichier de sortie")
     else:
-        try:
-            with open(args[0], "w") as file:
-                for index, question in sel:
-                    file.write(question.to_latex())
-        except FileNotFoundError:
-            with open(args[0], "x") as file:
-                for index, question in sel:
-                    file.write(question.to_latex())
+        Gestion.export_sel_latex(args[0])
         print("Exporté!")
 
 
 def export_moodle(args):
     """Exporte le code LaTeX moodle des QCMs sélectionnées dans le fichier passé en argument"""
 
-    global sel
     if len(args) == 0:
         print("Veuillez spécifier un fichier de sortie")
     else:
-        try:
-            with open(args[0], "w") as file:
-                for index, question in sel:
-                    file.write(question.to_moodle_latex() + "\n")
-        except FileNotFoundError:
-            with open(args[0], "x") as file:
-                for index, question in sel:
-                    file.write(question.to_moodle_latex() + "\n")
+        Gestion.export_sel_moodle(args[0])
         print("Exporté!")
 
 

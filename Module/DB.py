@@ -3,11 +3,11 @@ import QCM
 
 
 def tag_check(tags, required):
-    """Vérifie si les tags requis sont tous dans une liste de tags
-
-    :param tags: les tags à vérifier
-    :param required: les tags requis
-    :return:
+    """
+    Checks if the required tags are present in a list of tags
+    :param tags: the list of tags to chack
+    :param required: the list of required tags
+    :return: the answer
     """
     for tag in required:
         if tag not in tags:
@@ -15,11 +15,34 @@ def tag_check(tags, required):
     return True
 
 
+def keyword_check(text, keywords):
+    """
+    Check if a text contains all the required keywords
+    :param text: the text to check
+    :param keywords: the list of keywords
+    :return: the answer
+    """
+    for keyword in keywords:
+        if keyword not in text:
+            return False
+    return True
+
+
 def reponse_from_dict(rdict):
+    """
+    creates a QCM.Reponse object from a dict
+    :param rdict: the dict from the database
+    :return: the QCM.Reponse object
+    """
     return QCM.Reponse(rdict["est_correcte"], rdict["enonce"])
 
 
 def question_from_dict(qdict):
+    """
+    creates a QCM.Question object from a dict
+    :param qdict: the dict from the database
+    :return: the QCM.Question object
+    """
     reponses = [reponse_from_dict(rdict) for rdict in qdict["reponses"]]
     return QCM.Question(QCM.type_from_str(qdict["type"]),
                         qdict["nom"],
@@ -30,6 +53,10 @@ def question_from_dict(qdict):
 
 
 class Base:
+    """
+    Class that creates creates a dictionnary object from a JSON file
+    allows for various operation on the dictionnary before writing it back to the file
+    """
 
     def __init__(self, input_file):
         self.filename = input_file
@@ -75,8 +102,15 @@ class Base:
                 sel.append((index, question_from_dict(self.data[index])))
         return sel
 
-    def select_all_questions(self):
-        res = []
+    def select_question_by_keyword(self, keywords):
+        sel = []
         for index in self.data:
-            res.append((index, self.data[index]))
-        return res
+            if keyword_check(self.data[index]["enonce"], keywords):
+                sel.append((index, question_from_dict(self.data[index])))
+        return sel
+
+    def select_all_questions(self):
+        sel = []
+        for index in self.data:
+            sel.append((index, self.data[index]))
+        return sel

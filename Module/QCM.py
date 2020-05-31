@@ -73,7 +73,9 @@ class Question:
         self.tags = tags
 
     def __str__(self):
-        """Returns a string for displaying"""
+        """
+        :returns a string for displaying
+        """
         res = self.nom + "\n"
         res += str(self.type) + "\n"
         res += self.enonce + "\n"
@@ -84,13 +86,16 @@ class Question:
         return res
 
     def short_str(self):
-        """returns a short descriptive string of the question"""
+        """
+        :returns a short descriptive string of the question
+        """
         return self.nom + " {" + str(self.type) + "} " + "tags : " + str(self.tags)
 
     def to_dict(self):
         """creates a dictionnary representing the object
         all the fields correspond to a key in the resulting dictionnary
         this function is used for the JSON dump
+        :returns a dictionnary object representing the question
         """
         res = {
             "type": str_from_type(self.type),
@@ -103,7 +108,10 @@ class Question:
         return res
 
     def to_latex(self):
-        """Creates LaTeX code to represent the question using the AMC LaTeX package"""
+        """
+        Creates LaTeX code to represent the question using the AMC LaTeX package
+        :returns a string of LaTeX source code
+        """
 
         res = "\\begin{" + str_from_type(self.type) + "}{" + self.nom + "}\n"
         for option in self.amc_options:
@@ -117,7 +125,10 @@ class Question:
         return res
 
     def to_moodle_latex(self):
-        """Creates LaTeX code to represent the question using the Moodle LaTeX package"""
+        """
+        Creates LaTeX code to represent the question using the Moodle LaTeX package
+        :returns a string of LaTeX source code
+        """
 
         res = "\\begin{multi}[" + moodle_from_type(self.type) + "]{" + self.nom + "}\n"
         res += "  " + self.enonce.replace("\n", "\n  ") + "\n"
@@ -136,12 +147,12 @@ class Question:
         return [reponse for reponse in self.reponses if not reponse.est_correcte]
 
     def add_tag(self, tag):
+        """
+        adds a tag to the question while avoiding duplicates
+        :param tag: the tag to add (preferably a string to avoid conflict when saving to JSON)
+        """
         if tag not in self.tags:
             self.tags.append(tag)
 
     def remove_tag(self, tag):
         self.tags.remove(tag)
-
-
-
-
