@@ -9,7 +9,6 @@ from tkinter import *
 
 def on_latex(master, latex_str):
     preview_window = Toplevel(master)
-    preview_window.geometry("800x300")
     label = Label(preview_window)
 
     expr = latex_str + "\\end{document}"
@@ -46,7 +45,7 @@ def on_latex(master, latex_str):
     left = width/8
     top = height/9
     right = width
-    bottom = height/4
+    bottom = height/3.5
     img = img.crop((left, top, right, bottom))
 
     photo = ImageTk.PhotoImage(img)
@@ -55,6 +54,10 @@ def on_latex(master, latex_str):
     f.close()
 
     label.pack()
+    preview_window_width = str(int(right-left))
+    preview_window_height = str(int(bottom-top))
+    preview_window.geometry(preview_window_width + "x" + preview_window_height)
+    preview_window.resizable(False, False)
     preview_window.mainloop()
 
 
