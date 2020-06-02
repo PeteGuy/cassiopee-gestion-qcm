@@ -4,6 +4,7 @@ from tkinter import messagebox
 from tkinter import filedialog
 import DB
 import CL
+import Gestion
 import QCM
 from GUI_Module import LaTeXDisplay
 
@@ -184,13 +185,13 @@ def load_db():
 def import_tex():
     global highest_id
     tex_file_name = filedialog.askopenfilename(title="Veuillez sélectionner un fichier TeX", filetypes=(("fichiers TeX", "*.tex"), ("tous les fichiers", "*.*")))
-    CL.parse_file([tex_file_name])
-    for question in CL.buffer:
+    Gestion.parse_file(tex_file_name)
+    for question in Gestion.buffer:
         db.add_question(question)
         highest_id += 1
         list_base.insert(END, question.nom + " id: " + str(highest_id))
 
-    CL.buffer = []
+    Gestion.buffer = []
     list_base.pack(expand=YES, fill=BOTH)
 
 
