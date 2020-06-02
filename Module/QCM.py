@@ -1,6 +1,11 @@
 from enum import Enum
 
 
+#
+# Class and functions for types of QCM
+#
+
+
 class TypeQCM(Enum):
     """Small class to represent the type of a QCM without strings"""
     QUESTION = 1
@@ -8,7 +13,11 @@ class TypeQCM(Enum):
 
 
 def type_from_str(string):
-    """Allows the conversion of the QCM type from LaTeX"""
+    """
+    Allows the conversion of the QCM type from LaTeX
+    :param string: The LaTeX code of the type
+    :returns the corresponding QCM.TypeQCM
+    """
     if string == "question":
         return TypeQCM.QUESTION
     elif string == "questionmult":
@@ -16,7 +25,11 @@ def type_from_str(string):
 
 
 def str_from_type(type_qcm):
-    """Brings the QCM type back to LaTeX"""
+    """
+    Converts TypeQCM back to LaTeX code
+    :param type_qcm: the QCM.TypeQCM to convert
+    :returns the string of LaTeX code
+    """
     if type_qcm == TypeQCM.QUESTION:
         return "question"
     elif type_qcm == TypeQCM.QUESTION_MULT:
@@ -24,11 +37,20 @@ def str_from_type(type_qcm):
 
 
 def moodle_from_type(type_qcm):
-    """Exports the type to moodle LaTeX"""
+    """
+    Converts TypeQCM to moodle LaTeX code
+    :param type_qcm: the QCM.TypeQCM to convert
+    :returns the string of LaTeX code
+    """
     if type_qcm == TypeQCM.QUESTION:
         return "single"
     elif type_qcm == TypeQCM.QUESTION_MULT:
         return "multiple"
+
+
+#
+# Reponse and Question classes
+#
 
 
 class Reponse:
@@ -57,6 +79,7 @@ class Reponse:
             return "\\item " + self.enonce
 
 
+
 class Question:
     """Class representing a full QCM"""
 
@@ -73,9 +96,6 @@ class Question:
         self.tags = tags
 
     def __str__(self):
-        """
-        :returns a string for displaying
-        """
         res = self.nom + "\n"
         res += str(self.type) + "\n"
         res += self.enonce + "\n"
@@ -87,6 +107,7 @@ class Question:
 
     def short_str(self):
         """
+        Creates a short description that does not contain every field in the object
         :returns a short descriptive string of the question
         """
         return self.nom + " {" + str(self.type) + "} " + "tags : " + str(self.tags)
@@ -101,7 +122,7 @@ class Question:
         res = {
             "type": str_from_type(self.type),
             "nom": self.nom,
-            "amc_options" : self.amc_options,
+            "amc_options": self.amc_options,
             "enonce": self.enonce,
             "reponses": [rep.__dict__ for rep in self.reponses],
             "tags": self.tags
@@ -113,7 +134,6 @@ class Question:
         Creates LaTeX code to represent the question using the AMC LaTeX package
         :returns a string of LaTeX source code
         """
-
         res = "\\begin{" + str_from_type(self.type) + "}{" + self.nom + "}\n"
         for option in self.amc_options:
             res += "  " + option + "\n"
@@ -130,7 +150,6 @@ class Question:
         Creates LaTeX code to represent the question using the Moodle LaTeX package
         :returns a string of LaTeX source code
         """
-
         res = "\\begin{multi}[" + moodle_from_type(self.type) + "]{" + self.nom + "}\n"
         res += "  " + self.enonce.replace("\n", "\n  ") + "\n"
         for reponse in self.reponses:
@@ -139,12 +158,21 @@ class Question:
         return res
 
     def get_answers(self):
+        """
+        :return: The list of all the answers
+        """
         return self.reponses
 
     def get_right_answers(self):
+        """
+        :return: A list containing the right answers
+        """
         return [reponse for reponse in self.reponses if reponse.est_correcte]
 
     def get_wrong_answers(self):
+        """
+        :return: A list containing the wrong answers
+        """
         return [reponse for reponse in self.reponses if not reponse.est_correcte]
 
     def add_tag(self, tag):
@@ -156,4 +184,8 @@ class Question:
             self.tags.append(tag)
 
     def remove_tag(self, tag):
+        """
+        removes a tag (if the tag is absent nothing is done)
+        :param tag: the tag to remove
+        """
         self.tags.remove(tag)
