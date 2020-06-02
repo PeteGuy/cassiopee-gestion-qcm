@@ -27,7 +27,7 @@ def init():
     """
     global db
     location = os.path.dirname(os.path.realpath(__file__))
-    base_path = location + "db.json"
+    base_path = location + "/db.json"
     try:
         db = DB.Base(base_path)
         print("Fichier db.json trouvé, base chargée")
