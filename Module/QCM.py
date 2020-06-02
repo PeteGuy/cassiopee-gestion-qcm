@@ -79,7 +79,6 @@ class Reponse:
             return "\\item " + self.enonce
 
 
-
 class Question:
     """Class representing a full QCM"""
 

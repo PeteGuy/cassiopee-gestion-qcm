@@ -21,8 +21,10 @@ Liste des commandes :
     - exit : enregistre la base et ferme l'application
 """
 
+
 def main():
-    """reads the data from db.json or creates it if missing
+    """
+    reads the data from db.json or creates it if missing
     then prompts the user for a command which is then executed
     """
 
@@ -119,6 +121,11 @@ def main():
     print("base de donnée sauvegardée, arrêt...")
 
 
+#
+# Parse functions
+#
+
+
 def parse_file(args):
     """Parse un ou plusieurs fichiers LaTeX passé(s) en argument.
 Les QCMs trouvées sont stockées dans le buffer et non directement ajoutées à la base.
@@ -133,6 +140,11 @@ Utilisez ">>saveb" pour sauvegarder les questions trouvées.
             n += Gestion.parse_file(filename)
         print(str(len(args)) + " fichier(s) parsé(s), " + str(n) + " questions trouvées")
         print(str(len(Gestion.buffer)) + " questions non sauvegardées")
+
+
+#
+# Print Functions
+#
 
 
 def print_buffer(args):
@@ -237,6 +249,11 @@ def print_moodle(args):
                 print("Index invalide")
 
 
+#
+# Tag functions
+#
+
+
 def tag_buffer(args):
     """Applique un ensemble ce tags à toutes les QCMs du buffer"""
     for tag in args:
@@ -247,6 +264,11 @@ def tag_selection(args):
     """Applique un ensemble de tags au questions de la sélection"""
     for tag in args:
         Gestion.apply_tag_all(tag)
+
+
+#
+# Select functions
+#
 
 
 def select_name(args):
@@ -292,6 +314,11 @@ pour ajouter le résultat à la sélection utilisez l'option "-a".
     Gestion.select_keywords(args)
 
 
+#
+# Export functions
+#
+
+
 def export_latex(args):
     """Exporte le code LaTeX des QCMs sélectionnées dans le fichier ppassé en argument"""
 
@@ -314,8 +341,8 @@ def export_moodle(args):
 
 def print_help(args):
     """Affiche un message d'aide pour les commandes,
-si aucun argument n'est spécifié, affiche un message générique
-si des commandes sont spécifiées, affiche leurs messages d'aide respectifs à la suite.
+    si aucun argument n'est spécifié, affiche un message générique
+    si des commandes sont spécifiées, affiche leurs messages d'aide respectifs à la suite.
     """
 
     if len(args) == 0:
@@ -353,16 +380,20 @@ qu'après un appel à ">> persist" ou à ">> exit".""")
             elif command == "save":
                 print("""Sauvegarde les modification de la sélection dans la base
 NOTE : cette sauvegarde n'est effectivement répercutée sur le fichier de la base
-qu'après un appel à ">> persist" ou à ">> exit".""")
+qu'après un appel à ">> persist" ou à ">> exit".""" )
 
             elif command == "clear":
-                print("Efface le contenu de la sélection.\nToute modification non enregistrée est définitivement perdu.")
+                print("Efface le contenu de la sélection.\n"
+                      "Toute modification non enregistrée est définitivement perdu.")
 
             elif command == "selectbyname":
                 print(select_name.__doc__)
 
             elif command == "selectbytag":
                 print(select_tag.__doc__)
+
+            elif command == "seletbykeyword":
+                print(select_keyword.__doc__)
 
             elif command == "print":
                 print(print_selection.__doc__)
