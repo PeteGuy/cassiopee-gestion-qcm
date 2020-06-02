@@ -83,7 +83,7 @@ class Base:
         self.data.pop(index)
 
     def get_question(self, index):
-        return self.data[index]
+        return question_from_dict(self.data[index])
 
     def update_question(self, index, question):
         self.data[index] = question.to_dict()
@@ -112,5 +112,5 @@ class Base:
     def select_all_questions(self):
         sel = []
         for index in self.data:
-            sel.append((index, self.data[index]))
+            sel.append((index, question_from_dict(self.data[index])))
         return sel

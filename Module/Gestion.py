@@ -10,8 +10,14 @@ import os
 # of the caller to handle exceptions (such as IndexError)
 
 
+# The list of currently selected questions, these are the questions that will be exported
+# When using the command line tool this also serves the role of the "view" list
 sel = []
+# The list of question visible in the leftmost part of the GUI
+view = []
+# The list of questions at the output of a parse
 buffer = []
+# The database object
 db = None
 
 
@@ -24,6 +30,7 @@ def init():
     """
     initializes a database with the default name and location
     if a database already exists, it is charged, if not it is created
+    :returns True if a base was found false if no and a new base was created
     """
     global db
     location = os.path.dirname(os.path.realpath(__file__))
@@ -31,11 +38,13 @@ def init():
     try:
         db = DB.Base(base_path)
         print("Fichier db.json trouvé, base chargée")
+        return True
     except FileNotFoundError:
         with open(base_path, "w") as file:
             file.write("{}")
         db = DB.Base(base_path)
         print("Fichier db.json non trouvé, création d'une base vierge, base chargée")
+        return False
 
 
 def get_buffer():
@@ -287,6 +296,26 @@ def remove_duplicates():
             seen.append(sel[i][0])
 
 
+def get_index(index):
+    """
+    returns the QCM.Question object at the specified index in the database
+    :param index: the index of the desired question in the database
+    :return: the QCM.Question object
+    """
+    global db
+    return db.get_question(index)
+
+
+def update_index(index, update):
+    """
+    updates the QCM at the specified index with the new one
+    :param index: the index at which to update
+    :param update: the new question
+    """
+    global db
+    db.update_question(index, update)
+
+
 def persist_db():
     """
     forces the database to write data to disk
@@ -480,3 +509,91 @@ def select_all():
     clear_sel()
     for question in db.select_all_questions():
         sel.append(question)
+
+
+def select_id(db_id):
+    """
+    puts the question with the specified database id in the selection
+    :param db_id: the index to add
+    :returns True if the id was found False if not
+    """
+    global sel
+    global db
+    try:
+        sel.append((db_id, db.get_question(db_id)))
+        remove_duplicates()
+        return True
+    except IndexError:
+        return False
+    
+    
+def remove_sel(index):
+    """
+    removes the sel[index] question from the selection
+    :param index: the index in the sel list
+    """
+    global sel
+    sel.pop(index)
+
+
+#
+# Functions for manipulating the view
+#
+
+
+def clear_view():
+    """
+    clears the view
+    """
+    global view
+    view.clear()
+
+
+def view_all():
+    """
+    puts all the questions in the view list
+    """
+    global view
+    global db
+    clear_view()
+    for question in db.select_all_questions():
+        view.append(question)
+
+
+def view_name(name):
+    """
+    replaces the view with the questions with the specified name
+    :param name: the name to search
+    """
+    global db
+    global view
+    clear_view()
+    for question in db.select_question_by_name(name):
+        view.append(question)
+
+
+def view_tags(tags):
+    """
+    replaces the view with the questions with the specified tags
+    :param tags: the tags to search
+    """
+    global db
+    global view
+    clear_view()
+    for question in db.select_question_by_tag(tags):
+        view.append(question)
+
+
+def view_keywords(keywords):
+    """
+    replaces the view with the questions with the specified keywords
+    note : the keywords are only searched for in the text of the questions
+    (not the name nor the answers)
+    :param keywords: the keywords to search
+    """
+    global db
+    global view
+    clear_view()
+    for question in db.select_question_by_keyword(keywords):
+        view.append(question)
+
