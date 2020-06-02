@@ -1,19 +1,26 @@
 import QCM
 
 
+#
+# Utilitary functions
+#
+
+
 def get_block(text, block_open_char, block_close_char):
-    """Renvoie le premier bloc de texte délimité par les caractères spécifiés
-    Le bloc renvoyé ne contient pas les caractères délimitant mais contient les sous-blocs
-    Si aucun bloc valide n'est rencontré la fonction renvoie une chaîne vide.
+    """
+    Returns the first block of text marked by the specified characters.
+    The returned block does not contain the opening and closing characters.
+    The returned block contains all the sub-blocks.
+    If no valid block is encountered the function returns an empty string.
 
     example :
-    >>> get_block("test {content {2} content}", '{', '}')
-    >>> 'content {2} content'
+    >>> get_block("test {content {sub} content}", '{', '}')
+    >>> 'content {sub} content'
 
-    :param block_close_char: le caractère marquant l'ouverture d'un bloc
-    :param block_open_char: le caractère marquant la fermeture d'un bloc
-    :param text: le texte dans lequel chercher
-    :return le premier bloc valide trouvé si il existe, "" sinon
+    :param block_close_char: The character opening a block
+    :param block_open_char: The character closing a block
+    :param text: The text in which to extract the block
+    :return The first valid block, "" if none
     """
 
     depth = 0
@@ -36,29 +43,35 @@ def get_block(text, block_open_char, block_close_char):
 
 
 def pattern_at(text, index, pattern):
-    """Vérifie si le motif est à la position dan le texte
+    """
+    Checks if the specified pattern is at the specified position in a string
 
     exemple :
     >>> pattern_at("test exemple", 5, "exemple")
     >>> True
 
-    :param text le texte à vérifier
-    :param index l'index du caractère de début du motif dans le texte
-    :param pattern le motif
-    :return un booléen indiquant si le motif est effectivement dans le texte à l'endroit spécifié
+    :param text The string to test.
+    :param index The index at which the pattern is supposed to start in the string
+    :param pattern The pattern to test
+    :return A boolean answering the question
     """
 
-    return pattern == text[index : index + len(pattern)]
+    return pattern == text[index: index + len(pattern)]
+
+
+#
+# Parsing functions
+#
 
 
 def parse_reponses(r_lines):
-    """Parse les réponses d'une QCM à partir du code LaTeX
-     et renvoie une liste d'objets QCM.Reponse.
-     Le code LaTeX à parser doit commencer par "\\begin{reponse}
-     et finir par "\\end{reponse}"
+    """
+    Parses the answers of a QCM from LaTeX source code.
+    The LaTeX code this function is built to parse is between the
+    "\\begin{reponse} and "\\end{reponse}" tags
 
-    :param r_lines le code LaTeX à parser
-    :return la liste des réponses trouvées
+    :param r_lines The LaTeX code to parse
+    :return A list of QCM.Reponse objects
     """
 
     reponses = []
@@ -73,11 +86,12 @@ def parse_reponses(r_lines):
 
 
 def parse_qcm(q_lines):
-    """Parse une question à partir d'un code LaTeX
+    """
+    Parses the body of a question written in LaTeX source code representing the body of ONE question
+    the body must start with \\begin{question and ends with \\end{question
 
-    :param q_lines: Le code LaTeX représentant UNE question
-    doit commencer par \\begin{question et finir par \\end{question
-    :return: l'instance de QCM.Question représentant la question
+    :param q_lines: The LaTeX code to parse
+    :return: The object QCM.Question that corresponds to the source code
     """
 
     lines_iter = iter(q_lines)
@@ -92,10 +106,7 @@ def parse_qcm(q_lines):
 
     for line in lines_iter:
 
-        if line.startswith("\\element"):
-            pass
-
-        elif line.strip().startswith("\\begin{reponses}"):
+        if line.strip().startswith("\\begin{reponses}"):
             record_enonce = False
             q = QCM.Question(q_type, q_name, q_options, q_enonc)
             record_reponse = True
@@ -123,15 +134,21 @@ def parse_qcm(q_lines):
     return q
 
 
-def parse_latex(latex):
-    """Parse un code LaTeX fourni en argument et renvoie les QCM trouvées
-    le code LaTeX peut contenir autre chose que des QCM, seules les QCM seront reconnues et
-    le reste sera ignoré
+#
+# Main parsing function
+# this is the main function that should be called to parse LaTeX
+#
 
-    :param latex: Le code LaTeX à parser
-    le code peut être un objet quelconque do moment qu'il se comporte comme du texte
-    et qu'il est possible d'itérer sur les lignes.
-    :return: La liste contenant les questions trouvées dans le code LaTeX
+
+def parse_latex(latex):
+    """
+    Parses a LaTeX source code and returns a list of QCM.Questions objects representing the questions found,
+    the source code can contain anything beside the questions, only the latter will pe parsed.
+
+    :param latex: The source code to parse
+    This can ba any type of text object (file, string, etc)
+    as long as the default iterator iterates over the lines
+    :return: The list of the questions found
     """
 
     qcms = []
@@ -140,18 +157,21 @@ def parse_latex(latex):
 
     for line in latex:
 
+        # The starting tag of a question (needs to be on a separate line from the body)
         if line.strip().startswith("\\begin{question"):
             qcm_lines.append(line)
             record = True
 
+        # The end tag of a question (needs to be on a separate line from the body)
         elif line.strip().startswith("\\end{question"):
             qcm_lines.append(line)
             record = False
+            # Call to parse_qcm to parse the body of the question
             qcms.append(parse_qcm(qcm_lines))
             qcm_lines = []
 
+        # The body of the question
         elif record:
             qcm_lines.append(line)
 
     return qcms
-

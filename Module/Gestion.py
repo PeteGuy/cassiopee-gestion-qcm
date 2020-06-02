@@ -27,7 +27,7 @@ def init():
     """
     global db
     location = os.path.dirname(os.path.realpath(__file__))
-    base_path = location + "db.json"
+    base_path = location + "/db.json"
     try:
         db = DB.Base(base_path)
         print("Fichier db.json trouvé, base chargée")
@@ -135,7 +135,7 @@ def get_latex_str(index):
     """
     returns a LaTeX string for the question in the specified index of the selection
     :param index: th index of the selection list
-    :return: the string
+    :return: the LaTeX string
     """
     global sel
     return sel[index][1].to_latex()
@@ -145,7 +145,7 @@ def get_moodle_str(index):
     """
     returns a moodle LaTeX string for the question in the specified index of the selection
     :param index: th index of the selection list
-    :return: the string
+    :return: the LateX string
     """
     global sel
     return sel[index][1].to_moodle_latex()
@@ -155,7 +155,7 @@ def get_buffer_latex_str(index):
     """
     returns a LaTeX string for the question in the specified index of the selection
     :param index: th index of the selection list
-    :return: the string
+    :return: the LateX string
     """
     global buffer
     return buffer[index].to_latex()
@@ -164,8 +164,8 @@ def get_buffer_latex_str(index):
 def get_buffer_moodle_str(index):
     """
     returns a moodle LaTeX string for the question in the specified index of the selection
-    :param index: th index of the selection list
-    :return: the string
+    :param index: the index of the selection list
+    :return: the LaTeX string
     """
     global buffer
     return buffer[index].to_moodle_latex()
@@ -174,7 +174,7 @@ def get_buffer_moodle_str(index):
 def get_all_latex_str():
     """
     return all the LaTeX string for each question in the selction
-    :return: a list containing all the string
+    :return: a list containing all the strings
     """
     global sel
     res = []
@@ -186,7 +186,7 @@ def get_all_latex_str():
 def get_all_moodle_str():
     """
     return all the moodle LaTeX string for each question in the selction
-    :return: a list containing all the string
+    :return: a list containing all the strings
     """
     global sel
     res = []
@@ -198,7 +198,7 @@ def get_all_moodle_str():
 def get_all_buffer_latex_str():
     """
     return all the LaTeX string for each question in the selction
-    :return: a list containing all the string
+    :return: a list containing all the strings
     """
     global buffer
     res = []
@@ -210,7 +210,7 @@ def get_all_buffer_latex_str():
 def get_all_buffer_moodle_str():
     """
     return all the moodle LaTeX string for each question in the selction
-    :return: a list containing all the string
+    :return: a list containing all the strings
     """
     global buffer
     res = []

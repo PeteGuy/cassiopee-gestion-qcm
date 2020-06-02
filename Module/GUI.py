@@ -263,7 +263,6 @@ def set_gui():
     load_db_label.pack_forget()
     create_menu()
     create_frames()
-    return
 
 
 # Fonction permettant de sauvegarder la base de donnée au moment de quitter l'application
