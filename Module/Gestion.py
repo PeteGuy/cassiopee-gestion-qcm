@@ -559,6 +559,15 @@ def select_id(db_id):
         return False
 
 
+def refresh_sel():
+    """
+    Fetch another Question object from the database for each selected question
+    to see any change that might have occured to each currently selected questions.
+    """
+    global sel
+    for i in range(len(sel)):
+        sel[i] = db.get_question(sel[i][0])
+
 
 #
 # Functions for manipulating the view
@@ -622,3 +631,13 @@ def view_keywords(keywords):
     clear_view()
     for question in db.question_by_keyword(keywords):
         view.append(question)
+
+
+def refresh_view():
+    """
+    Fetch another Question object from the database for each question in the view
+    to see any change that might have occured to each currently visible question.
+    """
+    global view
+    for i in range(len(view)):
+        view[i] = db.get_question(view[i][0])
