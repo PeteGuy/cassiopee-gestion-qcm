@@ -1,6 +1,15 @@
 import Gestion
 
 
+# This module is responsible for creating a command line tool to use the app
+# the core of the app located in the Gestion module can be used without this module
+# but this module makes it harder to mess up.
+# In this module the "view" (database view) and "selection" (selection for export)
+# are merged together to simplify the process of selecting questions.
+# Otherwise this module simply wraps the Gestion module by providing some error handling
+# and help massages
+
+
 help_message_global = """Application de Gestion de QCMs
 Pour obtenir plus d'information sur une commande ">>help <commande>"
 
@@ -15,11 +24,14 @@ Liste des commandes :
     - moodle(moodleb) <?index>... : affiche le code LaTeX moodle des questions sélectionnées (du buffer) spécifiées
     - save(saveb) : enregistre les modifications sur la sélection (enregistre le buffer) dans la base
     - clear(clearb) : Remet à zéro la sélection (le buffer) sans sauvegarder
+    - remove(removeb) <index>... : enlève les questions aux indexs voulues de la sélection (du buffer)
     - tag(tagb) <tag>... : applique un tag à la sélection (au buffer)
-    - selectbytag, selectbyname <arg>... : sélectionne dans la base suivant un critère
+    - selectbytag, selectbyname, selectbykeyword <arg>... : sélectionne dans la base suivant un critère
     - exportlatex (exportmoodle) <fichier> : exporte la sélection au format LaTeX (Moodle LaTeX) dans le fichier
     - exit : enregistre la base et ferme l'application
 """
+
+index_error = "Index Invalide!"
 
 
 def main():
@@ -57,6 +69,9 @@ def main():
             Gestion.clear_buffer()
             print("Buffer cleared")
 
+        elif command == "removeb":
+            remove_buffer(args)
+
         elif command == "tagb":
             tag_buffer(args)
             print("Tag applied!")
@@ -81,6 +96,9 @@ def main():
         elif command == "clear":
             Gestion.clear_sel()
             print("Selection cleared!")
+
+        elif command == "remove":
+            remove_selection(args)
 
         elif command == "selectbyname":
             select_name(args)
@@ -161,7 +179,7 @@ Si des indexs sont passés en argument, affiche seulement les QCM(s) spécifiée
             try:
                 print(Gestion.get_buffer_str(index))
             except IndexError:
-                print("Index invalide")
+                print(index_error)
 
 
 def print_latex_buffer(args):
@@ -178,7 +196,7 @@ Si des indexs sont passés en argument n'affiche que ces derniers.
             try:
                 print(Gestion.get_buffer_latex_str(index))
             except IndexError:
-                print("Index invalide")
+                print(index_error)
 
 
 def print_moodle_buffer(args):
@@ -195,7 +213,7 @@ Si des indexs sont passés en argument n'affiche que ces derniers.
             try:
                 print(Gestion.get_buffer_moodle_str(index))
             except IndexError:
-                print("Index invalide")
+                print(index_error)
 
 
 def print_selection(args):
@@ -212,7 +230,7 @@ Si des indexs sont passés en argument, affiche seulement les QCM(s) spécifiée
             try:
                 print(Gestion.get_sel_str(index))
             except IndexError:
-                print("Index invalide")
+                print(index_error)
 
 
 def print_latex(args):
@@ -229,14 +247,14 @@ Si des indexs sont passés en argument n'affiche que ces derniers.
             try:
                 print(Gestion.get_latex_str(index))
             except IndexError:
-                print("Index invalide")
+                print(index_error)
 
 
 def print_moodle(args):
     """Affiche le code LaTeX Moodle des QCM de la sélection
-    Si aucun argument n'est spécifié, affiche toutes les QCM.
-    Si des indexs sont passés en argument n'affiche que ces derniers.
-        """
+Si aucun argument n'est spécifié, affiche toutes les QCM.
+Si des indexs sont passés en argument n'affiche que ces derniers.
+    """
 
     if len(args) == 0:
         for question in Gestion.get_all_moodle_str():
@@ -246,7 +264,7 @@ def print_moodle(args):
             try:
                 print(Gestion.get_moodle_str(index))
             except IndexError:
-                print("Index invalide")
+                print(index_error)
 
 
 #
@@ -264,6 +282,29 @@ def tag_selection(args):
     """Applique un ensemble de tags au questions de la sélection"""
     for tag in args:
         Gestion.apply_tag_all(tag)
+
+
+#
+# Remove functions
+#
+
+
+def remove_buffer(args):
+    """Retire les question voulues du buffer"""
+    for index in args:
+        try:
+            Gestion.remove_buffer(index)
+        except IndexError:
+            print(index_error)
+
+
+def remove_selection(args):
+    """retire les questions voulues de la sélection"""
+    for index in args:
+        try:
+            Gestion.remove_sel(index)
+        except IndexError:
+            print(index_error)
 
 
 #
@@ -367,6 +408,9 @@ def print_help(args):
             elif command == "clearb":
                 print("Efface le contenu du buffer.\nLe contenu effacé est définitivement perdu.")
 
+            elif command == "removeb":
+                print(remove_buffer.__doc__)
+
             elif command == "tagb":
                 print(tag_buffer.__doc__)
 
@@ -380,11 +424,14 @@ qu'après un appel à ">> persist" ou à ">> exit".""")
             elif command == "save":
                 print("""Sauvegarde les modification de la sélection dans la base
 NOTE : cette sauvegarde n'est effectivement répercutée sur le fichier de la base
-qu'après un appel à ">> persist" ou à ">> exit".""" )
+qu'après un appel à ">> persist" ou à ">> exit".""")
 
             elif command == "clear":
                 print("Efface le contenu de la sélection.\n"
                       "Toute modification non enregistrée est définitivement perdu.")
+
+            elif command == "remove":
+                print(remove_selection.__doc__)
 
             elif command == "selectbyname":
                 print(select_name.__doc__)

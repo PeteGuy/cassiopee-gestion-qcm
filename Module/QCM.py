@@ -1,6 +1,11 @@
 from enum import Enum
 
 
+# This module defines the Question class used by the rest of the GestionQCM app
+# The class contains all the methods necessary to manipulate and export a question
+# Creating a question from a LaTeX source code otherwise requires the use of the Parser module
+
+
 #
 # Class and functions for types of QCM
 #

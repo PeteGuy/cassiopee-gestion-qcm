@@ -1,16 +1,11 @@
-import os
 from tkinter import *
 from tkinter import messagebox
 from tkinter import filedialog
-import DB
-import CL
 import Gestion
 import QCM
 from GUI_Module import LaTeXDisplay
 
-db = None
-buffer = []
-highest_id = 0
+current = None
 master = Tk()
 
 # Ajout des 3 frames
@@ -19,12 +14,10 @@ detail_frame = LabelFrame(master, text="Détail")
 selection_frame = LabelFrame(master, text="Selection")
 
 # Ajout des listes
-list_base = Listbox(base_frame, selectmode=SINGLE)
-last_id_base = 0
+list_view = Listbox(base_frame, selectmode=SINGLE)
 
 list_selection = Listbox(selection_frame, selectmode=SINGLE)
 list_selection.pack()
-last_id_selection = 0
 
 # Ajout des composants frame détail
 detail_frame.columnconfigure(1, weight=10)
@@ -43,13 +36,15 @@ question_type_var = IntVar()
 question_type_check = Checkbutton(detail_frame, variable=question_type_var, onvalue=2, offvalue=1)
 question_type_check.grid(row=2, column=1)
 
-reponses_labels = [Label(detail_frame, text="Réponse " + str(i+1) + ":").grid(row=3+i, column=0, sticky="W") for i in range(6)]
+reponses_labels = [Label(detail_frame, text="Réponse " + str(i + 1) + ":").grid(row=3 + i, column=0, sticky="W") for i
+                   in range(6)]
 reponses_var = [StringVar() for i in range(6)]
-reponses_entry = [Entry(detail_frame, textvariable=reponses_var[i]).grid(row=3+i, column=1, ipadx=150) for i in range(6)]
+reponses_entry = [Entry(detail_frame, textvariable=reponses_var[i]).grid(row=3 + i, column=1, ipadx=150) for i in
+                  range(6)]
 reponses_vraies_var = [IntVar() for i in range(6)]
 reponses_vraies_checks = [Checkbutton(detail_frame, variable=reponses_vraies_var[i]) for i in range(6)]
 for i in range(6):
-    reponses_vraies_checks[i].grid(row=3+i, column=2)
+    reponses_vraies_checks[i].grid(row=3 + i, column=2)
 
 button_preview = Button(detail_frame, text="Prévisualiser la question", state=DISABLED)
 button_update = Button(detail_frame, text="Mettre à jour", state=DISABLED)
@@ -58,16 +53,23 @@ button_export = Button(detail_frame, text="Selectionner", state=DISABLED)
 
 # Gère l'affichages des détails d'une question
 def display_detail_question(question):
-    question_nom_var.set(question["nom"])
-    question_enonce_var.set(question["enonce"])
-    if QCM.type_from_str(question["type"]) == QCM.TypeQCM.QUESTION_MULT:
+    """
+    displays the given QCM.Question object in the center of the screen
+    :param question: the question to display
+    """
+    question_nom_var.set(question.nom)
+    question_enonce_var.set(question.enonce)
+    if question.type == QCM.TypeQCM.QUESTION_MULT:
         question_type_check.select()
     else:
         question_type_check.deselect()
     nbr_reponses = 0
-    for reponse in question["reponses"]:
-        reponses_var[nbr_reponses].set(reponse["enonce"])
-        reponses_vraies_checks[nbr_reponses].select() if reponse["est_correcte"] else reponses_vraies_checks[nbr_reponses].deselect()
+    for reponse in question.reponses:
+        reponses_var[nbr_reponses].set(reponse.enonce)
+        if reponse.est_correcte:
+            reponses_vraies_checks[nbr_reponses].select()
+        else:
+            reponses_vraies_checks[nbr_reponses].deselect()
         nbr_reponses += 1
     for i in range(nbr_reponses, 6):
         reponses_vraies_checks[i].deselect()
@@ -77,8 +79,11 @@ def display_detail_question(question):
 # Commande des boutons de détail
 # Bouton de preview
 def button_preview_command():
-    selected_question = db.get_question(last_id_base)
-    LaTeXDisplay.on_latex(master, DB.question_from_dict(selected_question).to_latex())
+    """
+    preview the currently shown question by compiling the LaTeX code
+    """
+    selected_question = Gestion.get_index(current)
+    LaTeXDisplay.on_latex(master, selected_question.to_latex())
 
 
 button_preview['command'] = button_preview_command
@@ -87,23 +92,24 @@ button_preview.grid(row=9, column=0)
 
 # Bouton de mise à jour de la question
 def button_update_command():
-    global db, last_id_base
+    """
+    updates the currently shown question in the database
+    """
     type_qcm = QCM.TypeQCM.QUESTION_MULT if question_type_var.get() == 2 else QCM.TypeQCM.QUESTION
-    options = db.get_question(last_id_base)["amc_options"]
+    options = Gestion.get_index(current).amc_option
     reponses = []
     bonnes_reponses = 0
     for i in range(6):
         if reponses_var[i].get() != "":
             reponses.append(QCM.Reponse((reponses_vraies_var[i].get() == 1), reponses_var[i].get()))
             bonnes_reponses += reponses_vraies_var[i].get()
-
-    if (type_qcm == QCM.TypeQCM.QUESTION_MULT and bonnes_reponses > 0) or (type_qcm == QCM.TypeQCM.QUESTION and bonnes_reponses == 1):
-        question = QCM.Question(type_qcm, question_nom_var.get(), options, question_enonce_var.get(), reponses, None)
-        db.update_question(last_id_base, question)
+    if (type_qcm == QCM.TypeQCM.QUESTION_MULT and bonnes_reponses > 0) \
+            or (type_qcm == QCM.TypeQCM.QUESTION and bonnes_reponses == 1):
+        question = QCM.Question(type_qcm, question_nom_var.get(), options, question_enonce_var.get(), reponses)
+        Gestion.update_index(current, question)
     else:
         messagebox.showerror("Mauvais nombre de bonnes réponses", "Veuillez mettre un nombre de réponse(s) approprié")
-
-    list_base.pack(expand=YES, fill=BOTH)
+    update_view()
 
 
 button_update['command'] = button_update_command
@@ -112,8 +118,11 @@ button_update.grid(row=9, column=1)
 
 # Bouton d'ajout dans la zone d'export
 def button_export_command():
-    list_selection.insert(END, list_base.get(int(last_id_base)-1))
-    list_selection.pack(expand=YES, fill=BOTH)
+    """
+    adds the currently shown question to the selection/export view (rightmost part of the screen)
+    """
+    Gestion.select_id(current)
+    update_selection()
 
 
 button_export['command'] = button_export_command
@@ -122,17 +131,20 @@ button_export.grid(row=9, column=2)
 
 # Commande remplacant l'export quand on clique dans la liste de selection
 def button_export_retirer():
-    list_selection.delete(list_selection.curselection())
-    list_selection.pack(expand=YES, fill=BOTH)
+    Gestion.remove_sel(list_selection.curselection()[0])
+    update_selection()
 
 
 # Permet de mettre à jour l'affichage de la question sur laquelle on travaille
 def base_onselect(event):
-    global db, last_id_base
-    selected = list_base.get(list_base.curselection())
-    last_id_base = selected[(selected.find(" id: ") + 5):]
-    selected_question = db.get_question(last_id_base)
-    display_detail_question(selected_question)
+    """
+    updates the display when a question is selected in the database view (leftmost part of the screen)
+    :param event: the Tk event
+    """
+    global current
+    selected = list_view.curselection()[0]
+    current = Gestion.view[selected][0]
+    display_detail_question(Gestion.view[selected][1])
     button_preview["state"] = "normal"
     button_update["state"] = "normal"
     button_export["state"] = "normal"
@@ -140,15 +152,18 @@ def base_onselect(event):
     button_export["command"] = button_export_command
 
 
-list_base.bind('<<ListboxSelect>>', base_onselect)
+list_view.bind('<<ListboxSelect>>', base_onselect)
 
 
 def selection_onselect(event):
-    global db, last_id_selection
-    selected = list_selection.get(list_selection.curselection())
-    last_id_selection = selected[(selected.find(" id: ") + 5):]
-    selected_question = db.get_question(last_id_selection)
-    display_detail_question(selected_question)
+    """
+    updates the display when a question is selected in the selection view (rightmost part of the screen)
+    :param event: the Tk event
+    """
+    global current
+    selected = list_selection.curselection()[0]
+    current = Gestion.sel[selected][0]
+    display_detail_question(Gestion.sel[selected][1])
     button_preview["state"] = "disabled"
     button_update["state"] = "disabled"
     button_export["state"] = "normal"
@@ -161,79 +176,58 @@ list_selection.bind('<<ListboxSelect>>', selection_onselect)
 
 # Charge la base de donnée au démarrage de l'app
 def load_db():
-    global db, highest_id
-    location = os.path.dirname(os.path.realpath(__file__))
-    base_path = location + "/db.json"
-    try:
-        db = DB.Base(base_path)
-        questions = db.select_all_questions()
-        for question in questions:
-            list_base.insert(END, question[1]["nom"] + " id: " + str(question[0]))
-            list_base.pack(expand=YES, fill=BOTH)
-        highest_id = int(questions[-1][0])
-        messagebox.showinfo(title="Info BDD", message="Fichier db.json trouvé, base chargée", parent=master)
-    except FileNotFoundError:
-        with open(base_path, "w") as file:
-            file.write("{}")
-        db = DB.Base(base_path)
+    """
+    initializes the Gestion module
+    the Gestion module will open the database
+    this function then updates the database view to show every question in the database
+    """
+    found = Gestion.init()
+    Gestion.view_all()
+    update_view()
+    if found:
+        messagebox.showinfo(title="Info BDD",
+                            message="Fichier db.json trouvé, base chargée",
+                            parent=master)
+    else:
         messagebox.showinfo(title="Info BDD",
                             message="Fichier db.json non trouvé, création d'une base vierge, base chargée",
                             parent=master)
 
 
 # Fonctions du menu
-def import_tex():
-    global highest_id
-    tex_file_name = filedialog.askopenfilename(title="Veuillez sélectionner un fichier TeX", filetypes=(("fichiers TeX", "*.tex"), ("tous les fichiers", "*.*")))
-    Gestion.parse_file(tex_file_name)
-    for question in Gestion.buffer:
-        db.add_question(question)
-        highest_id += 1
-        list_base.insert(END, question.nom + " id: " + str(highest_id))
+type_tex = ("fichiers TeX", "*.tex")
+type_all = ("tous les fichiers", "*.*")
 
-    Gestion.buffer = []
-    list_base.pack(expand=YES, fill=BOTH)
+
+def import_tex():
+    """
+    imports a .tex file and saves it directly to the database
+    """
+    tex_file_name = filedialog.askopenfilename(title="Veuillez sélectionner un fichier TeX",
+                                               filetypes=(type_tex, type_all))
+    Gestion.parse_file(tex_file_name)
+    Gestion.save_bufer()
+    Gestion.clear_buffer()
+    Gestion.view_all()
+    update_view()
 
 
 def export_tex():
-    global db
-    to_export = list_selection.get(0, END)
-    tex_file_name = filedialog.asksaveasfilename(title="Sauvegarder un fichier TeX", filetypes=(("fichiers TeX", "*.tex"), ("tous les fichiers", "*.*")))
-    try:
-        with open(tex_file_name, "w") as file:
-            for question_str in to_export:
-                id = question_str[(question_str.find(" id: ") + 5):]
-                question = db.get_question(id)
-                question = DB.question_from_dict(question)
-                file.write(question.to_latex() + "\n")
-    except FileNotFoundError:
-        with open(tex_file_name, "x") as file:
-            for question_str in to_export:
-                id = question_str[(question_str.find(" id: ") + 5):]
-                question = db.get_question(id)
-                question = DB.question_from_dict(question)
-                file.write(question.to_latex() + "\n")
+    """
+    exports the questions in the selection to a .tex file
+    """
+    tex_file_name = filedialog.asksaveasfilename(title="Sauvegarder un fichier TeX",
+                                                 filetypes=(type_tex, type_all))
+    Gestion.export_sel_latex(tex_file_name)
 
 
 def export_moodle():
-    global db
-    to_export = list_selection.get(0, END)
+    """
+    exports the questions in the selection to a .tex file
+    """
     tex_file_name = filedialog.asksaveasfilename(title="Sauvegarder un fichier TeX Moodle",
-                                                 filetypes=(("fichiers TeX", "*.tex"), ("tous les fichiers", "*.*")))
-    try:
-        with open(tex_file_name, "w") as file:
-            for question_str in to_export:
-                id = question_str[(question_str.find(" id: ") + 5):]
-                question = db.get_question(id)
-                question = DB.question_from_dict(question)
-                file.write(question.to_moodle_latex() + "\n")
-    except FileNotFoundError:
-        with open(tex_file_name, "x") as file:
-            for question_str in to_export:
-                id = question_str[(question_str.find(" id: ") + 5):]
-                question = db.get_question(id)
-                question = DB.question_from_dict(question)
-                file.write(question.to_moodle_latex() + "\n")
+                                                 filetypes=(type_tex, type_all))
+    Gestion.export_sel_moodle(tex_file_name)
 
 
 # Création du menu en top bar
@@ -267,12 +261,34 @@ def set_gui():
 
 # Fonction permettant de sauvegarder la base de donnée au moment de quitter l'application
 def exit_protocol():
-    global db
     if messagebox.askyesno("Quitter", "Voulez-vous sauvegarder la BDD ?"):
-        db.persist()
+        Gestion.persist_db()
         master.destroy()
     else:
         master.destroy()
+
+
+# Fonction permettant d'actualiser la vue
+def update_view():
+    """
+    updates the view list shown on screen to match the internal Gestion.view list
+    """
+    global list_view
+    list_view.delete(0, END)
+    for index, question in Gestion.view:
+        list_view.insert(END, question.nom + " id: " + index)
+        list_view.pack(expand=YES, fill=BOTH)
+
+
+def update_selection():
+    """
+    updates the selection list shown on screen to match the internal Gestion.sel list
+    """
+    global list_selection
+    list_selection.delete(0, END)
+    for index, question in Gestion.sel:
+        list_selection.insert(END, question.nom + " id: " + index)
+        list_view.pack(expand=YES, fill=BOTH)
 
 
 master.geometry("800x300")
