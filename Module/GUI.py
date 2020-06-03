@@ -96,7 +96,7 @@ def button_update_command():
     updates the currently shown question in the database
     """
     type_qcm = QCM.TypeQCM.QUESTION_MULT if question_type_var.get() == 2 else QCM.TypeQCM.QUESTION
-    options = Gestion.get_index(current).amc_option
+    options = Gestion.get_index(current).amc_options
     reponses = []
     bonnes_reponses = 0
     for i in range(6):
@@ -109,7 +109,7 @@ def button_update_command():
         Gestion.update_index(current, question)
     else:
         messagebox.showerror("Mauvais nombre de bonnes réponses", "Veuillez mettre un nombre de réponse(s) approprié")
-    update_view()
+    refresh()
 
 
 button_update['command'] = button_update_command
@@ -289,6 +289,16 @@ def update_selection():
     for index, question in Gestion.sel:
         list_selection.insert(END, question.nom + " id: " + index)
         list_view.pack(expand=YES, fill=BOTH)
+
+
+def refresh():
+    """
+    refresh the current view and selection from the database
+    """
+    Gestion.refresh_view()
+    Gestion.refresh_sel()
+    update_view()
+    update_selection()
 
 
 master.geometry("800x300")
