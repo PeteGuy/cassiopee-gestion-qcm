@@ -1,6 +1,10 @@
 import QCM
 
 
+# This module implements a simple LaTeX parser to create QCM.Question objects from a LaTeX source code
+# The functions in this module expect the LaTeX code to use the AMC package and the french keywords
+
+
 #
 # Utilitary functions
 #

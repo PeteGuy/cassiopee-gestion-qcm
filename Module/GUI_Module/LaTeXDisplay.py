@@ -7,6 +7,9 @@ from PIL import Image as PILImage, ImageTk
 from tkinter import *
 
 
+# This module is responsible for producing the LaTeX image preview from the questions LaTeX code
+
+
 def on_latex(master, latex_str):
     preview_window = Toplevel(master)
     label = Label(preview_window)

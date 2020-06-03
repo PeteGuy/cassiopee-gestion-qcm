@@ -14,7 +14,7 @@ detail_frame = LabelFrame(master, text="Détail")
 selection_frame = LabelFrame(master, text="Selection")
 
 # Ajout des listes
-list_base = Listbox(base_frame, selectmode=SINGLE)
+list_view = Listbox(base_frame, selectmode=SINGLE)
 
 list_selection = Listbox(selection_frame, selectmode=SINGLE)
 list_selection.pack()
@@ -53,6 +53,10 @@ button_export = Button(detail_frame, text="Selectionner", state=DISABLED)
 
 # Gère l'affichages des détails d'une question
 def display_detail_question(question):
+    """
+    displays the given QCM.Question object in the center of the screen
+    :param question: the question to display
+    """
     question_nom_var.set(question.nom)
     question_enonce_var.set(question.enonce)
     if question.type == QCM.TypeQCM.QUESTION_MULT:
@@ -75,6 +79,9 @@ def display_detail_question(question):
 # Commande des boutons de détail
 # Bouton de preview
 def button_preview_command():
+    """
+    preview the currently shown question by compiling the LaTeX code
+    """
     selected_question = Gestion.get_index(current)
     LaTeXDisplay.on_latex(master, selected_question.to_latex())
 
@@ -85,6 +92,9 @@ button_preview.grid(row=9, column=0)
 
 # Bouton de mise à jour de la question
 def button_update_command():
+    """
+    updates the currently shown question in the database
+    """
     type_qcm = QCM.TypeQCM.QUESTION_MULT if question_type_var.get() == 2 else QCM.TypeQCM.QUESTION
     options = Gestion.get_index(current).amc_option
     reponses = []
@@ -99,7 +109,7 @@ def button_update_command():
         Gestion.update_index(current, question)
     else:
         messagebox.showerror("Mauvais nombre de bonnes réponses", "Veuillez mettre un nombre de réponse(s) approprié")
-    list_base.pack(expand=YES, fill=BOTH)
+    update_view()
 
 
 button_update['command'] = button_update_command
@@ -108,6 +118,9 @@ button_update.grid(row=9, column=1)
 
 # Bouton d'ajout dans la zone d'export
 def button_export_command():
+    """
+    adds the currently shown question to the selection/export view (rightmost part of the screen)
+    """
     Gestion.select_id(current)
     update_selection()
 
@@ -124,8 +137,12 @@ def button_export_retirer():
 
 # Permet de mettre à jour l'affichage de la question sur laquelle on travaille
 def base_onselect(event):
+    """
+    updates the display when a question is selected in the database view (leftmost part of the screen)
+    :param event: the Tk event
+    """
     global current
-    selected = list_base.curselection()[0]
+    selected = list_view.curselection()[0]
     current = Gestion.view[selected][0]
     display_detail_question(Gestion.view[selected][1])
     button_preview["state"] = "normal"
@@ -135,10 +152,14 @@ def base_onselect(event):
     button_export["command"] = button_export_command
 
 
-list_base.bind('<<ListboxSelect>>', base_onselect)
+list_view.bind('<<ListboxSelect>>', base_onselect)
 
 
 def selection_onselect(event):
+    """
+    updates the display when a question is selected in the selection view (rightmost part of the screen)
+    :param event: the Tk event
+    """
     global current
     selected = list_selection.curselection()[0]
     current = Gestion.sel[selected][0]
@@ -155,6 +176,11 @@ list_selection.bind('<<ListboxSelect>>', selection_onselect)
 
 # Charge la base de donnée au démarrage de l'app
 def load_db():
+    """
+    initializes the Gestion module
+    the Gestion module will open the database
+    this function then updates the database view to show every question in the database
+    """
     found = Gestion.init()
     Gestion.view_all()
     update_view()
@@ -174,6 +200,9 @@ type_all = ("tous les fichiers", "*.*")
 
 
 def import_tex():
+    """
+    imports a .tex file and saves it directly to the database
+    """
     tex_file_name = filedialog.askopenfilename(title="Veuillez sélectionner un fichier TeX",
                                                filetypes=(type_tex, type_all))
     Gestion.parse_file(tex_file_name)
@@ -184,12 +213,18 @@ def import_tex():
 
 
 def export_tex():
+    """
+    exports the questions in the selection to a .tex file
+    """
     tex_file_name = filedialog.asksaveasfilename(title="Sauvegarder un fichier TeX",
                                                  filetypes=(type_tex, type_all))
     Gestion.export_sel_latex(tex_file_name)
 
 
 def export_moodle():
+    """
+    exports the questions in the selection to a .tex file
+    """
     tex_file_name = filedialog.asksaveasfilename(title="Sauvegarder un fichier TeX Moodle",
                                                  filetypes=(type_tex, type_all))
     Gestion.export_sel_moodle(tex_file_name)
@@ -235,19 +270,25 @@ def exit_protocol():
 
 # Fonction permettant d'actualiser la vue
 def update_view():
-    global list_base
-    list_base.delete(0, END)
+    """
+    updates the view list shown on screen to match the internal Gestion.view list
+    """
+    global list_view
+    list_view.delete(0, END)
     for index, question in Gestion.view:
-        list_base.insert(END, question.nom + " id: " + index)
-        list_base.pack(expand=YES, fill=BOTH)
+        list_view.insert(END, question.nom + " id: " + index)
+        list_view.pack(expand=YES, fill=BOTH)
 
 
 def update_selection():
+    """
+    updates the selection list shown on screen to match the internal Gestion.sel list
+    """
     global list_selection
     list_selection.delete(0, END)
     for index, question in Gestion.sel:
         list_selection.insert(END, question.nom + " id: " + index)
-        list_base.pack(expand=YES, fill=BOTH)
+        list_view.pack(expand=YES, fill=BOTH)
 
 
 master.geometry("800x300")
