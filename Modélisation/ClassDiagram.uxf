@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.3.0">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>380</x>
+      <y>230</y>
+      <w>210</w>
+      <h>260</h>
+    </coordinates>
+    <panel_attributes>Question
+Package::QCM
+{a full QCM}
+--
+-nom: string
+-type: {TypeQCM}
+-options: [string]
+-enonce: string
+-reponses: [{Reponse}]
+-tags: [string]
+--
+short_str: string
+to_dict: dictionnary
+to_latex: string
+to_moodle_latex: string
+add_tag: void
+remove_tag:void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>20</x>
+      <y>350</y>
+      <w>210</w>
+      <h>140</h>
+    </coordinates>
+    <panel_attributes>Reponse
+Package::QCM
+{an answer}
+--
+-enonce: string
+-est_correcte: boolean
+--
+to_latex: string
+to_moodle_latex: string</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>220</x>
+      <y>350</y>
+      <w>180</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=2..n</panel_attributes>
+    <additional_attributes>10.0;70.0;160.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>0</x>
+      <y>220</y>
+      <w>250</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>Enum:TypeQCM
+Package::QCM
+{QCM type}
+--
+type_from_str(string): TypeQCM
+str_from_type(TypeQCm): string
+moodle_from_type(TypeQCM): string</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>240</x>
+      <y>240</y>
+      <w>160</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=1..1</panel_attributes>
+    <additional_attributes>10.0;10.0;140.0;70.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>690</x>
+      <y>170</y>
+      <w>300</w>
+      <h>330</h>
+    </coordinates>
+    <panel_attributes>Base
+Package::DB
+{json database}
+--
+-filename: string
+-data: dictionnary
+-nextindex: int
+--
+persist: void
+add_question({Question}): void
+add_multiple([{Question}]): void
+del_question(string): void
+get_question(string): {Question}
+update_question(string, {Question}): void
+question_by_name(string): [{Question}]
+question_by_tag([string]): [{Question}]
+question_by_keyword([string]): [{Question}]
+all_questions: [{Question}]
+--
+Responsibilities
+-- Keeping the db.json file coherent
+-- Keeping the internal representation coherent</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>580</x>
+      <y>240</y>
+      <w>130</w>
+      <h>130</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=0..n</panel_attributes>
+    <additional_attributes>10.0;110.0;110.0;10.0</additional_attributes>
+  </element>
+</diagram>
