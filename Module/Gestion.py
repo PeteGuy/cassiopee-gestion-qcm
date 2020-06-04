@@ -1,3 +1,5 @@
+from typing import List, Tuple
+
 import DB
 import Parser
 import os
@@ -10,13 +12,16 @@ import os
 # of the caller to handle exceptions (such as IndexError)
 
 
+import QCM
+
 # The list of currently selected questions, these are the questions that will be exported
 # When using the command line tool this also serves the role of the "view" list
-sel = []
+sel: List[Tuple[str, QCM.Question]] = []
 # The list of question visible in the leftmost part of the GUI -> always a subset of the database
-view = []
+# This list is used to display search results in the database
+view: List[Tuple[str, QCM.Question]] = []
 # The list of questions at the output of a parse
-buffer = []
+buffer: List[QCM.Question] = []
 # The database object
 db: DB.Base
 
