@@ -23,6 +23,7 @@ Liste des commandes :
     - latex(latexb) <?index>... : affiche le code LaTeX des questions sélectionnées (du buffer) spécifiées
     - moodle(moodleb) <?index>... : affiche le code LaTeX moodle des questions sélectionnées (du buffer) spécifiées
     - save(saveb) : enregistre les modifications sur la sélection (enregistre le buffer) dans la base
+    - persist : répercute les chagements dans la base de donnée sur le disque dur
     - clear(clearb) : Remet à zéro la sélection (le buffer) sans sauvegarder
     - remove(removeb) <index>... : enlève les questions aux indexs voulues de la sélection (du buffer)
     - tag(tagb) <tag>... : applique un tag à la sélection (au buffer)
@@ -51,7 +52,7 @@ def main():
         try:
             func = commandes[command]
             func(args)
-        except IndexError:
+        except KeyError:
             print("Commande inconnue, tapez help pour une liste des commandes")
 
         line = input("GestionQCM >> ")
@@ -353,7 +354,7 @@ def print_help(args):
         for command in args:
             try:
                 print(commandes[command].__doc__)
-            except IndexError:
+            except KeyError:
                 print("""Commande inconnue, tapez "help" pour une liste des commandes""")
 
 
@@ -382,6 +383,7 @@ commandes = {
     "selectbyname": select_name,
     "selectbytag": select_tag,
     "selectbykeyword": select_keyword,
+    "help": print_help,
 }
 
 
