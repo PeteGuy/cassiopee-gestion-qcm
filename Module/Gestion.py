@@ -18,7 +18,7 @@ view = []
 # The list of questions at the output of a parse
 buffer = []
 # The database object
-db = None
+db: DB.Base
 
 
 #
