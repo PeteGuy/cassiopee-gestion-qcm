@@ -9,7 +9,7 @@ import os
 # All other modules should refrain from using modules other than Gestion as mush as possible
 # To use this module, simply import it and execute the init() function
 # Almost none of the function in this module handle exceptions and it is the responsability
-# of the caller to handle exceptions (such as IndexError)
+# of the caller to handle exceptions (such as IndexError and KeyError)
 
 
 import QCM
