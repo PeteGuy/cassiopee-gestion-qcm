@@ -1,10 +1,9 @@
 import os
+from io import BytesIO
+from tkinter import *
 
 import sympy as sp
-from io import BytesIO
 from PIL import Image as PILImage, ImageTk
-
-from tkinter import *
 
 
 # This module is responsible for producing the LaTeX image preview from the questions LaTeX code
@@ -27,8 +26,8 @@ def on_latex(master, latex_str):
     preamble += r"\usepackage{automultiplechoice}"
     preamble += r"\usepackage{amssymb}"
     preamble += r"\usepackage{amsmath}"
-    #r"\definecolor{graybg}{HTML}" + the_color +
-    #r"\pagecolor{graybg}"
+    # r"\definecolor{graybg}{HTML}" + the_color +
+    # r"\pagecolor{graybg}"
     preamble += r"\input{\pathSrcStyleFiles/defGras.tex}"
     preamble += r"\input{\pathSrcStyleFiles/defCdes.tex}"
     preamble += r"\begin{document}"
@@ -45,10 +44,10 @@ def on_latex(master, latex_str):
     img = img.resize((int(img.size[0] / 3), int(img.size[1] / 3)), PILImage.BILINEAR)
 
     width, height = img.size
-    left = width/8
-    top = height/9
+    left = width / 8
+    top = height / 9
     right = width
-    bottom = height/3.5
+    bottom = height / 3.5
     img = img.crop((left, top, right, bottom))
 
     photo = ImageTk.PhotoImage(img)
@@ -57,12 +56,8 @@ def on_latex(master, latex_str):
     f.close()
 
     label.pack()
-    preview_window_width = str(int(right-left))
-    preview_window_height = str(int(bottom-top))
+    preview_window_width = str(int(right - left))
+    preview_window_height = str(int(bottom - top))
     preview_window.geometry(preview_window_width + "x" + preview_window_height)
     preview_window.resizable(False, False)
     preview_window.mainloop()
-
-
-
-

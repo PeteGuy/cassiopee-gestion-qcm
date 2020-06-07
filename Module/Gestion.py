@@ -1,18 +1,15 @@
+import os
 from typing import List, Tuple
 
 import DB
 import Parser
-import os
-
+import QCM
 
 # This module is the core of the GestionQCM app. every major can and should be done from this module
 # All other modules should refrain from using modules other than Gestion as mush as possible
 # To use this module, simply import it and execute the init() function
 # Almost none of the function in this module handle exceptions and it is the responsability
-# of the caller to handle exceptions (such as IndexError)
-
-
-import QCM
+# of the caller to handle exceptions (such as IndexError and KeyError)
 
 # The list of currently selected questions, these are the questions that will be exported
 # When using the command line tool this also serves the role of the "view" list

@@ -1,6 +1,5 @@
 import Gestion
 
-
 # This module is responsible for creating a command line tool to use the app
 # the core of the app located in the Gestion module can be used without this module
 # but this module makes it harder to mess up.
@@ -385,7 +384,6 @@ commandes = {
     "selectbykeyword": select_keyword,
     "help": print_help,
 }
-
 
 if __name__ == "__main__":
     main()

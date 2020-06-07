@@ -1,6 +1,7 @@
 from tkinter import *
-from tkinter import messagebox
 from tkinter import filedialog
+from tkinter import messagebox
+
 import Gestion
 import QCM
 from GUI_Module import LaTeXDisplay
