@@ -147,7 +147,7 @@ Si des indexs sont passés en argument, affiche seulement les QCM(s) spécifiée
     else:
         for index in args:
             try:
-                print(Gestion.get_buffer_str(index))
+                print(Gestion.get_buffer_str(int(index)))
             except IndexError:
                 print(index_error)
 
@@ -163,7 +163,7 @@ Si des indexs sont passés en argument n'affiche que ces derniers.
     else:
         for index in args:
             try:
-                print(Gestion.get_buffer_latex_str(index))
+                print(Gestion.get_buffer_latex_str(int(index)))
             except IndexError:
                 print(index_error)
 
@@ -179,7 +179,7 @@ Si des indexs sont passés en argument n'affiche que ces derniers.
     else:
         for index in args:
             try:
-                print(Gestion.get_buffer_moodle_str(index))
+                print(Gestion.get_buffer_moodle_str(int(index)))
             except IndexError:
                 print(index_error)
 
@@ -195,7 +195,7 @@ Si des indexs sont passés en argument, affiche seulement les QCM(s) spécifiée
     else:
         for index in args:
             try:
-                print(Gestion.get_sel_str(index))
+                print(Gestion.get_sel_str(int(index)))
             except IndexError:
                 print(index_error)
 
@@ -211,7 +211,7 @@ Si des indexs sont passés en argument n'affiche que ces derniers.
     else:
         for index in args:
             try:
-                print(Gestion.get_latex_str(index))
+                print(Gestion.get_latex_str(int(index)))
             except IndexError:
                 print(index_error)
 
@@ -227,7 +227,7 @@ Si des indexs sont passés en argument n'affiche que ces derniers.
     else:
         for index in args:
             try:
-                print(Gestion.get_moodle_str(index))
+                print(Gestion.get_moodle_str(int(index)))
             except IndexError:
                 print(index_error)
 
@@ -260,7 +260,7 @@ def remove_buffer(args):
     """Retire les question voulues du buffer"""
     for index in args:
         try:
-            Gestion.remove_buffer(index)
+            Gestion.remove_buffer(int(index))
         except IndexError:
             print(index_error)
 
@@ -269,7 +269,7 @@ def remove_selection(args):
     """retire les questions voulues de la sélection"""
     for index in args:
         try:
-            Gestion.remove_sel(index)
+            Gestion.remove_sel(int(index))
         except IndexError:
             print(index_error)
 
