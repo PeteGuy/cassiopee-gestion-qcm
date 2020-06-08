@@ -35,7 +35,9 @@ question_enonce_entry.grid(row=1, column=1, ipadx=150)
 Label(detail_frame, text="Cocher si plusieurs réponses vraies :").grid(row=2, column=0, sticky="W")
 question_type_var = IntVar()
 question_type_check = Checkbutton(detail_frame, variable=question_type_var, onvalue=2, offvalue=1)
-question_type_check.grid(row=2, column=1)
+question_type_check.grid(row=2, column=1, sticky="W")
+
+Label(detail_frame, text="Correcte ?").grid(row=2, column=2)
 
 NBR_MAX_REPONSES = 6
 reponses_labels = [Label(detail_frame, text="Réponse " + str(i + 1) + ":").grid(row=3 + i, column=0, sticky="W") for i
@@ -48,9 +50,9 @@ reponses_vraies_checks = [Checkbutton(detail_frame, variable=reponses_vraies_var
 for i in range(NBR_MAX_REPONSES):
     reponses_vraies_checks[i].grid(row=3 + i, column=2)
 
-button_preview = Button(detail_frame, text="Prévisualiser la question", state=DISABLED)
+button_preview = Button(detail_frame, text="Prévisualiser question", state=DISABLED)
 button_update = Button(detail_frame, text="Mettre à jour", state=DISABLED)
-button_export = Button(detail_frame, text="Selectionner", state=DISABLED)
+button_export = Button(detail_frame, text="Selectionner question", state=DISABLED)
 
 
 # Gère l'affichages des détails d'une question
@@ -150,7 +152,7 @@ def base_onselect(event):
     button_preview["state"] = "normal"
     button_update["state"] = "normal"
     button_export["state"] = "normal"
-    button_export["text"] = "Selectionner"
+    button_export["text"] = "Selectionner question"
     button_export["command"] = button_export_command
 
 
@@ -169,7 +171,7 @@ def selection_onselect(event):
     button_preview["state"] = "disabled"
     button_update["state"] = "disabled"
     button_export["state"] = "normal"
-    button_export["text"] = "Retirer"
+    button_export["text"] = "Retirer question"
     button_export["command"] = button_export_retirer
 
 
