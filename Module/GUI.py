@@ -32,7 +32,7 @@ question_enonce_var = StringVar()
 question_enonce_entry = Entry(detail_frame, textvariable=question_enonce_var)
 question_enonce_entry.grid(row=1, column=1, ipadx=150)
 
-Label(detail_frame, text="Question à choix multiple ?").grid(row=2, column=0, sticky="W")
+Label(detail_frame, text="Cocher si plusieurs réponses vraies :").grid(row=2, column=0, sticky="W")
 question_type_var = IntVar()
 question_type_check = Checkbutton(detail_frame, variable=question_type_var, onvalue=2, offvalue=1)
 question_type_check.grid(row=2, column=1)
