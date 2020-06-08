@@ -37,14 +37,15 @@ question_type_var = IntVar()
 question_type_check = Checkbutton(detail_frame, variable=question_type_var, onvalue=2, offvalue=1)
 question_type_check.grid(row=2, column=1)
 
+NBR_MAX_REPONSES = 6
 reponses_labels = [Label(detail_frame, text="Réponse " + str(i + 1) + ":").grid(row=3 + i, column=0, sticky="W") for i
-                   in range(6)]
-reponses_var = [StringVar() for i in range(6)]
+                   in range(NBR_MAX_REPONSES)]
+reponses_var = [StringVar() for i in range(NBR_MAX_REPONSES)]
 reponses_entry = [Entry(detail_frame, textvariable=reponses_var[i]).grid(row=3 + i, column=1, ipadx=150) for i in
-                  range(6)]
-reponses_vraies_var = [IntVar() for i in range(6)]
-reponses_vraies_checks = [Checkbutton(detail_frame, variable=reponses_vraies_var[i]) for i in range(6)]
-for i in range(6):
+                  range(NBR_MAX_REPONSES)]
+reponses_vraies_var = [IntVar() for i in range(NBR_MAX_REPONSES)]
+reponses_vraies_checks = [Checkbutton(detail_frame, variable=reponses_vraies_var[i]) for i in range(NBR_MAX_REPONSES)]
+for i in range(NBR_MAX_REPONSES):
     reponses_vraies_checks[i].grid(row=3 + i, column=2)
 
 button_preview = Button(detail_frame, text="Prévisualiser la question", state=DISABLED)
@@ -72,7 +73,7 @@ def display_detail_question(question):
         else:
             reponses_vraies_checks[nbr_reponses].deselect()
         nbr_reponses += 1
-    for i in range(nbr_reponses, 6):
+    for i in range(nbr_reponses, NBR_MAX_REPONSES):
         reponses_vraies_checks[i].deselect()
         reponses_var[i].set("")
 
@@ -88,7 +89,7 @@ def button_preview_command():
 
 
 button_preview['command'] = button_preview_command
-button_preview.grid(row=9, column=0)
+button_preview.grid(row=3 + NBR_MAX_REPONSES, column=0)
 
 
 # Bouton de mise à jour de la question
@@ -100,7 +101,7 @@ def button_update_command():
     options = Gestion.get_index(current).amc_options
     reponses = []
     bonnes_reponses = 0
-    for i in range(6):
+    for i in range(NBR_MAX_REPONSES):
         if reponses_var[i].get() != "":
             reponses.append(QCM.Reponse((reponses_vraies_var[i].get() == 1), reponses_var[i].get()))
             bonnes_reponses += reponses_vraies_var[i].get()
@@ -114,7 +115,7 @@ def button_update_command():
 
 
 button_update['command'] = button_update_command
-button_update.grid(row=9, column=1)
+button_update.grid(row=3 + NBR_MAX_REPONSES, column=1)
 
 
 # Bouton d'ajout dans la zone d'export
@@ -127,7 +128,7 @@ def button_export_command():
 
 
 button_export['command'] = button_export_command
-button_export.grid(row=9, column=2)
+button_export.grid(row=3 + NBR_MAX_REPONSES, column=2)
 
 
 # Commande remplacant l'export quand on clique dans la liste de selection
