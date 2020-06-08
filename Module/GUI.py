@@ -168,7 +168,7 @@ def selection_onselect(event):
     selected = list_selection.curselection()[0]
     current = Gestion.sel[selected][0]
     display_detail_question(Gestion.sel[selected][1])
-    button_preview["state"] = "disabled"
+    button_preview["state"] = "normal"
     button_update["state"] = "disabled"
     button_export["state"] = "normal"
     button_export["text"] = "Retirer question"
