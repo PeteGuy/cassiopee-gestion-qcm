@@ -1,0 +1,826 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\element{quNonClassee}{
+  \begin{question}{} La fonction d'autocorrélation
+    $\gamma_x(\tau),\tau\in\RR$ (en énergie ou puissance) d'un signal
+    à temps continu $x(t),t\in\RR$:
+   \begin{reponses}
+   \mauvaise{ est toujours une fonction périodique.}
+   \bonne{ peut {\^e}tre une fonction périodique selon le signal $x(t)$.}
+   \mauvaise{ vérifie pour tout $\tau$: $\gamma_x(\tau)\geq0$.}
+   \mauvaise{ est définie comme le module au carré de la transformée de
+     Fourier de $x(t)$.}
+   \end{reponses}
+\end{question}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\element{quNonClassee}{
+  \begin{question}{} On peut observer un phénomène d'élargissement des
+    raies spectrales:
+  \begin{reponses}
+    \mauvaise{ uniquement lorsque le principe d'incertitude de
+      Heisenberg n'est pas contredit par le signal.}
+
+    \mauvaise{ lorsque la fréquence d'échantillonnage est mal
+      choisie.}
+
+    \bonne{ de fa{\c c}on générale lors de la troncature temporelle
+      d'un signal comportant des raies dans son spectre.}
+
+    \mauvaise{ uniquement lorsque le signal étudié est une sinusoïde
+      convoluée avec une porte.}
+  \end{reponses}
+\end{question}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\element{quNonClassee}{
+  \begin{questionmult}{} Soit $x(t)$ un signal et $X(f)$ sa
+    transformée de Fourier (ce que l'on note par: $x(t) \TF
+    X(f)$). Alors:
+  \begin{reponses}
+    \bonne{ $x(t)e^{\ic2\pi f_0t} \TF X(f-f_0)$}
+
+    \mauvaise{ $x(t+t_0) \TF X(ft_0)$}
+
+    \mauvaise{ $x(at) \TF aX(af)$}
+
+    \bonne{ si $x(t)$ est réel, alors $X(f) = X(-f)^*$.}
+  \end{reponses}
+\end{questionmult}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\element{quNonClassee}{
+\begin{question}{} Un signal sinusoïdal pur de fréquence 418Hz est
+  échantillonné. La durée entre deux échantillons est de 20ms.
+  \begin{reponses}
+  \mauvaise{ La condition d'échantillonnage de Shannon est respectée.}
+  \mauvaise{ La condition d'échantillonnage de Shannon n'est pas respectée.
+    Il y a repliement de spectre et une raie est repliée à 20Hz.}
+  \bonne{ La condition d'échantillonnage de Shannon n'est pas respectée.
+    Il y a repliement de spectre et une raie est repliée à 18Hz.}
+  \mauvaise{ La transformée de Fourier à temps discret du signal
+    échantillonné n'est pas définie car la condition d'échantillonnage
+    n'est pas respectée.}
+  \end{reponses}
+\end{question}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\element{quNonClassee}{
+\begin{question}{} Soit $x(t)$ un signal réel et $X(f)$ sa transformée de
+  Fourier. Rappelons que le signal analytique $x_a(t)$ associé au
+  signal réel $x(t)$ peut {\^e}tre défini par sa transformée de Fourier:
+   \[
+   X_a(f) =
+   \begin{cases}
+     2X(f) & \text{ si } f\geq0, \\
+     0    & \text{ si } f<0.
+   \end{cases}
+   \]
+   \begin{reponses}
+   \mauvaise{ La transformation de $x(t)$ en signal analytique $x_a(t)$ est
+     indispensable avant toute analyse à l'analyseur de spectre car
+     seules les fréquences positives existent.}
+     \mauvaise{ Le signal analytique $x_a(t)$ est un signal réel.}
+     \bonne{ Le signal analytique $x_a(t)$ est un signal complexe.}
+     \mauvaise{ Le signal analytique $x_a(t)$ peut {\^e}tre réel ou complexe,
+       celà dépend du signal $x(t)$.}
+   \end{reponses}
+\end{question}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\element{quNonClassee}{
+\begin{questionmult}{} L'algorithme de transformée de Fourier rapide (FFT):
+  \begin{reponses}
+  \mauvaise{est un algorithme rapide qui permet de calculer la transformée
+    de Fourier discrète; il s'applique dès que le nombre
+    d'échantillons est pair.}
+  \bonne{est un algorithme rapide qui permet de calculer la transformée
+    de Fourier discrète; il s'applique lorsque le nombre
+    d'échantillons est une puissance de deux.}
+  \mauvaise{ est un algorithme rapide pour le calcul du produit matriciel
+    de l'équation (\ref{eq:prodFFT_1}) ci-dessous o{\`u} $x_1,\ldots,x_N$ sont
+    $N$ échantillons; l'algorithme s'applique dès que $N$ est pair.}
+  \bonne{est un algorithme rapide pour le calcul du produit matriciel
+    de l'équation (\ref{eq:prodFFT_1}) ci-dessous o{\`u} $x_1,\ldots,x_N$ sont
+    $N$ échantillons; l'algorithme s'applique lorsque $N$ est une
+    puissance de deux.
+    \begin{equation*}
+      \label{eq:prodFFT_1}
+      \begin{pmatrix}
+        1      & 1        & 1         & 1      & 1    \\
+        1      & w        & w^2       & \cdots & w^{N-1}    \\
+        1      & w^2      & w^4       & \cdots & w^{2(N-1)} \\
+        \vdots & \vdots   & \vdots    & \ddots &\vdots      \\
+        1      &  w^{N-1} &w^{2(N-1)} & \cdots & w^{(N-1)^2}
+      \end{pmatrix}
+      \begin{pmatrix}
+        x_1 \\ x_2 \\ x_3 \\ \vdots \\ x_N
+      \end{pmatrix} \qquad \text{avec: } w=e^{\ic2\pi/N} \,.
+    \end{equation*}}
+  \end{reponses}
+\end{questionmult}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\element{quNonClassee}{
+\begin{question}{} Un filtre à temps discret défini par sa réponse
+  impulsionnelle $(h_n)_{n\in\ZZ}$ ou par sa transformée en $z$ $H[z]$
+  est stable si et seulement si:
+  \begin{reponses}
+  \mauvaise{ le domaine de convergence de $H[z]$ est un disque de rayon $R\in\RR_+^*$.}
+  \mauvaise{ le domaine de convergence de $H[z]$ est du type $\{z\in\CC \;|\;
+    |z|>R\}$, o{\`u} $R\in\RR_+^*$.}
+  \bonne{ l'ensemble $\{z\in\CC \;|\;|z|=1\}$ est inclus dans le domaine de 
+    convergence de $H[z]$.}
+  \mauvaise{ $\lim_{n\to+\infty} h_n = 0$.}
+  \end{reponses}
+\end{question}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\element{quNonClassee}{
+\begin{question}{} Si $x = \begin{bmatrix} 1& -2& 3& -4& 5& -6& 5&
+    -2\end{bmatrix}$ et si on note $X = \begin{bmatrix} X_0& X_1& \ldots &
+    X_7 \end{bmatrix}$ la transformée de Fourier discrète de la suite
+  d'échantillons contenus dans le vecteur $x$, que vaut $X_0$ ?
+  \begin{reponses}
+  \mauvaise{ $+\sqrt{2} - i2\pi$}
+  \mauvaise{ $-\sqrt{2} + i2\pi$}
+  \bonne{ $0$}
+  \mauvaise{ $8$}
+  \end{reponses}
+  \end{question}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\element{quNonClassee}{
+\begin{questionmult}{} Soit $x(t)$ un signal déterministe d'énergie finie,
+    $X(f)$ sa transformée de Fourier et $\Gamma_x(f)$ sa densité spectrale
+    d'énergie.
+    \begin{reponses}
+    \bonne{On a: $\forall f\in\RR \quad \Gamma_x(f) = |X(f)|^2$.}
+    \mauvaise{On a: $\forall f\in\RR \quad \Gamma_x(f) = |X(f)|$.}
+    \bonne{On a l'égalité: $\ds \int_{-\infty}^\infty|x(t)|^2\,dt=\int_{-\infty}^\infty \Gamma_x(f) \,df$.}
+    \mauvaise{$\Gamma_x(f)$ est toujours maximal en $0$.}
+    \end{reponses}
+\end{questionmult}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\element{quNonClassee}{
+\begin{question}{} La formule d'interpolation d'un signal à bande limitée:
+  \begin{reponses}
+  \mauvaise{ est une approximation qui permet d'approcher les valeurs du
+    signal entre les échantillons.}
+  \bonne{ est une égalité; la reconstruction exacte du signal entre deux
+    échantillons est possible en théorie.}
+  \mauvaise{ ne fait intervenir que les échantillons passés du signal car
+    un filtre de restitution doit {\^e}tre causal.}
+  \mauvaise{ n'est valable que pour des signaux périodiques.}
+  \end{reponses}
+\end{question}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\element{quNonClassee}{
+\begin{question}{} Un filtre à réponse impulsionnelle finie est aussi appelé:
+  \begin{reponses}
+  \bonne{ filtre transverse.}
+  \mauvaise{ filtre récursif.}
+  \mauvaise{ filtre à causalité finie.}
+  \mauvaise{ filtre à p{\^o}les positifs.}
+  \end{reponses}
+\end{question}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\element{quNonClassee}{
+\begin{question}{} On considère l'opération qui à un signal à temps continu
+   $x(t)$ associe le signal $y(t)$ défini par:
+   \[
+   y(t)=\int_{t}^{t+\alpha} x(\theta) \;d\theta \qquad \text{avec $\alpha>0$.}
+   \]
+   \begin{reponses}
+   \mauvaise{ C'est une opération de filtrage par un filtre non causal dont
+     la réponse impulsionnelle est donnée par:
+     \[
+     h(\theta)=
+     \begin{cases}
+       x(\theta) & \text{si } \theta\in[t,t+\alpha] \\
+       0 & \text{sinon.}
+     \end{cases}
+     \]}
+   \mauvaise{ C'est une opération de filtrage par un filtre causal dont la
+     réponse impulsionnelle est donnée par:
+     \[
+     h(\theta)= 
+     \begin{cases}
+       x(\theta) & \text{si } \theta\in[t,t+\alpha] \\
+       0 & \text{sinon.}
+     \end{cases}
+     \]}
+   \bonne{ C'est une opération de filtrage par un filtre non causal dont
+     la réponse impulsionnelle est donnée par:
+     \[
+     h(\theta)=
+     \begin{cases}
+       1 & \text{si } \theta\in[-\alpha,0] \\
+       0 & \text{sinon.}
+     \end{cases}
+     \]}
+   \mauvaise{ C'est une opération de filtrage par un filtre causal dont la
+     réponse impulsionnelle est donnée par:
+     \[
+     h(\theta)=
+     \begin{cases}
+       1 & \text{si } \theta\in[-\alpha,0] \\
+       0 & \text{sinon.}
+     \end{cases}
+     \]}
+   \end{reponses}
+\end{question}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\element{quNonClassee}{
+\begin{question}{} Soit $T\in\RR_+$ et $p_T(t)$ le signal porte défini par
+   $p_T(t) = 1$ si $t\in[-T/2,T/2]$ et $p_T(t)=0$ si $t\notin[-T/2,T/2]$.  La
+   transformée de Fourier $P_T(f)$ de $p_T(t)$:
+   \begin{reponses}
+   \mauvaise{n'est pas dérivable car le signal $p_T(t)$ n'est pas continu.}
+   \bonne{vérifie l'égalité: $\displaystyle \int_{-\infty}^{+\infty} |P_T(f)|^2 \,df
+     = T $.}
+   \mauvaise{est à valeurs complexes (et non pas réelles), comme c'est le
+     cas pour toutes les transformées de Fourier.}
+   \mauvaise{vaut: $\displaystyle P_T(f) = T\left(\frac{\sin(\pi fT)}{\pi
+         fT}\right)^2$ si $f\neq0$ et $P_T(0)=1$.}
+   \end{reponses}
+\end{question}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\element{quNonClassee}{
+\begin{question}{} Soit $x(t)$ un signal à bande limitée, dont le support de
+   la transformée de Fourier est inclus dans $[-B,B]$; soit $h(t)$ la
+   réponse impulsionnelle d'un filtre quelconque. Soit $y(t)$ la
+   sortie de ce filtre excité par $x(t)$.
+   \begin{reponses}
+   \bonne{ $y(t)$ est un signal à bande limitée.}
+   \mauvaise{ si $T$ est une période d'échantillonnage telle que $1/T>2B$,
+     alors le signal à temps discret $(y(nT))$ co{\"\i}ncide avec la
+     version filtrée de $(x(nT))$, la réponse impulsionnelle du filtre
+     numérique dont il est question étant $(h(nT))$.}
+   \mauvaise{ puisque $\displaystyle y(t) = \int_{\mathbb{R}} h(\tau)x(t-\tau)d\tau$,
+     on peut toujours écrire, quel que soit $T>0$:
+     \[
+     y(nT) = \sum_{k\in\ZZ} h(kT)x(nT-kT)
+     \]}
+   \mauvaise{ $y(t)$ est un signal causal car obtenu par une opération de
+     filtrage.}
+   \end{reponses}
+\end{question}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\element{quNonClassee}{
+\begin{question}{} Un filtre numérique rationnel défini par sa fonction de
+   transfert en $z$ $H[z]$ ou par sa réponse impulsionnelle
+   $(h_n)_{n\in\ZZ}$ est stable si et seulement si:
+   \begin{reponses}
+   \mauvaise{ le domaine de convergence de $H[z]$ est du type
+     $\{z\in\CC \,|\, |z|>R\}$, o{\`u} $R\in\RR_+^*$.}
+   \mauvaise{ les p{\^o}les de $H[z]$ sont à partie réelle négative.}
+   \mauvaise{ la réponse impulsionnelle est bornée (càd il existe
+     $M\in\RR^*_+$ tel que pour tout $n$, $|h_n|<M$).}
+   \bonne{ l'ensemble $\{z\in\CC/|z|=1\}$ est inclus dans le domaine de 
+       convergence de $H[z]$.}
+   \end{reponses}
+\end{question}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\element{quNonClassee}{
+\begin{question}{} Soit $x(t)$ un signal déterministe d'énergie finie, $X(f)$
+  sa transformée de Fourier et $\Gamma_x(f)$ sa densité spectrale
+  d'énergie.
+  \begin{reponses}
+  \bonne{ L'énergie de $x(t)$ vaut $\ds \int_{-\infty}^\infty |X(f)|^2 \,df$.}
+  \mauvaise{ On a: $\forall f\in\RR \quad \Gamma_x(f) = |X(f)|$.}
+  \mauvaise{ $\Gamma_x(f)$ admet toujours une symétrie hermitienne, càd: $\forall f\in\RR \quad \Gamma(f)=\Gamma(-f)^*$.}
+  \mauvaise{ $\Gamma_x(f)$ est toujours maximale en $0$.}
+  \end{reponses}
+\end{question}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\element{quNonClassee}{
+\begin{question}{} On souhaite tracer sous Matlab la courbe de la fonction
+  $t\mapsto e^{-t}\sin(2\pi t)$ pour $t\in[-2,2]$. Laquelle de ces suites
+  d'instructions Matlab permet-elle d'obtenir un tracé d'allure
+  correcte?
+  \begin{reponses}
+  \mauvaise{ \texttt{plot(exp(-t)*sin(2*pi*t),t=[-2..2]);}}
+  \mauvaise{ \texttt{t = [-2:0.05:2]; x = (exp(-t)*sin(2*pi*t)); plot(t,x);}}
+  \bonne{ \texttt{t = [-2:0.05:2]; x = (exp(-t).*sin(2*pi*t)); plot(t,x);}}
+  \mauvaise{ \texttt{for t=-2:0.01:2, \\ plot(exp(-t).*sin(2*pi*t)); \\ end;}}
+  \end{reponses}
+\end{question}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\element{quNonClassee}{
+\begin{question}{} Sous le logiciel \textsc{Matlab}, on entre les
+  commandes suivantes:
+  \texttt{t = (1:512); x = cos(2*pi*0.25*t); X = fft(x);}
+  \begin{reponses}
+   \bonne{ La variable \texttt{x} est un vecteur de taille 512 qui
+     contient des échantillons d'une sinuso\"ide de fréquence 0.25
+     échantillonnée à la période 1.}
+   \mauvaise{ La commande \texttt{plot(t,abs(X))} permet de tracer le module
+     de la transformée de Fourier discrète de \texttt{x} en fonction de
+     la fréquence normalisée.}
+   \mauvaise{ La commande \texttt{plot(t/512,abs(X))} affiche le
+     module de la transformée de Fourier discrète de \texttt{x} en
+     fonction de la fréquence normalisée.}
+   \mauvaise{ La commande \texttt{plot(fft(X))} affiche le module de la
+     transformée de Fourier discrète de \texttt{x} en fonction de la
+     fréquence normalisée.}
+  \end{reponses}
+\end{question}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\element{quNonClassee}{
+\begin{questionmult}{} Sous le logiciel \textsc{Matlab}, on suppose avoir chargé
+  dans la variable \texttt{x} des échantillons d'un signal prélevés à
+  une fréquence d'échantillonnage de $1\text{kHz}$.
+  \begin{reponses}
+  \mauvaise{ Les commandes \texttt{N=length(x); plot((1:N),abs(fft(x)));}
+    tracent le module de la transformée de Fourier à temps discret du
+    vecteur \texttt{x}. La fréquence réduite (ou normalisée) est
+    indiquée est abscisse.}
+  \bonne{ Les commandes \texttt{N=length(x);
+      plot((0:N-1)/N,abs(fft(x)));} tracent le module de la
+    transformée de Fourier à temps discret du vecteur \texttt{x}.  La
+    fréquence réduite (ou normalisée) est indiquée est abscisse.}
+  \mauvaise{ Les commandes \texttt{N=length(x);
+      plot((0:N-1)/N*1000,abs(fft(x)));} tracent le module de la
+    transformée de Fourier à temps discret du vecteur \texttt{x}.  La
+    fréquence réduite (ou normalisée) est indiquée est abscisse.}
+  \bonne{ Les commandes \texttt{N=length(x);
+      plot((0:N-1)/N*1000,abs(fft(x)));} tracent le module de la
+    transformée de Fourier à temps discret du vecteur \texttt{x}. La
+    fréquence réelle est indiquée est abscisse.}
+  \end{reponses}
+\end{questionmult}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\element{quNonClassee}{
+\begin{questionmult}{} Un filtre numérique défini par sa fonction de transfert
+    en $z$ $H[z]$ ou par sa réponse impulsionnelle $(h_n)_{n\in\ZZ}$ est
+    causal si et seulement si:
+    \begin{reponses}
+    \mauvaise{ $h_n>0$ pout tout $n>0$.}
+    \bonne{ $h_n=0$ pour tout $n<0$.}
+    \bonne{ le domaine de convergence de $H[z]$ est du type $\{z\in\CC \;|\;
+      |z|>R\}\cup\{\infty\}$ (càd le complémentaire d'un disque centré en $0$, point à l'infini compris).}
+    \mauvaise{ le domaine de convergence de $H[z]$ est du type $\{z\in\CC \;|\;
+      R_1<|z|<R_2\}$ o{\`u} $R_2$ est un réel positif (càd un anneau compris entre les cercles centrés en $0$ et de rayon $R_1$ et $R_2$).}
+  \end{reponses}
+\end{questionmult}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\element{quNonClassee}{
+\begin{question}{} Soit $\Gamma_x(f)$ la densité spectrale d'énergie
+    d'un signal $x(t)$.
+    \begin{reponses}
+    \mauvaise{ L'énergie du signal vaut $\Gamma_x(0)$.}
+    \mauvaise{ L'énergie du signal vaut $|\Gamma_x(0)|^2$.}
+    \bonne{ L'énergie du signal vaut $\int_\RR \Gamma_x(f) \; df$.}
+    \mauvaise{ L'énergie du signal vaut $\int_\RR |\Gamma_x(f)|^2 \; df$.}
+    \end{reponses}
+\end{question}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\element{quNonClassee}{
+\begin{question}{} Le signal $x(t)=\cos(2\pi f_0t)$ avec $f_0=93\mathrm{Hz}$ est
+    échantillonné à la fréquence d'échantillonnage $F_e=100\mathrm{Hz}$ pour
+    former le signal $x_n=x(\frac{n}{F_e}),n\in\ZZ$.
+    \begin{reponses}
+    \mauvaise{ Il n'est pas possible de procéder ainsi car $2f_0>F_e$ et la
+      condition de Shannon-Nyquist du théorème d'échantillonnage n'est
+      pas vérifiée.}
+    \mauvaise{ Il est possible de procéder ainsi car $f_0\leq F_e$ et la
+      condition de Shannon-Nyquist du théorème d'échantillonnage est
+      vérifiée.}
+    \mauvaise{ Indépendamment de $f_0$ et $F_e$, il est toujours possible de
+      procéder ainsi. Ici, $f_0\leq F_e$ et la condition de Shannon-Nyquist
+      du théorème d'échantillonnage est donc vérifiée.}
+    \bonne{ Indépendamment de $f_0$ et $F_e$, il est toujours possible de
+      procéder ainsi. Ici, $2f_0>F_e$ et la condition de Shannon-Nyquist
+      du théorème d'échantillonnage n'est donc pas vérifiée.}
+    \end{reponses}
+\end{question}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\element{quNonClassee}{
+\begin{question}{} L'algorithme de transformée de Fourier rapide (FFT):
+   \begin{reponses}
+   \mauvaise{ est un algorithme rapide basé sur les propriétés fondamentales
+     de la transformée de Fourier (linéarité, changement de variables,
+     Parseval,\ldots). Il permet le calcul de la transformée de Fourier des
+     signaux à temps continu.}
+   \mauvaise{ est un algorithme rapide basé sur le théorème des résidus et
+     qui permet le calcul de la transformée de Fourier des signaux à
+     temps continu.}
+   \bonne{ est un algorithme rapide pour le calcul du produit matriciel
+     de l'équation (\ref{eq:prodFFT}) ci-dessous lorsque $N$ est une
+     puissance de deux.
+     \begin{equation}
+       \label{eq:prodFFT}
+       \begin{pmatrix}
+         1      & 1        & 1         & 1      & 1    \\
+         1      & w        & w^2       & \cdots & w^{N-1}    \\
+         1      & w^2      & w^4       & \cdots & w^{2(N-1)} \\
+         \vdots & \vdots   & \vdots    & \ddots &\vdots      \\
+         1      &  w^{N-1} &w^{2(N-1)} & \cdots & w^{(N-1)^2}
+       \end{pmatrix}
+       \begin{pmatrix}
+         x_1 \\ x_2 \\ x_3 \\ \vdots \\ x_N
+       \end{pmatrix} \qquad \text{avec: } w=e^{\ic2\pi/N} 
+     \end{equation}}
+   \mauvaise{ est un algorithme rapide basé sur les propriétés du filtrage à
+     temps continu et qui est utilisé dans les analyseurs de spectre
+     analogiques.}
+   \end{reponses}
+\end{question}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\element{quNonClassee}{
+\begin{question}{} Sur un analyseur de spectre analogique (tel que celui que
+ vous avez manipulé en TP):
+ \begin{reponses}
+   \mauvaise{ une durée de balayage plus faible améliore toujours la
+     résolution.}
+   \bonne{ une durée de balayage plus grande permet de choisir une bande
+     passante plus faible du filtre d'analyse et d'améliorer la
+     résolution.}
+   \mauvaise{ une bonne résolution est obtenue avec une bande passante
+     large du filtre d'analyse.}
+   \mauvaise{ la résolution en fréquence dépend de la rapidité à laquelle
+     varie le signal et pas de l'appareil.}
+ \end{reponses}
+\end{question}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\element{quNonClassee}{
+\begin{question}{} Que renvoie la commande \texttt{fftshift([1 1 1 1])} sous
+  le logiciel \textsc{Matlab}?
+  \begin{reponses}
+    \mauvaise{ Le vecteur \texttt{[1 2 3 4]}.}
+    \mauvaise{ Le vecteur \texttt{[4 0 0 0]}.}
+    \mauvaise{ Le vecteur \texttt{[1+i 1-i 1+i 1-i]}.}
+    \bonne{ Le vecteur \texttt{[1 1 1 1]}.}
+  \end{reponses}
+\end{question}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\element{quNonClassee}{
+\begin{question}{} Que renvoie la commande \texttt{fft([1 0 0 0])} sous le
+  logiciel \textsc{Matlab}?
+  \begin{reponses}
+    \mauvaise{ Le vecteur \texttt{[1 2 3 4]}.}
+    \mauvaise{ Le vecteur \texttt{[4 0 0 0]}.}
+    \mauvaise{ Le vecteur \texttt{[1+i 1-i 1+i 1-i]}.}
+    \bonne{ Le vecteur \texttt{[1 1 1 1]}.}
+  \end{reponses}
+\end{question}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\element{quNonClassee}{
+\begin{question}{} Que renvoie la commande \texttt{fft([1 1 1 1])} sous
+  le logiciel \textsc{Matlab}?
+  \begin{reponses}
+    \mauvaise{ Le vecteur \texttt{[1-i 1+i 1-i 1+i]}.}
+    \bonne{ Le vecteur \texttt{[4 0 0 0]}.}
+    \mauvaise{ Le vecteur \texttt{[1+i 1-i 1+i 1-i]}.}
+    \mauvaise{ Le vecteur \texttt{[1 1 1 1]}.}
+  \end{reponses}
+\end{question}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\element{quNonClassee}{
+\begin{question}{} Que renvoie la commande \texttt{fftshift([1 2 3 4])} sous
+  le logiciel \textsc{Matlab}?
+  \begin{reponses}
+    \bonne{ Le vecteur \texttt{[3 4 1 2]}.}
+    \mauvaise{ Le vecteur \texttt{[1 3 2 4]}.}
+    \mauvaise{ La transformée de Fourier discrète du vecteur \texttt{[1 2 3
+      4]}, avec des fréquences croissantes de $-\frac{1}{2}$ à
+    $\frac{1}{2}$.}
+    \mauvaise{ La transformée de Fourier discrète du vecteur \texttt{[1 2 3
+      4]}, avec des fréquences croissantes de $0$ à $1$.}
+  \end{reponses}
+\end{question}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\element{quNonClassee}{
+\begin{question}{} Que renvoie la commande \texttt{fft([0 0 0 1]))} sous le logiciel \textsc{Matlab}?
+  \begin{reponses}
+    \mauvaise{ Le vecteur \texttt{[1-i 1+i 1-i 1+i]}.}
+    \mauvaise{ Le vecteur \texttt{[4 0 0 0]}.}
+    \mauvaise{ Le vecteur \texttt{[0 1 0 0]}.}
+    \mauvaise{ Le vecteur \texttt{[1 1 1 1]}. }   
+    \mauvaise{ Le vecteur \texttt{[1+i 1-i 1+i 1-i]}.}
+    \bonne{ Le vecteur \texttt{[1 i -1 -i]}.}
+  \end{reponses}
+\end{question}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\element{quNonClassee}{
+\begin{question}{} Que renvoie la commande \texttt{fftshift([0 0 0 1]))} sous le logiciel \textsc{Matlab}?
+  \begin{reponses}
+    \mauvaise{ Le vecteur \texttt{[1-i 1+i 1-i 1+i]}.}
+    \mauvaise{ Le vecteur \texttt{[4 0 0 0]}.}
+    \bonne{ Le vecteur \texttt{[0 1 0 0]}.}
+    \mauvaise{ Le vecteur \texttt{[1 1 1 1]}.}
+    \mauvaise{ Le vecteur \texttt{[1+i 1-i 1+i 1-i]}.}
+    \mauvaise{ Le vecteur \texttt{[1 i -1 -i]}.}
+  \end{reponses}
+\end{question}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\element{quNonClassee}{
+\begin{question}{} Que renvoie la commande \texttt{fft(fftshift([1 1 1 1]))} sous le logiciel \textsc{Matlab}?
+  \begin{reponses}
+    \mauvaise{ Le vecteur \texttt{[1-i 1+i 1-i 1+i]}.}
+    \bonne{ Le vecteur \texttt{[4 0 0 0]}.}
+    \mauvaise{ Le vecteur \texttt{[1+i 1-i 1+i 1-i]}.}
+    \mauvaise{ Le vecteur \texttt{[1 1 1 1]}.}
+  \end{reponses}
+\end{question}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\element{quNonClassee}{
+\begin{question}{} Que renvoie la commande \texttt{fftshift(fft([1 1 1 1]))}
+  sous le logiciel \textsc{Matlab}?
+  \begin{reponses}
+    \bonne{ Le vecteur \texttt{[0 0 4 0]}.}
+    \mauvaise{ Le vecteur \texttt{[4 0 0 0]}.}
+    \mauvaise{ Le vecteur \texttt{[1+i 1-i 1+i 1-i]}.}
+    \mauvaise{ Le vecteur \texttt{[1-i 1+i 1-i 1+i]}.}
+  \end{reponses}
+\end{question}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\element{quNonClassee}{
+\begin{questionmult}{} Soit $\gamma_x(t)$ la fonction d'autocorrélation en puissance
+  d'un signal $x(t)$ de puissance finie.
+  \begin{reponses}
+  \mauvaise{ $\gamma_x(t)\geq 0$ pour tout $t$.}
+  \mauvaise{ La puissance de $x(t)$ vaut $\int_{-\infty}^{+\infty} |\gamma_x(t)|^2 \,dt$.}
+  \mauvaise{ L'énergie de $x(t)$ vaut $\int_{-\infty}^{+\infty} |\gamma_x(t)|^2 \,dt$.}
+  \bonne{ $\gamma_x(t)$ peut {\^e}tre une fonction périodique.}
+  \bonne{ $\gamma_x(0)\geq|\gamma_x(t)|$ pour tout $t$.}
+  \end{reponses}
+\end{questionmult}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\element{quNonClassee}{
+  \begin{questionmult}{} Soit $\Gamma_x(f)$ la densité spectrale de
+    puissance d'un signal $x(t)$ de puissance finie.
+  \begin{reponses}
+    \mauvaise{$\Gamma_x(0)$ est égal à la puissance du signal.}
+    \bonne{$\Gamma_x(f)$ est positif.}
+    \mauvaise{$\forall f\in\RR \quad \Gamma_x(f) \leq \Gamma_x(0)$.}
+    \mauvaise{$\Gamma_x(f)$ n'existe que pour un signal $x(t)$ réel.}
+    \mauvaise{La puissance du signal vaut $\int_\RR |\Gamma_x(f)|^2 \; df$.}
+    \bonne{L'énergie (ou respectivement la puissance) du signal vaut
+     $\int_\RR \Gamma_x(f) \; df$.}
+    \mauvaise{L'énergie (ou respectivement la puissance) du signal vaut
+    $\Gamma_x(0)$.}
+     \mauvaise{L'énergie (ou respectivement la puissance)du signal vaut
+     $|\Gamma_x(0)|^2$.}
+    \end{reponses}
+\end{questionmult}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\element{quNonClassee}{
+\begin{questionmult}{} Pour définir une densité spectrale de puissance d'un
+  signal aléatoire, il faut:
+  \begin{reponses}
+    \mauvaise{ que toutes ses trajectoires soient d'énergie finie.}    
+    \bonne{ lorsque ce signal est stationnaire au sens strict.}
+    \bonne{ qu'il soit stationnaire au sens large.}
+    \mauvaise{ que le module de sa transformée de Fourier soit borné.}
+    \mauvaise{ que sa transformée de Fourier soit ergodique.}
+  \end{reponses}
+\end{questionmult}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\element{quNonClassee}{
+\begin{question}{} $(y_n)_{n\in\ZZ}$ est la sortie d'un filtre stable de
+  réponse en fréquence $H(f)$ excité en entrée par un signal
+  $(x_n)_{n\in\ZZ}$ aléatoire stationnaire au sens large.
+  \begin{reponses}
+    \mauvaise{ $(y_n)_{n\in\ZZ}$ est un signal aléatoire stationnaire au sens
+    large et sa transformée de Fourier à temps discret est $H(f)X(f)$
+    (o{\`u} $X(f)$ est la transformée de Fourier du signal aléatoire
+    $(x_n)_{n\in\ZZ}$).}
+    \mauvaise{ $(y_n)_{n\in\ZZ}$ est un signal aléatoire déterministe car le filtre est stable et sa transformée de Fourier à temps discret est $H(f)X(f)$
+    (o{\`u} $X(f)$ est la transformée de Fourier du signal aléatoire
+    $(x_n)_{n\in\ZZ}$).}
+    \bonne{ $(y_n)_{n\in\ZZ}$ est un signal aléatoire stationnaire au sens
+    large et sa densité spectrale de puissance est $|H(f)|^2\Gamma_x(f)$
+    (o{\`u} $\Gamma_x(f)$ est la densité spectrale de puissance de
+    $(x_n)_{n\in\ZZ}$).}
+    \mauvaise{ $(y_n)_{n\in\ZZ}$ est un signal aléatoire stationnaire au sens
+    large. En tant que signal aléatoire, on ne peut pas définir sa
+    densité spectrale de puissance.}
+  \end{reponses}
+\end{question}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\element{quNonClassee}{
+\begin{question}{} On effectue l'analyse d'un signal à l'analyseur de spectre
+  analogique (tel que celui que vous avez manipulé en TP). On garde
+  constante la bande de fréquences
+  $[f_{\mathrm{min}},f_{\mathrm{max}}]$ étudiée et affichée à
+  l'analyseur.
+  \begin{reponses}
+    \mauvaise{ Pour améliorer la résolution en fréquence, il faut choisir
+    un balayage plus rapide.}
+    \mauvaise{ Pour améliorer la résolution en fréquence, il faut que le
+    filtre d'analyse de l'analyseur soit moins sélectif et ait une
+    bande passante plus large.}
+    \bonne{ Pour un affichage plus rapide, il faut un balayage plus
+    rapide. La vitesse de balayage possible dépend de la résolution
+    choisie.}
+    \mauvaise{ Pour un affichage plus rapide, il faut un balayage plus
+    rapide. La vitesse de balayage possible peut {\^e}tre choisie
+    indépendamment de la résolution.}
+  \end{reponses}
+\end{question}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\element{quNonClassee}{
+\begin{question}{} $(x_n)_{n\in\ZZ}$ est un bruit blanc de puissance $\sigma^2$
+  envoyé en entrée d'un filtre stable de réponse impulsionnelle
+  $(h_n)_{n\in\ZZ}$ et de réponse en fréquence $H(f)$ .
+  \begin{reponses}
+    \mauvaise{ La densité spectrale de puissance en sortie est $|H(f)|\sigma$.}
+    \mauvaise{ La densité spectrale de puissance en sortie est $H(f)X(f)$
+    o{\`u} $X(f)$ est la transformée de Fourier à temps discret de
+    $(x_n)_{n\in\ZZ}$.}
+    \mauvaise{ La densité spectrale de puissance en sortie est $H(f)X(f)$
+    o{\`u} $X(f)$ est la transformée de Fourier rapide de $(x_n)_{n\in\ZZ}$.}
+    \bonne{ La densité spectrale de puissance en sortie est
+    $|H(f)|^2\sigma^2$.}
+    \mauvaise{ La densité spectrale de puissance en sortie est $H(f)\sigma$.}
+  \end{reponses}
+\end{question}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\element{quNonClassee}{
+\begin{question}{} Un bruit blanc numérique:
+  \begin{reponses}
+    \bonne{ a une densité spectrale de puissance constante.}
+    \mauvaise{ a une densité spectrale de puissance égale à un Dirac.}
+    \mauvaise{ a pour transformée de Fourier une constante.}
+    \mauvaise{ a pour transformée de Fourier un Dirac.}
+  \end{reponses}
+\end{question}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\element{quNonClassee}{
+\begin{question}{} \label{qu:filtreNum020609bis} La figure
+  \ref{fig:filtreNum020609bis} représente schématiquement le module de la
+  réponse en fréquence d'un filtre numérique en fonction de la
+  fréquence normalisée.
+   % \begin{figure}[htbp]
+   %   \centering
+   %   \begin{pspicture}(14,1.7)(0,0)
+   %     %\psgrid[subgriddiv=1,griddots=5,gridlabels=7pt,gridcolor=red](0,-1)(15,20)
+   %      %\psaxes[Ox=0,Dx=1,Oy=0,Dy=1,labels=none,ticks=none]{->}(0,0)(0,-1.5)(5.5,2)
+   %     \put(5.5,0){
+   %       \psaxes[Dx=1,dx=4,ticks=x,labels=x]{->}(0,0)(0,0)(4.5,1.5)
+   %       \psline[linewidth=0.01,fillstyle=none](1.2,0)(1.4,1.5)(2.6,0.8)(2.8,0)
+   %       \uput[45](4.5,0){$f$ (fréq. normalisée)} \uput[0](0,1.5){$|H(f)|$} }
+   %   \end{pspicture}
+   %   \caption{Module de la réponse en fréquence du filtre question
+   %     \ref{qu:filtreNum020609bis}}
+   %   \label{fig:filtreNum020609bis}
+   % \end{figure}
+  \begin{reponses}
+    \mauvaise{ il s'agit d'un filtre passe-bande et sa réponse
+    impulsionnelle est à valeurs complexes.}
+    \mauvaise{ il s'agit d'un filtre coupe-bande et sa réponse
+    impulsionnelle est à valeurs réelles.}
+    \bonne{ il s'agit d'un filtre passe-haut et sa réponse
+    impulsionnelle est à valeurs complexes.}
+    \mauvaise{ il s'agit d'un filtre passe-haut et sa réponse
+    impulsionnelle est à valeurs réelles.}
+  \end{reponses}
+\end{question}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\element{quNonClassee}{
+\begin{questionmult}{} Soit $\Gamma_x(f)$ la densité spectrale d'énergie (ou
+  respectivement de puissance) d'un signal $x(t)$.
+  \begin{reponses}
+   \mauvaise{ $\Gamma_x(0)$ est égal à l'énergie (ou respectivement la puissance) du signal.}
+   \bonne{ $\Gamma_x(f)$ est toujours positif.}
+   \mauvaise{ $\forall f\in\RR \quad \Gamma_x(f) \leq \Gamma_x(0)$.}
+   \mauvaise{ $\Gamma_x(f)$ n'existe que pour un signal $x(t)$ réel.}
+  \mauvaise{ L'énergie (ou respectivement la puissance) du signal vaut
+    $\int_\RR |\Gamma_x(f)|^2 \; df$.}
+  \bonne{ L'énergie (ou respectivement la puissance) du signal vaut
+    $\int_\RR \Gamma_x(f) \; df$.}
+  \mauvaise{ L'énergie (ou respectivement la puissance) du signal vaut
+    $\Gamma_x(0)$.}
+  \mauvaise{ L'énergie (ou respectivement la puissance)du signal vaut
+    $|\Gamma_x(0)|^2$.}
+  \end{reponses}
+\end{questionmult}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\element{quNonClassee}{
+\begin{questionmult}{} Un filtre numérique rationnel défini par sa fonction de
+   transfert en $z$ $H[z]$ ou par sa réponse impulsionnelle
+   $(h_n)_{n\in\ZZ}$ est stable si et seulement si:
+   \begin{reponses}
+   \mauvaise{ le domaine de convergence de $H[z]$ est un disque de rayon
+     $R\in\RR_+^*$.}
+   \mauvaise{ le domaine de convergence de $H[z]$ est du type
+     $\{z\in\CC \,|\, |z|>R\}$, o{\`u} $R\in\RR_+^*$.}
+   \mauvaise{ les p{\^o}les de $H[z]$ sont à partie réelle négative.}
+   \mauvaise{ la réponse impulsionnelle est bornée (càd il existe
+     $M\in\RR^*_+$ tel que pour tout $n$, $|h_n|<M$).}
+   \bonne{ $\sum_{k=-\infty}^{+\infty} |h_k|$ est fini.}
+   \bonne{ l'ensemble $\{z\in\CC/|z|=1\}$ est inclus dans le domaine de 
+       convergence de $H[z]$.}
+  \mauvaise{ $\lim_{n\to+\infty} h_n = 0$.}
+   \end{reponses}
+\end{questionmult}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\element{quNonClassee}{
+\begin{question}{} Pour les signaux aléatoires:
+  \begin{reponses}
+    \bonne{ la stationnarité au sens strict entraîne la stationnarité
+    au sens large.}
+    \mauvaise{ la stationnarité au sens strict entraîne l'ergodicité.}
+    \mauvaise{ la stationnarité au sens large entraîne la stationnarité
+    au sens strict.}
+    \mauvaise{ la stationnarité au sens large et au sens strict
+    entraînent l'ergodicité.}
+  \end{reponses}
+\end{question}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\element{quNonClassee}{
+\begin{question}{} Soit un filtre temps continu de réponse impulsionnelle
+$h(t)$ et de réponse en fréquence $H(f)$. Le filtre est excité en
+entrée par un signal \emph{aléatoire} $x(t)$ stationnaire au sens
+large et sa sortie est notée $y(t)$.
+\begin{reponses}
+  \mauvaise{ Les transformées de Fourier $X(f)$ et $Y(f)$ des signaux
+  aléatoires $x(t)$ et $y(t)$ sont liées par $Y(f)=H(f)X(f)$.}
+  \mauvaise{ Les transformées de Fourier $X(f)$ et $Y(f)$ des signaux
+  aléatoires $x(t)$ et $y(t)$ sont liées par $Y(f)=H(f)\star X(f)$ où
+  $\star$ représente la convolution.}
+  \mauvaise{ Les transformées de Fourier $X(f)$ et $Y(f)$ des signaux
+  aléatoires $x(t)$ et $y(t)$ sont égales aux densités spectrales de
+  puissance respectives et on a $Y(f)=|H(f)|^2X(f)$.}
+  \bonne{ On ne peut pas définir de transformée de Fourier des signaux
+  aléatoires $x(t)$ et $y(t)$ dans le sens usuel (càd tel que
+  rencontré en cours de mathématiques de début
+  d'année).} % En revanche, les
+  % densités spectrales de puissance notées $\Gamma_x(f)$ et
+  % $\Gamma_y(f)$ respectivement en entrée et en sortie sont liées par:
+  % $\Gamma_y(f)=|H(f)|^2\Gamma_x(f)$.
+\end{reponses}
+\end{question}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\element{quNonClassee}{
+\begin{question}{} Deux séances de travaux pratiques (TP) ont eu lieu.
+\begin{reponses}
+  \bonne{Les deux séances étaient sous \matlab. L'une concernait
+  l'analyse spectrale numérique et l'autre le filtrage numérique.}
+  \mauvaise{Les deux séances étaient sous \matlab. L'une concernait
+  l'analyse spectrale numérique et l'autre l'analyse spectrale
+  analogique.}
+  \mauvaise{Une séance était sous \matlab et traitait d'analyse spectrale
+  numérique. L'autre séance utilisait un analyseur de spectre
+  analogique.}
+  \mauvaise{Une séance était sous \matlab et traitait d'analyse spectrale
+  analogique. L'autre séance utilisait un analyseur de spectre
+  analogique et traitait de filtrage.}
+\end{reponses}
+\end{question}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\element{quNonClassee}{
+\begin{question}{} \label{qu:Matlab1} La figure \ref{fig:MatlabSpec1} sur la
+   page \pageref{fig:MatlabSpec1} a été obtenue à l'aide du logiciel
+   \textsc{Matlab}. Indiquer la ou les séquences de commandes qui
+   peuvent donner ce tracé.
+   \begin{reponses}
+   \bonne{ \texttt{t = [1:512]; x=cos(2*pi*0.15*t); plot(abs(fft(x)));}}
+   \mauvaise{ \texttt{t = [1:512]; x=cos(2*pi*0.15*t); plot(fft(x));}}
+   \mauvaise{ \texttt{t = [1:512]; x=cos(2*pi*0.15*t);
+       plot((0:511)/512,abs(fft(x)));}}
+   \mauvaise{ \texttt{t = [1:512]; x=cos(2*pi*0.15*t); plot((0:511)/512,fft(x));}}
+   \end{reponses}
+ \end{question}
+}
+
+

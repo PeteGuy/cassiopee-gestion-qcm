@@ -1,0 +1,119 @@
+\newif\ifLogoTSP \LogoTSPfalse
+\newif\ifControleFinalUn
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\ControleFinalUntrue
+\ControleFinalUnfalse
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% mettre dans les commandes ci-dessous le(s) bon(s) repertoire(s)
+%%% sans / a la fin
+\newcommand{\pathSrcStyleFiles}{./src_styles}
+%%%
+\newcommand{\titreExam}{ Signal 1A \\ Catalogue}
+
+\documentclass[a4paper]{article}
+
+\usepackage[utf8x]{inputenc}    
+\usepackage[T1]{fontenc}
+
+\usepackage[bloc, completemulti, ensemble, catalog, answers, noshuffle,
+francais]{automultiplechoice}
+%% options: bloc (evite changement page à l'interieur question)
+%% option: completemulti -> ajoute "Aucune bonne réponse" pour les questionmult 
+%% option : ensemble -> sert à mettre la feuille de réponse à la fin
+%%          outsidebox -> avec ensemble, met les lettres à l'ext des cases
+%% mettre option francais -> si besoin
+%%               noshuffle -> evite permutation des reponses  
+%%                            (pour correction a posteriori)
+%%               answers -> pour la correction
+%%               catalog -> pour lister questions corrigees avec label
+%\usepackage{etex}
+%\usefonttheme[onlymath]{serif}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{dsfont,pifont}
+%\usepackage[mathscr]{eucal}
+\usepackage{multicol}
+\usepackage{graphicx}
+\usepackage{pstricks,pst-node,pst-text,pst-3d,pst-plot,pst-grad}
+%\usepackage{tabularx}
+\graphicspath{{/home/castella/Documents/LatexStyle/Fig/},{./src_img/}}
+
+% %%% Gras %%%
+\input{\pathSrcStyleFiles/defGras.tex}
+% %%% Autres commandes en vrac %%%
+\input{\pathSrcStyleFiles/defCdes.tex}
+
+%\def\AMCotextReserved{\emph{Réservé au correcteur}}
+\begin{document}
+%%% insertion des groupes de questions
+\element{grtest}{ %cree le groupe qui prendra toutes les questions
+  \begin{questionmult}{qu-tout1}
+    Concernant ce cours et ce sujet:
+    \begin{reponses}
+      \bonne{J'ai aimé le cours et le sujet d'examen.}
+      \bonne{J'ai aimé le cours, mais pas l'examen.}
+      \bonne{Je n'ai pas aimé le cours, mais j'ai aimé l'examen.}
+      \mauvaise{Je n'ai aimé ni le cours, ni l'examen.}
+    \end{reponses}
+\end{questionmult}
+}
+\element{grtest}{ %cree un groupe pour qques questions specifiques cours/tdstoutes les questions
+  \begin{questionmult}{qu-tout2}
+    Concernant ce cours et ce sujet:
+    \begin{reponses}
+      \bonne{J'ai assisté à tous les cours et TDs.}
+      \bonne{J'ai assisté à la plupart des cours et TDs.}
+      \bonne{J'ai assisté à quelqes cours et TDs.}
+      \mauvaise{Je ne sais plus / je n'ose pas avouer que je ne suis
+        jamais venu.}
+    \end{reponses}
+\end{questionmult}
+}
+%%% === input groupes de questions ===
+  \input{src/elements_Signal1A.tex}
+  \input{src/CF2019_seance1.tex}
+%%% === FIN input groupes de questions ===
+%%% === Paramètres des groupes ===
+\setdefaultgroupmode{fixed}
+%\setgroupmode{NomGroupe}{fixed} %fixed/cyclic/withreplacement/withoutreplacement
+% \AMCrandomseed{11062019}
+%%% === FIN Paramètres des groupes ===
+
+\onecopy{1}{ %\exemplaire fait la meme chose que \onecopy mais
+  % prend des valeurs par defaut et celles en francais pour
+  % \AMCtext{none}{...}. Utiliser plutot l'option francais.
+%%% initialisation et entete
+  \setcounter{equation}{0}
+  % \fancyhead[C]{\AMCIDBoxesABC un fancy head}
+  % \fancyfoot[C]{Nom et prénom:}
+  \input{\pathSrcStyleFiles/AMC_entete_Sep.tex}
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  \restituegroupe{quNonClassee}
+  \restituegroupe{devel-seance1}
+
+  % \cleargroup{tout}
+  % \copygroup[2]{grtest}{tout}
+  % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+  % \restituegroupe{tout}
+  % \AMCaddpagesto{8}
+
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% formulaire de réponses
+  \AMCcleardoublepage  %% saut de page avant formulaire réponses à
+                       %% part (+ page blanche si nécessaire)
+  % \AMCaddpagesto{3}  %% ajoute pages blanches pour nb pages à endroit cde
+  \AMCdebutFormulaire
+  \input{\pathSrcStyleFiles/AMC_entete_SepRep.tex}
+  \formulaire
+  % \AMCaddpagesto{10}
+}   
+\end{document}
+
+%%% Local variables:
+%%% mode: latex
+%%% TeX-command-default: "make"
+%%% TeX-master: t
+%%% End:

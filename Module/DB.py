@@ -118,6 +118,7 @@ class Base:
         :param index: the string index of the question to remove
         """
         self.data.pop(index)
+        print(db.data)
 
     def get_question(self, index):
         """
