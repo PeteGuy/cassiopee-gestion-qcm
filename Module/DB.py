@@ -82,6 +82,7 @@ class Base:
         self.filename = input_file
         with open(input_file, "r") as file:
             self.data = json.load(file)
+        print(self.data)
         self.nextindex = 1
         # We search for the next valid unused index value in the database
         while str(self.nextindex) in self.data:
@@ -102,7 +103,7 @@ class Base:
             self.nextindex += 1
         # json objects are like python dictionnaries so we convert our object into one
         # the keys of a json object must be strings so our unique indexes are converted to strings
-        self.data[str(self.nextindex)] = question.to_dict()
+        self.data[str(self.nextindex)] = question.to_dict(str(self.nextindex))
 
     def add_multiple(self, questions):
         """
@@ -137,7 +138,19 @@ class Base:
         :param index: the index at which to replace
         :param question: the new question object to put at the given index
         """
-        self.data[index] = question.to_dict()
+        self.data[index] = question.to_dict(index)
+
+    def question_by_id(self, id):
+        """
+        return the questions in the database that match the given id
+        :param id: the id string to search for
+        :return: a list of matching questions and their indexes
+        """
+        sel = []
+        for index in self.data:
+            if self.data[index]["id"] == id:
+                sel.append((index, question_from_dict(self.data[index])))
+        return sel
 
     def question_by_name(self, name):
         """

@@ -267,6 +267,7 @@ def save_bufer():
     saves the content of the buffer in the database
     """
     global buffer
+    
     db.add_multiple(buffer)
 
 

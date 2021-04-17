@@ -99,7 +99,7 @@ def parse_reponses(r_lines):
     return reponses
 
 
-def parse_qcm(q_lines):
+def parse_qcm(q_lines, nb_questions):
     """
     Parses the body of a question written in LaTeX source code representing the body of ONE question
     the body must start with \\begin{question and ends with \\end{question
@@ -143,6 +143,9 @@ def parse_qcm(q_lines):
             q_type = QCM.type_from_str(q_decl[1].strip('} \n'))
             # We use split and not strip to remove any trailing option we don't care about (such as bareme)
             q_name = q_decl[2].split('}')[0]
+            if q_name.strip() == "" :
+                q_name = "QUESTION" + str(nb_questions)
+
             record_enonce = True
 
         # Any line starting woth \AMC is an amc option and needs to be stored separately
@@ -180,11 +183,25 @@ def parse_latex(latex):
     qcms = []
     qcm_lines = []
     record = False
+    nb_questions = 0
 
     for line in latex:
 
         # The starting tag of a question (needs to be on a separate line from the body)
+
+        # # We manually add a name if the question doesn't have one
+        # if line.strip().startswith("\\begin\{question\}\{\}") :
+        #     line = line.strip()[0:17] + "TEST" + line.strip()[17:]
+        #     qcm_lines.append(line)
+        #     record = True
+
+        # elif line.strip().startswith("\\begin\{questionmult\}\{\}"):
+        #     line = line.strip()[0:21] + "TESTMULT" + line.strip()[21:]
+        #     qcm_lines.append(line)
+        #     record = True
+
         if line.strip().startswith("\\begin{question"):
+            nb_questions += 1
             qcm_lines.append(line)
             record = True
 
@@ -193,7 +210,7 @@ def parse_latex(latex):
             qcm_lines.append(line)
             record = False
             # Call to parse_qcm to parse the body of the question
-            qcms.append(parse_qcm(qcm_lines))
+            qcms.append(parse_qcm(qcm_lines, nb_questions))
             qcm_lines = []
 
         # The body of the question

@@ -11,12 +11,13 @@ Created on Sun Mar 28 15:03:33 2021
 @author: pierre
 """
 
-for arg in sys.argv:
-    print(arg)
-    Gestion.init()
-    Gestion.parse_file(sys.argv[1])
-    Gestion.save_bufer()
-    Gestion.persist_db()
+#for arg in sys.argv:
+#print(arg)
+Gestion.init()
+Gestion.parse_file(sys.argv[1])
+    
+Gestion.save_bufer()
+Gestion.persist_db()
     
 
 
@@ -26,5 +27,5 @@ for arg in sys.argv:
 
 
 
-Gestion.persist_db()
+
 

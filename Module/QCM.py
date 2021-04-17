@@ -116,14 +116,17 @@ class Question:
         """
         return self.nom + " {" + str(self.type) + "} " + "tags : " + str(self.tags)
 
-    def to_dict(self):
+    def to_dict(self, index):
         """
         creates a dictionnary representing the object
         all the fields correspond to a key in the resulting dictionnary
         this function is used for the JSON dump
         :returns a dictionnary object representing the question
         """
+
+
         res = {
+            "id":   index,
             "type": str_from_type(self.type),
             "nom": self.nom,
             "amc_options": self.amc_options,

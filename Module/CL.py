@@ -278,6 +278,19 @@ def remove_selection(args):
 # Select functions
 #
 
+def select_id(args):
+    """Recherche des QCMs dans la base qui ont le nom spécifié et les ajoutes à la sélection.
+Plusieurs noms peuvent êtres recherchés à la fois.
+
+Par défaut la sélection courante est remplacée par le résultat de la requête,
+pour ajouter le résultat à la sélection utilisez l'option "-a".
+    """
+    if "-a" in args:
+        args.remove("-a")
+        Gestion.clear_sel()
+    for id in args:
+        Gestion.select_id(id)
+
 
 def select_name(args):
     """Recherche des QCMs dans la base qui ont le nom spécifié et les ajoutes à la sélection.
@@ -379,6 +392,7 @@ commandes = {
     "save": save_selection,
     "exportlatex": export_latex,
     "exportmoodle": export_moodle,
+    "selectbyid": select_id,
     "selectbyname": select_name,
     "selectbytag": select_tag,
     "selectbykeyword": select_keyword,
