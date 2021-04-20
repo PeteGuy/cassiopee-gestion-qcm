@@ -93,8 +93,24 @@ Utilisez l'option "-s" pour ajouter le buffer à la sélection immédiatement ap
 NOTE : cette sauvegarde n'est effectivement répercutée sur le fichier de la base
 qu'après un appel à ">> persist" ou à ">> exit".
     """
-    Gestion.save_bufer()
+    Gestion.save_buffer()
     print("Buffer saved!")
+    if "-s" in args:
+        select_name([question.nom for question in Gestion.buffer])
+    if "-c" not in args:
+        Gestion.clear_buffer()
+        print("Buffer cleared")
+
+
+def save_selection_buffer(args):
+    """Sauvegarde le contenu de la selection du buffer dans la base,
+par défaut efface le buffer, utilisez l'option "-c" pour conserver le buffer.
+Utilisez l'option "-s" pour ajouter le buffer à la sélection immédiatement après.
+NOTE : cette sauvegarde n'est effectivement répercutée sur le fichier de la base
+qu'après un appel à ">> persist" ou à ">> exit".
+    """
+    Gestion.save_sel_buffer()
+    print("Buffer selection saved!")
     if "-s" in args:
         select_name([question.nom for question in Gestion.buffer])
     if "-c" not in args:
@@ -148,6 +164,22 @@ Si des indexs sont passés en argument, affiche seulement les QCM(s) spécifiée
         for index in args:
             try:
                 print(Gestion.get_buffer_str(int(index)))
+            except IndexError:
+                print(index_error)
+
+
+def print_selection_buffer(args):
+    """Affiche les QCM de la selection du buffer
+Si aucun argument n'est spécifié, affiche une courte descrption de toutes les questions.
+Si des indexs sont passés en argument, affiche seulement les QCM(s) spécifiée(s) en détails.
+    """
+    if len(args) == 0:
+        for string in Gestion.get_all_short_selbuff_str():
+            print(string)
+    else:
+        for index in args:
+            try:
+                print(Gestion.get_selbuff_str(int(index)))
             except IndexError:
                 print(index_error)
 
@@ -332,6 +364,20 @@ pour ajouter le résultat à la sélection utilisez l'option "-a".
     Gestion.select_keywords(args)
 
 
+def select_buffer_name(args):
+    """Recherche des QCMs dans le buffer qui ont le nom spécifié et les ajoutes à la sélection.
+Plusieurs noms peuvent êtres recherchés à la fois.
+
+Par défaut la sélection courante est remplacée par le résultat de la requête,
+pour ajouter le résultat à la sélection utilisez l'option "-a".
+    """
+    if "-a" in args:
+        args.remove("-a")
+        Gestion.clear_sel()
+    for name in args:
+        Gestion.select_buffer_name(name)
+
+
 #
 # Export functions
 #
@@ -377,6 +423,7 @@ commandes = {
     "parsef": parse_file,
     "persist": persist,
     "printb": print_buffer,
+    "printselb": print_selection_buffer,
     "print": print_selection,
     "latexb": print_latex_buffer,
     "latex": print_latex,
@@ -390,6 +437,7 @@ commandes = {
     "clear": clear_selection,
     "saveb": save_buffer,
     "save": save_selection,
+    "saveselb": save_selection_buffer,
     "exportlatex": export_latex,
     "exportmoodle": export_moodle,
     "selectbyid": select_id,
@@ -397,6 +445,7 @@ commandes = {
     "selectbytag": select_tag,
     "selectbykeyword": select_keyword,
     "help": print_help,
+    "selectbufferbyname": select_buffer_name,
 }
 
 if __name__ == "__main__":
