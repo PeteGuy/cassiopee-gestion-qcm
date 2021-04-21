@@ -87,7 +87,7 @@ class Reponse:
 class Question:
     """Class representing a full QCM"""
 
-    def __init__(self, type_qcm, nom, options, enonce, reponses=None, tags=None):
+    def __init__(self, type_qcm, nom, options, enonce, reponses=None, tags=None,numberColumn=1):
         if tags is None:
             tags = []
         if reponses is None:
@@ -97,7 +97,8 @@ class Question:
         self.amc_options = options
         self.enonce = enonce.strip()
         self.reponses = reponses
-        self.tags = tags
+        self.tags = tags   
+        self.numberColumn = numberColumn
 
     def __str__(self):
         res = self.nom + "\n"
@@ -132,6 +133,7 @@ class Question:
             "amc_options": self.amc_options,
             "enonce": self.enonce,
             "reponses": [rep.__dict__ for rep in self.reponses],
+            "numberColumn":self.numberColumn,
             "tags": self.tags
         }
         return res
@@ -141,14 +143,27 @@ class Question:
         Creates LaTeX code to represent the question using the AMC LaTeX package
         :returns a string of LaTeX source code
         """
+        
         res = "\\begin{" + str_from_type(self.type) + "}{" + self.nom + "}\n"
+        
         for option in self.amc_options:
             res += "  " + option + "\n"
         res += "  " + self.enonce.replace("\n", "\n  ") + "\n"
+        
+        if self.numberColumn != 1:
+            res+="\\begin{multicols}{"+self.numberColumn+"}\n"
+        
+            
+            print(self.numberColumn)
+           
+            
+            
         res += "  \\begin{reponses}\n"
         for reponse in self.reponses:
             res += "    " + reponse.to_latex() + "\n"
         res += "  \\end{reponses}\n"
+        if self.numberColumn != 1:
+            res+="\\end{multicols}\n"
         res += "\\end{" + str_from_type(self.type) + "}" + "\n"
         return res
 

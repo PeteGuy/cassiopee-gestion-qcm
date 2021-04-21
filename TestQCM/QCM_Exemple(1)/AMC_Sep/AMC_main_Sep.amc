@@ -2,9 +2,19 @@ AUTOQCM[VAR:project:pdfform=0]
 
 AUTOQCM[VAR:ensemble=1]
 
+AUTOQCM[NUM=1=qu-seance1-a-0]
+
+AUTOQCM[FQ]
+
+AUTOQCM[FQ]
+
+AUTOQCM[NUM=2=qu-seance1-b-0]
+
+AUTOQCM[FQ]
+
 AUTOQCM[TOTAL=1]
 
-AUTOQCM[NUM=1=]
+AUTOQCM[NUM=3=]
 
 AUTOQCM[FQ]
 
@@ -97,16 +107,6 @@ AUTOQCM[FQ]
 AUTOQCM[FQ]
 
 AUTOQCM[FQ]
-
-AUTOQCM[NUM=2=qu-seance1-a-0]
-
-AUTOQCM[FQ]
-
-AUTOQCM[NUM=3=qu-seance1-b-0]
-
-AUTOQCM[FQ]
-
-AUTOQCM[NUM=4=qu-seance1-c-0]
 
 AUTOQCM[FQ]
 

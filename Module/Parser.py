@@ -127,6 +127,9 @@ def parse_qcm(q_lines, nb_questions):
         if line.strip().startswith("\\begin{reponses}"):
             record_enonce = False
             q = QCM.Question(q_type, q_name, q_options, q_enonc)
+            if q_numberColumn != 1:
+                q.numberColumn = q_numberColumn
+            #print(type(q+"foizehfoizjfozes\n"))
             record_reponse = True
 
         # These lines mark the end of the answer block
@@ -136,13 +139,16 @@ def parse_qcm(q_lines, nb_questions):
             # We have all the answer lines -> we can parse them
             q.reponses = parse_reponses(r_lines)
 
-        # This line is the biginning of the question and where we register the name and type
+        # This line is the beginning of the question and where we register the name and type
         elif line.strip().startswith("\\begin{question"):
             # We split the line into "\begin", "questionType}", "questionName}" ...
             q_decl = line.split('{')
             q_type = QCM.type_from_str(q_decl[1].strip('} \n'))
             # We use split and not strip to remove any trailing option we don't care about (such as bareme)
             q_name = q_decl[2].split('}')[0]
+            
+            q_numberColumn = 1
+            
             if q_name.strip() == "" :
                 q_name = "QUESTION" + str(nb_questions)
 
@@ -151,6 +157,13 @@ def parse_qcm(q_lines, nb_questions):
         # Any line starting woth \AMC is an amc option and needs to be stored separately
         elif record_enonce and line.strip().startswith("\\AMC"):
             q_options.append(line.strip())
+            
+        #A line starting with \\begin{multicols} has to be taken into account
+        elif record_enonce and line.strip().startswith("\\begin{multicols}"):
+            q_decl = line.split('{')
+            q_numberColumn = q_decl[2].split('}')[0];
+           
+        
 
         # The lines between the \begin{question} tag and the \begin{reponses} tag are the enonce of the question
         elif record_enonce:
@@ -212,6 +225,7 @@ def parse_latex(latex):
             # Call to parse_qcm to parse the body of the question
             qcms.append(parse_qcm(qcm_lines, nb_questions))
             qcm_lines = []
+            
 
         # The body of the question
         elif record:

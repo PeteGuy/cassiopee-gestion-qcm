@@ -1,0 +1,211 @@
+
+
+%%% commandes pour modifications et notes %%%
+\newcommand{\ndlr}[1]{{\color{blue} (\textsc{#1})}}
+\newcommand{\temp}[1]{{\color{red} *** \textsc{ #1} ***}}
+%\newcommand{\versiontmp}[1]{\colorbox{yellow}{\color{red}{#1}}}
+\newcommand{\modifA}[1]{{\color{red}#1}}
+\newcommand{\Averif}[1]{\textcolor{blue}{#1}}
+
+\newcommand{\grillecalage}{ \psaxes[Ox=0, Dx=1, Oy=0, Dy=1,ticks=none,
+        labels=none, linecolor={red!60}]{->}(0,0)(0,0)(1,1)
+        \psgrid[subgriddiv=2, subgriddots=10, subgridcolor={red!20},
+        griddots=10, gridcolor={red!30}, gridlabels=5pt](-1,-1)(10,5)}
+
+%%% calligraphiques %%%
+\newcommand{\mA}{\mathcal{A}}
+\newcommand{\mB}{\mathcal{B}}
+\newcommand{\mC}{\mathcal{C}}
+\newcommand{\mD}{\mathcal{D}}
+\newcommand{\mE}{\mathcal{E}}
+\newcommand{\mF}{\mathcal{F}}
+\newcommand{\mG}{\mathcal{G}}
+\newcommand{\mH}{\mathcal{H}}
+\newcommand{\mI}{\mathcal{I}} %\newcommand{\cI}{{\mathcal{I}}}
+\newcommand{\mJ}{\mathcal{J}}
+\newcommand{\mK}{\mathcal{K}}
+\newcommand{\mL}{\mathcal{L}}
+\newcommand{\mM}{\mathcal{M}}
+\newcommand{\mN}{\mathcal{N}}
+\newcommand{\mO}{\mathcal{O}}
+\newcommand{\mP}{\mathcal{P}}
+\newcommand{\mQ}{\mathcal{Q}}
+\newcommand{\mR}{\mathcal{R}}
+\newcommand{\mS}{\mathcal{S}}
+\newcommand{\mT}{\mathcal{T}}
+\newcommand{\mU}{\mathcal{U}}
+\newcommand{\mV}{\mathcal{V}}
+\newcommand{\mW}{\mathcal{W}}
+\newcommand{\mX}{\mathcal{X}}
+\newcommand{\mY}{\mathcal{Y}}
+\newcommand{\mZ}{\mathcal{Z}}
+
+%%% Blackboard (Ensembles) %%%
+\newcommand{\rr}{\mathbb{r}}
+\renewcommand{\AA}{\mathbb{A}}
+\newcommand{\CC}{\mathbb{C}}
+\newcommand{\DD}{\mathbb{D}}
+\newcommand{\EE}{\mathbb{E}}
+\newcommand{\FF}{\mathbb{F}}
+\newcommand{\KK}{\mathbb{K}}    %{\Bbbk}
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\PP}{\mathbb{P}}
+\newcommand{\QQ}{\mathbb{Q}}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\SSS}{\mathbb{S}} %exception... \SS existe deja: alternative 1 
+\newcommand{\Sn}{\mathbb{S}}  %exception... \SS existe deja: alternative 2
+\newcommand{\Sym}{\mathbb{S}} % exception... \SS existe deja: alternative 3
+\newcommand{\TT}{\mathbb{T}}
+\newcommand{\ZZ}{\mathbb{Z}}
+
+\newcommand{\ic}{\mathfrak{i}}  %i complexe i^2=-1
+
+\newcommand{\indic}{\mathds{1}} %indicatrice 0-1 (ou fonction caractéristique)
+\newcommand{\iindic}{\imath}    %indicatrice 0-+\infty
+\newcommand{\convexindic}{\imath} %alternative \iindic
+\newcommand{\defeq}{:=}%{\triangleq}
+\newcommand{\eqdef}{=:}
+
+%%% Cumulants %%%
+%\newcommand{\C}{\mathrm{C}}
+%\newcommand{\Cq}[1]{\mathrm{C}\{#1\}}
+\newcommand{\Cum}[1]{\mathbb{C}\mathrm{um}\left\{#1\right\}}  % ca a change !!
+% \newcommand{\Cum}[1]{\mathrm{Cum}\left\{#1\right\}}  % ca a change !!
+\newcommand{\Cumm}[1]{\mathrm{C}_4\{#1\}}   % ca a change !!
+%\newcommand{\Cum}[1]{\mathrm{Cum}[#1]}
+%\newcommand{\Cum4}[1]{\mathrm{C}_4\{#1\}} % ca a change !!
+%\newcommand{\Cum4}[1]{\mathrm{Cum}\{#1\}}
+%\newcommand{\Cum}[1]{\mathrm{Cum}\{#1\}}
+
+\newcommand{\E}[1]{\mathbb{E}\{#1\}} %\newcommand{\E}[1]{\mathrm{E}\{#1\}}
+%%%% \newcommand{\E}[1]{\mathbb{E}\left\{#1\right\}}
+\newcommand{\Cov}[1]{\mathbb{C}\mathrm{ov}\{#1\}}
+\newcommand{\Var}[1]{\mathbb{V}\mathrm{ar}\{#1\}}
+
+
+
+\newcommand{\st}{\mathrm{s.t.} \;}   %\newcommand{\st}{\mathrm{s.t.} \quad}
+\newcommand{\mini}{\mathrm{min.} \;} %\newcommand{\mini}{\mathrm{min.} \quad}
+\newcommand{\maxi}{\mathrm{max.} \;} %\newcommand{\maxi}{\mathrm{max.} \quad}
+
+\newcommand{\argmin}{\mathrm{argmin}}
+\newcommand{\argmax}{\mathrm{argmax}}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\Diag}{Diag}
+\DeclareMathOperator{\dom}{dom}%\newcommand{\dom}{\mathrm{dom}\,}
+\DeclareMathOperator{\interior}{int}%\newcommand{\interior}{\mathrm{int}}
+\DeclareMathOperator{\boundary}{bd} %boundary
+\DeclareMathOperator{\closure}{cl} %closure
+\DeclareMathOperator{\core}{core}
+\DeclareMathOperator{\cont}{cont}
+\DeclareMathOperator{\conv}{conv}
+\DeclareMathOperator{\aff}{aff}
+\DeclareMathOperator{\epi}{epi}
+\DeclareMathOperator{\relint}{relint}
+\DeclareMathOperator{\ri}{ri}
+\DeclareMathOperator{\prox}{prox}
+\DeclareMathOperator{\Argmin}{Arg\min}
+\DeclareMathOperator{\trace}{tr}        %operateur trace
+\DeclareMathOperator{\Trace}{Tr}        %operateur trace avec majuscule
+\DeclareMathOperator{\Tr}{Tr}           %(ajoute suite a transp. Egalisation)
+\DeclareMathOperator{\Ker}{Ker}   %\renewcommand{\ker}{\mathrm{Ker}}
+\DeclareMathOperator{\spn}{span} % ajoute suite a transp. Egalisation
+\DeclareMathOperator{\Span}{Span} 
+\DeclareMathOperator{\rank}{rank} %\newcommand{\rank}{\mathrm{rank}}
+\DeclareMathOperator{\vecop}{vec} %opérateur vectorisation matrice
+% \renewcommand{\t}{{^{^{\rm \!T}}}\!} % transpose
+% \newcommand{\tr}{{^\mathrm{T}}\!} % transpose
+\newcommand{\tr}{{^\top}} % transpose autres solutions: \mathsf{T} \mathtt{T}
+% \renewcommand{\t}{{^{^{\rm \!T}}}\!} % transpose 
+% \newcommand{\tr}{{^\mathrm{T}}\!} % transpose 
+ \newcommand{\tc}{{^\mathrm{H}}\!}
+ \newcommand{\trh}{{^\mathrm{H}}\!} % Hermitian transpose 
+
+\DeclareMathOperator{\sign}{sign}
+
+\newcommand{\sinc}{\mathrm{sinc}}
+%\newcommand{\sgn}{\mathrm{sgn}}
+
+\newcommand{\kHz}{\mathrm{kHz}} \newcommand{\Hz}{\mathrm{Hz}}
+
+%%% peigne de Dirac (anciennes versions et version actuelle)
+%\newcommand{\cha}{\amalg\negthickspace\negthickspace\amalg}%\mbox{}}
+%\newcommand{\cha}{\amalg\negthickspace\negthickspace\amalg\mbox{}}
+%\newcommand{\cha}{\coprod\negthickspace\negthickspace\coprod}
+    \DeclareFontFamily{U}{wncy}{}
+    \DeclareFontShape{U}{wncy}{m}{n}{<->wncyr10}{}
+    \DeclareSymbolFont{mcy}{U}{wncy}{m}{n}
+    \DeclareMathSymbol{\Sh}{\mathord}{mcy}{"58} 
+\newcommand{\cha}{\Sh}
+
+\newcommand{\ds}{\displaystyle}
+
+%\newcommand{\dvk}{\mathrm{D}} 
+%\newcommand{\imu}{\mathrm{I}} 
+%\newcommand{\ent}{\mathrm{H}}
+%\newcommand{\nge}{\mathrm{J}}
+
+\newcommand{\Id}{\mathbf{I\negthinspace d}}     %operateur identite
+
+\newcommand{\Fourier}{\mathscr{F}}%{\mF}        %operateur de Fourier
+\newcommand{\TF}{\stackrel{\mathrm{TF}}{\longrightarrow}}
+\newcommand{\iTF}{\stackrel{\mathrm{TF^{-1}}}{\longrightarrow}}
+\newcommand{\Tz}{\stackrel{\mathrm{Tz}}{\longrightarrow}}
+\newcommand{\TFTD}{\stackrel{\mathrm{TFTD}}{\longrightarrow}}
+%\newcommand{\TFD}{\stackrel{\mathrm{TFD}}{\longrightarrow}}
+%\newcommand{\TF}[1]{\mathrm{TF}\left[#1\right]}
+%\newcommand{\iTF}[1]{\mathrm{TF}^{-1}\left\{#1\right\}}
+
+
+% \newcommand{\D}{\mathscr{D}}
+% \newcommand{\Dtestfunc}{\mathcal{D}}
+% \newcommand{\Stestfunc}{\mathcal{S}}
+
+
+%% divers
+%%%% debut macro Rectangle noir \qed %%%%
+\def\qed{\ifmmode\hbox{\hfill\sqb}\else{\ifhmode\unskip\fi%
+\nobreak\hfil
+\penalty50\hskip1em\null\nobreak\hfil$\blacksquare$
+\parfillskip=0pt\finalhyphendemerits=0\endgraf}\fi}
+%%%% fin macro Rectangle noir %%%%
+% \newcommand{\emptyBOX}{\rule[-1pt]{.5pt}{3mm}\rule[-3pt]{4mm}{.5pt}\rule[-1pt]{.5pt}{3mm}}
+% \newcommand{\joker}{\diamondsuit}
+\newcommand{\matlab}{{\textsc{Matlab} }}
+
+%% cours ICA/autres?
+% \newcommand{\bobs}{\by} % observations (in bold)
+% \newcommand{\obs}{y} % observations (non bold)
+
+%% cours sur polynomes, bases de Groebner
+% \newcommand{\LT}{\mathrm{LT}}
+% \newcommand{\LC}{\mathrm{LC}}
+% \newcommand{\LM}{\mathrm{LM}}
+% \newcommand{\pgcd}{\mathrm{pgcd}}
+% \newcommand{\ppcm}{\mathrm{ppcm}}
+% \newcommand{\Syl}{\mathrm{Syl}}
+% \newcommand{\Res}{\mathrm{Res}} %resultant. Residu analyse complexe?
+% \newcommand{\lex}{\mathrm{lex}}
+% \newcommand{\grlex}{\mathrm{grlex}}
+% \newcommand{\grevlex}{\mathrm{grevlex}}
+% \newcommand{\multideg}{\mathrm{multideg}}
+% \newcommand{\Spol}{\mathrm{Spol}}
+
+%% specifique: separation de sources/MIMO/...
+%\newcommand{\nbs}{N} % nombre de sources
+%\newcommand{\nbc}{N} % nombre de capteurs
+
+%% specifique: article IEEE Contrastes Ref? 
+% \newcommand{\ubd}{\underline{\bd}}
+% \newcommand{\ubv}{\underline{\mathbf{v}}}
+% \newcommand{\ubw}{\underline{\mathbf{w}}}
+% \newcommand{\ubx}{\underline{\mathbf{x}}}
+% \newcommand{\bCxz}{\mathbf{C}}%{\mathbf{C}_{\ubx,\bz}}
+% \newcommand{\bCv}{\mathbf{C}(\ubv)}
+% \newcommand{\bCvk}{\mathbf{C}(\ubv_k)}
+% \newcommand{\bRx}{\mathbf{R}}%{\mathbf{R}_{\ubx}}
+
+%%% depreciated %%% 
+% \newcommand{\Mat}[1]{{\bf #1}}
+% \newcommand{\Cqref}[2]{\mathcal{C}_{#1}\{#2\}}
+% \newcommand{\Cum}[1]{\kappa_{#1}(0,0,0)}
