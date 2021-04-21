@@ -210,7 +210,7 @@ def import_tex():
     tex_file_name = filedialog.askopenfilename(title="Veuillez sélectionner un fichier TeX",
                                                filetypes=(type_tex, type_all))
     Gestion.parse_file(tex_file_name)
-    Gestion.save_bufer()
+    Gestion.save_buffer()
     Gestion.clear_buffer()
     Gestion.view_all()
     update_view()

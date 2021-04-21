@@ -179,6 +179,13 @@ class Question:
         res += "\\end{multi}" + "\n"
         return res
 
+
+    def get_name(self):
+        """
+        :return: The name of the question
+        """
+        return self.nom
+
     def get_answers(self):
         """
         :return: The list of all the answers

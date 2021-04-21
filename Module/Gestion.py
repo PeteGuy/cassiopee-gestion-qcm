@@ -19,6 +19,8 @@ sel: List[Tuple[str, QCM.Question]] = []
 view: List[Tuple[str, QCM.Question]] = []
 # The list of questions at the output of a parse
 buffer: List[QCM.Question] = []
+# A selection of questions from the buffer
+selbuff: List[QCM.Question] = []
 # The database object
 db: DB.Base
 
@@ -262,13 +264,20 @@ def parse_file(filename):
 #
 
 
-def save_bufer():
+def save_buffer():
     """
     saves the content of the buffer in the database
     """
-    global buffer
-    
-    db.add_multiple(buffer)
+    global selbuff
+    db.add_multiple(selbuff)
+
+
+def save_sel_buffer():
+    """
+    saves the content of the buffer in the database
+    """
+    global selbuff
+    db.add_multiple(selbuff)
 
 
 def clear_buffer():
@@ -417,6 +426,16 @@ def get_buffer_str(index):
     return str(buffer[index])
 
 
+def get_selbuff_str(index):
+    """
+    returns the string corresponding to the specified question in the selection
+    :param index: the index of the question in the selection
+    :return: the desired string
+    """
+    global selbuff
+    return str(selbuff[index])
+
+
 def get_short_buffer_str(index):
     """
     returns a short string corresponding to the specified question in the selection
@@ -475,6 +494,18 @@ def get_all_short_buffer_str():
     return res
 
 
+def get_all_short_selbuff_str():
+    """
+    returns a short string for every question in the selbuff
+    :return: a list of the desired strings
+    """
+    global selbuff
+    res = []
+    for question in selbuff:
+        res.append(question.short_str())
+    return res
+
+
 #
 # functions for selecting questions from the db to the selection
 #
@@ -494,6 +525,17 @@ def remove_duplicates():
             sel.pop(i)
         else:
             seen.append(sel[i][0])
+
+
+def select_buffer_name(name):
+    """
+
+    """
+    global sel
+    for question in buffer :
+        if question.get_name() == name :
+            selbuff.append(question)
+    #remove_duplicates()
 
 
 def select_name(name):
