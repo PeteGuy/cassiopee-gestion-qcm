@@ -60,7 +60,7 @@ def question_from_dict(qdict):
                         qdict["amc_options"],
                         qdict["enonce"],
                         reponses,
-                        qdict["tags"])
+                        qdict["tags"],qdict["numberColumn"])
 
 
 #

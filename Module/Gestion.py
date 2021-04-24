@@ -252,6 +252,8 @@ def parse_file(filename):
     :param filename: the path to a latex source code
     :returns the number of questions found
     """
+    print("parsing")
+    
     global buffer
     n = len(buffer)
     with open(filename, 'r') as file:
@@ -268,8 +270,15 @@ def save_buffer():
     """
     saves the content of the buffer in the database
     """
+<<<<<<< HEAD
     global buffer
     db.add_multiple(buffer)
+=======
+    global selbuff
+    global buffer
+    db.add_multiple(buffer)
+    db.add_multiple(selbuff)
+>>>>>>> c46b48081d28aa5405b8fafe0b67fde05c237eb0
 
 
 def save_sel_buffer():
