@@ -82,7 +82,7 @@ class Base:
         self.filename = input_file
         with open(input_file, "r") as file:
             self.data = json.load(file)
-        print(self.data)
+        #print(self.data)
         self.nextindex = 1
         # We search for the next valid unused index value in the database
         while str(self.nextindex) in self.data:
