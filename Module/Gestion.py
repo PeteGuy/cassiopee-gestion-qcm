@@ -270,15 +270,10 @@ def save_buffer():
     """
     saves the content of the buffer in the database
     """
-<<<<<<< HEAD
-    global buffer
-    db.add_multiple(buffer)
-=======
     global selbuff
     global buffer
     db.add_multiple(buffer)
     db.add_multiple(selbuff)
->>>>>>> c46b48081d28aa5405b8fafe0b67fde05c237eb0
 
 
 def save_sel_buffer():
