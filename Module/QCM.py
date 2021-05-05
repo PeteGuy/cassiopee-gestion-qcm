@@ -154,7 +154,7 @@ class Question:
             res+="\\begin{multicols}{"+self.numberColumn+"}\n"
         
             
-            print(self.numberColumn)
+            #print(self.numberColumn)
            
             
             

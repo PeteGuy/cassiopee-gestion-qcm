@@ -563,7 +563,7 @@ def select_tags(tags):
     global sel
     for question in db.question_by_tag(tags):
         sel.append(question)
-    remove_duplicates()
+    #remove_duplicates()
 
 
 def select_keywords(keywords):
