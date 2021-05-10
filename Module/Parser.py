@@ -149,10 +149,17 @@ def parse_qcm(q_lines, nb_questions):
             
             q_numberColumn = 1
             
+            # We test if the question already has a name, and give it a generic nam if that's not the case
+            # The name may be the same as a question from the db.json, or from the .tex file that's parsed 
             if q_name.strip() == "" :
                 q_name = "QUESTION" + str(nb_questions)
 
+            # From now on, we start saving line as part of the enonce of the question
             record_enonce = True
+
+            # The enonce might start on the first line 
+            if len(q_decl[2].split('}')) == 2:
+                q_enonc += q_decl[2].split('}')[1].strip() + " \n"
 
         # Any line starting woth \AMC is an amc option and needs to be stored separately
         elif record_enonce and line.strip().startswith("\\AMC"):
@@ -167,7 +174,7 @@ def parse_qcm(q_lines, nb_questions):
 
         # The lines between the \begin{question} tag and the \begin{reponses} tag are the enonce of the question
         elif record_enonce:
-            q_enonc += line.strip() + "\n"
+            q_enonc += line.strip() + " \n"
 
         # The lines between the \begin{reponses} and \end{repones} tag are stored and parsed separately
         elif record_reponse:

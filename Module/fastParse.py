@@ -2,6 +2,8 @@
 import sys
 import Gestion
 
+#ajouter option pour importer direcetement, sans sélection
+
 Gestion.init()
 Gestion.parse_file(sys.argv[1])
 

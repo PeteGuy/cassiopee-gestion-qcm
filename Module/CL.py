@@ -311,7 +311,7 @@ def remove_selection(args):
 #
 
 def select_id(args):
-    """Recherche des QCMs dans la base qui ont le nom spécifié et les ajoutes à la sélection.
+    """Recherche des QCMs dans la base qui ont l'id spécifié et les ajoutes à la sélection.
 Plusieurs noms peuvent êtres recherchés à la fois.
 
 Par défaut la sélection courante est remplacée par le résultat de la requête,

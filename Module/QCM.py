@@ -1,4 +1,5 @@
 from enum import Enum
+import string
 
 
 # This module defines the Question class used by the rest of the GestionQCM app
@@ -115,7 +116,7 @@ class Question:
         Creates a short description that does not contain every field in the object
         :returns a short descriptive string of the question
         """
-        return self.nom + " {" + str(self.type) + "} " + "tags : " + str(self.tags)
+        return self.nom + " {" + str(self.type)[8:] + "} " + str(self.tags) + "\n" + self.enonce[:100].replace('\n', '').rstrip(string.ascii_letters + string.digits + string.punctuation) + "...\n"
 
     def to_dict(self, index):
         """
