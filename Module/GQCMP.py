@@ -17,22 +17,79 @@ if(len(sys.argv) == 1):
 if sys.argv[1] == "import":
     if len(sys.argv) == 3:
         #import rapide 
-        print("tesst")
+        
         Gestion.init()
-        Gestion.parse_file(sys.argv[2])
+        try: 
+            Gestion.parse_file(sys.argv[2])
+           
+
+            for string in Gestion.get_all_short_buffer_str():
+            	print(string)
+            
+            line = input("Input names of questions to save, or press enter to select all >> ")
+            args = line.split()
+            #print(len(args))
+            
+            
+            if len(args) == 0 :
+            	Gestion.save_buffer()
+            	print("buffer saved")
+            else :
+            	for name in args:
+            		Gestion.select_buffer_name(name)
+            	Gestion.save_sel_buffer()
+            
+            
+            Gestion.persist_db()
+            print("Base de donnée sauvegardée")
+            sys.exit()
+            
+        except FileNotFoundError:
+            print("Error file "+sys.argv[2]+" not found")
     
         Gestion.save_buffer()
         Gestion.persist_db()
+        sys.exit()
         
-    elif len(sys.argv) == 4:
-        #import avec détails on fait une boucle while pour avoir les détails
-        print("4")
+    elif(len(sys.argv) == 2):
+        entry = input("Enter a file name >>>")
+        try:
+            Gestion.parse_file(entry)
+            for string in Gestion.get_all_short_buffer_str():
+            	print(string)
+            
+            line = input("Input names of questions to save, or press enter to select all >> ")
+            args = line.split()
+            #print(len(args))
+            
+            
+            if len(args) == 0 :
+            	Gestion.save_buffer()
+            	print("buffer saved")
+            else :
+            	for name in args:
+            		Gestion.select_buffer_name(name)
+            	Gestion.save_sel_buffer()
+            
+            
+            Gestion.persist_db()
+            print("Base de donnée sauvegardée")
+            sys.exit()
+            
+       
+        except FileNotFoundError:
+            print("Error file "+sys.argv[2]+" not found")
         
-    
-    
-    else:
+        
+        
+    elif len(sys.argv) >= 4:
         print("Error number of argument invalid")
         sys.exit()
+        
+    
+    
+
+        
          
          
 elif sys.argv[1] == "export":
@@ -67,16 +124,20 @@ elif sys.argv[1] == "export":
                 if(entryId != "quit" and entryId != ""):
                     Gestion.select_id(entryId)
                 entryId = input("Enter an id or enter quit to go back to selection back >>>")
-                
+             
+        print("\nQuestions currently selected for export :\n")
+        for string in Gestion.get_all_short_sel_str():
+            print(string)
 
                 
 
-        entry = input("Select how to choose what you want to export : 'tag';'name';'id';    enter finsh to finalize export >>>")
+        entry = input("Select how to choose what you want to export : 'tag';'name';'id' :\n Or enter finish to finalize export >>>")
             
     nomFichier=input("Entrez un nom de fichier :")
     while(nomFichier == ""):
         nomFichier=input("Entrez un nom de fichier :")
     Gestion.export_sel_latex(nomFichier+".tex")
+    print("Fichier "+nomFichier+".tex exporté")
     sys.exit()
 
 
