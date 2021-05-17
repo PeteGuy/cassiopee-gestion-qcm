@@ -126,7 +126,7 @@ def parse_qcm(q_lines, nb_questions):
         # Theses lines mark the beginning of the anwer block and the end of the enonce
         if line.strip().startswith("\\begin{reponses}"):
             record_enonce = False
-            q = QCM.Question(q_type, q_name, q_options, q_enonc)
+            q = QCM.Question(q_type, "", q_name, q_options, q_enonc)
             if q_numberColumn != 1:
                 q.numberColumn = q_numberColumn
             #print(type(q+"foizehfoizjfozes\n"))

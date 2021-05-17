@@ -33,10 +33,9 @@ if(len(sys.argv) == 1):
 
 
 if sys.argv[1] == "import":
+    Gestion.init()
     if len(sys.argv) == 3:
         #import rapide 
-        
-        Gestion.init()
         try: 
             Gestion.parse_file(sys.argv[2])
         
@@ -70,7 +69,9 @@ if sys.argv[1] == "import":
         sys.exit()
         
     elif(len(sys.argv) == 2):
-        entry = input("Enter a file name >>> ")
+        entry = input("Enter the path of the file to import >>> ").strip()
+        while(entry == ""):
+            entry = input("Enter the path of the file to import >>> ").strip()
         try:
             Gestion.parse_file(entry)
             for string in Gestion.get_all_short_buffer_str():
