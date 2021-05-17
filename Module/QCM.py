@@ -88,7 +88,7 @@ class Reponse:
 class Question:
     """Class representing a full QCM"""
 
-    def __init__(self, type_qcm, nom, options, enonce, reponses=None, tags=None,numberColumn=1):
+    def __init__(self, type_qcm, id, nom, options, enonce, reponses=None, tags=None, numberColumn=1):
         if tags is None:
             tags = []
         if reponses is None:
@@ -100,6 +100,7 @@ class Question:
         self.reponses = reponses
         self.tags = tags   
         self.numberColumn = numberColumn
+        self.id = id
 
     def __str__(self):
         res = self.nom + "\n"
@@ -116,7 +117,7 @@ class Question:
         Creates a short description that does not contain every field in the object
         :returns a short descriptive string of the question
         """
-        return self.nom + " {" + str(self.type)[8:] + "} " + str(self.tags) + "\n" + self.enonce[:100].replace('\n', '').rstrip(string.ascii_letters + string.digits + string.punctuation) + "...\n"
+        return self.id + ": " + self.nom + " {" + str(self.type)[8:] + "} " + str(self.tags) + "\n" + self.enonce[:100].replace('\n', '').rstrip(string.ascii_letters + string.digits + string.punctuation) + "...\n"
 
     def to_dict(self, index):
         """

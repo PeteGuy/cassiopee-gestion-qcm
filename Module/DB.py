@@ -56,11 +56,13 @@ def question_from_dict(qdict):
     """
     reponses = [reponse_from_dict(rdict) for rdict in qdict["reponses"]]
     return QCM.Question(QCM.type_from_str(qdict["type"]),
+                        qdict["id"],
                         qdict["nom"],
                         qdict["amc_options"],
                         qdict["enonce"],
                         reponses,
-                        qdict["tags"],qdict["numberColumn"])
+                        qdict["tags"],
+                        qdict["numberColumn"])
 
 
 #
@@ -103,6 +105,7 @@ class Base:
             self.nextindex += 1
         # json objects are like python dictionnaries so we convert our object into one
         # the keys of a json object must be strings so our unique indexes are converted to strings
+
         self.data[str(self.nextindex)] = question.to_dict(str(self.nextindex))
 
     def add_multiple(self, questions):

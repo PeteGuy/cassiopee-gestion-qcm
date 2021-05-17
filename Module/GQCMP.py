@@ -5,13 +5,31 @@ import DB
 import Parser
 import QCM
 
+#TODO LIST
+
+#uniformiser les messages adressés à l'utilisateur
+#-> texte français ou anglais ?
+#-> commande "entrer" ou 'quit' pour quitter ?
+
+#commande "tag" : trouver une implémentation ergonomique, plus rapide que d'utiliser "search" puis l'option 'tag'
+
+#commande "import":
+#-> proposer à l'utilisateur de taguer les questions immédiatement après l'import ?
+#-> nettoyer le code : je pense qu'il ya beaucoup de code en double
+
+#implémenter commande "untag" : enlève les tags "tag1 tag1 tag3" d'une selection de questions si elles ont ces tags
+#-> nouvelle commande, ou bien seulement une option à la fin de search ?
+
+#implémenter commande "rename" : change le nom d'une unique question (GQCM rename ancienNom nouveauNom)
+#-> si plusieurs question avec même nom, les affiche et demande d'entrer l'id de la question à changer
+
+
 
 if(len(sys.argv) == 1):
     print("Error no command entered")
     sys.exit()
 
-# La suite de if elif else est très peu élégante -> faire un match case, ou bien passer par un dictionnaire comme dans CL.py 
-
+# La suite de if elif else est très peu élégante -> faire un match case, ou bien passer par un dictionnaire comme dans CL.py ?
 
 
 if sys.argv[1] == "import":
@@ -21,12 +39,12 @@ if sys.argv[1] == "import":
         Gestion.init()
         try: 
             Gestion.parse_file(sys.argv[2])
-           
+        
 
             for string in Gestion.get_all_short_buffer_str():
             	print(string)
             
-            line = input("Input names of questions to save, or press enter to select all >> ")
+            line = input("Input names of questions to save, or press enter to select all >>> ")
             args = line.split()
             #print(len(args))
             
@@ -45,20 +63,20 @@ if sys.argv[1] == "import":
             sys.exit()
             
         except FileNotFoundError:
-            print("Error file "+sys.argv[2]+" not found")
+            print("Error file " + sys.argv[2] + " not found")
     
         Gestion.save_buffer()
         Gestion.persist_db()
         sys.exit()
         
     elif(len(sys.argv) == 2):
-        entry = input("Enter a file name >>>")
+        entry = input("Enter a file name >>> ")
         try:
             Gestion.parse_file(entry)
             for string in Gestion.get_all_short_buffer_str():
             	print(string)
             
-            line = input("Input names of questions to save, or press enter to select all >> ")
+            line = input("Input names of questions to save, or press enter to select all >>> ")
             args = line.split()
             #print(len(args))
             
@@ -78,11 +96,10 @@ if sys.argv[1] == "import":
             
        
         except FileNotFoundError:
-            print("Error file "+sys.argv[2]+" not found")
-        
-        
-        
+            print("Error file " + sys.argv[2] + " not found")
+                
     elif len(sys.argv) >= 4:
+        #implémenter l'importation de plusieurs fichiers à la fois ?
         print("Error number of argument invalid")
         sys.exit()
         
@@ -91,31 +108,30 @@ if sys.argv[1] == "import":
 
         
          
-         
 elif sys.argv[1] == "export":
     Gestion.init()
     print("EXPORTING")
-    entry = input("Select how to choose what you want to export : 'tag';'name';'id';    enter finsh to finalize export >>>")
+    entry = input("Select how to choose what you want to export : 'tag';'name';'id';    enter finsh to finalize export >>> ")
     while(entry != "finish"):
         
         
         if(entry == "tag"):
-            entryTag = input("Enter a tag or enter quit to go back to selection type >>>")
+            entryTag = input("Enter a tag or enter quit to go back to selection type >>> ")
             while(entryTag != "quit"):
                 if(entryTag != "quit" and entryTag != ""):
                     entryTag = entryTag.split()
                     Gestion.select_tags(entryTag)
-                entryTag = input("Enter a tag or enter quit to go back to selection type >>>")
+                entryTag = input("Enter a tag or enter quit to go back to selection type >>> ")
                 
                 
             
         elif(entry == "name"):
-            entryName = input("Enter a name or enter quit to go back to selection type >>>")
+            entryName = input("Enter a name or enter quit to go back to selection type >>> ")
             while(entryName != "quit"):
                 if(entryName != "quit" and entryName != ""):
                     Gestion.select_name(entryName)
               
-                entryName= input("Enter a name or enter quit to go back to selection type >>>")
+                entryName= input("Enter a name or enter quit to go back to selection type >>> ")
                 
             
         elif(entry == "id"):
@@ -133,11 +149,11 @@ elif sys.argv[1] == "export":
 
         entry = input("Select how to choose what you want to export : 'tag';'name';'id' :\n Or enter finish to finalize export >>>")
             
-    nomFichier=input("Entrez un nom de fichier :")
+    nomFichier = input("Entrez un nom de fichier :").strip()
     while(nomFichier == ""):
-        nomFichier=input("Entrez un nom de fichier :")
-    Gestion.export_sel_latex(nomFichier+".tex")
-    print("Fichier "+nomFichier+".tex exporté")
+        nomFichier = input("Entrez un nom de fichier :").strip()
+    Gestion.export_sel_latex(nomFichier + ".tex")
+    print("Fichier " + nomFichier + ".tex exporté")
     sys.exit()
 
 
@@ -148,17 +164,18 @@ elif sys.argv[1] == "show":
         print(string)
     sys.exit()
 
+elif sys.arv[1] == "tag":
+    Gestion.init()
+
 
 elif sys.argv[1] == "search":
     Gestion.init()
     if len(sys.argv) == 2:
-        entry = input("Select searching method ('tag', 'name' or 'id') or press enter to abort >>> ")
-        while(entry not in ["tag", "name", "id", ""]):
-            entry = input("Select searching method ('tag', 'name' or 'id') or press enter to abort >>> ")
-        if(entry == ""):
+        searchtype = input("Select searching method ('tag', 'name' or 'id') or press enter to abort >>> ").strip()
+        while(searchtype not in ["tag", "name", "id", ""]):
+            searchtype = input("Select searching method ('tag', 'name' or 'id') or press enter to abort >>> ").strip()
+        if(searchtype == ""):
             sys.exit()
-        else:
-            searchtype = entry
 
 
     if len(sys.argv) < 4:
@@ -189,9 +206,27 @@ elif sys.argv[1] == "search":
 
     if Gestion.sel == []:
         print("No corresponding question found")
-    else:
-        for string in Gestion.get_all_short_sel_str():
-            print(string)
+        sys.exit()
+    for string in Gestion.get_all_short_sel_str():
+        print(string)
+
+    entry = input("Select what to do with the selection ('tag', 'export') or press enter to quit >>> ").strip()
+
+    if (entry == ""):
+        sys.exit()
+    elif (entry == 'tag'):
+        tags = input("Input the tags to apply to the selection >>> ").split()
+        for tag in tags:
+            Gestion.apply_tag_all(tag)
+            Gestion.persist_db()
+    elif (entry == 'export'):
+        nomFichier = input("Input a file name : ").strip()
+        while(nomFichier == ""):
+            nomFichier = input("Input a valid file name : ").strip()
+        Gestion.export_sel_latex(nomFichier + ".tex")
+    
+
+
     sys.exit()
 
    
