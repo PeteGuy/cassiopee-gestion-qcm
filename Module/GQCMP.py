@@ -166,7 +166,8 @@ elif sys.argv[1] == "show":
     sys.exit()
 
 elif sys.arv[1] == "tag":
-    Gestion.init()
+    #Gestion.init()
+    print("")
 
 
 elif sys.argv[1] == "search":
