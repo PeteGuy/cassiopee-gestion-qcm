@@ -27,6 +27,12 @@ import QCM
 
 if(len(sys.argv) == 1):
     print("Error no command entered")
+    print("Voici la liste des commmandes disponibles :")
+    print("    -import")
+    print("    -export")
+    print("    -show (affiche toutes les questions contenues dans la base de donnée")
+    print("    -tag")
+    print("    -search")
     sys.exit()
 
 # La suite de if elif else est très peu élégante -> faire un match case, ou bien passer par un dictionnaire comme dans CL.py ?
@@ -112,7 +118,7 @@ if sys.argv[1] == "import":
 elif sys.argv[1] == "export":
     Gestion.init()
     print("EXPORTING")
-    entry = input("Select how to choose what you want to export : 'tag';'name';'id';    enter finsh to finalize export >>> ")
+    entry = input("Select how to choose what you want to export : 'tag';'name';'id';    enter finish to finalize export >>> ")
     while(entry != "finish"):
         
         
@@ -165,9 +171,55 @@ elif sys.argv[1] == "show":
         print(string)
     sys.exit()
 
-elif sys.arv[1] == "tag":
-    #Gestion.init()
-    print("")
+elif sys.argv[1] == "tag":
+    Gestion.init()
+    
+    entry = input("Select how to choose what you want to tag : 'tag';'name';'id';    enter finish to finalize tag >>> ")
+    while(entry != "finish"):
+        
+        
+        if(entry == "tag"):
+            entryTag = input("Enter a tag or enter quit to go back to selection type >>> ")
+            while(entryTag != "quit"):
+                if(entryTag != "quit" and entryTag != ""):
+                    entryTag = entryTag.split()
+                    Gestion.select_tags(entryTag)
+                entryTag = input("Enter a tag or enter quit to go back to selection type >>> ")
+                
+                
+            
+        elif(entry == "name"):
+            entryName = input("Enter a name or enter quit to go back to selection type >>> ")
+            while(entryName != "quit"):
+                if(entryName != "quit" and entryName != ""):
+                    Gestion.select_name(entryName)
+              
+                entryName= input("Enter a name or enter quit to go back to selection type >>> ")
+                
+            
+        elif(entry == "id"):
+            entryId = input("Enter an id or enter quit to go back to selection back >>>")
+            while(entryId != "quit"):
+                if(entryId != "quit" and entryId != ""):
+                    Gestion.select_id(entryId)
+                entryId = input("Enter an id or enter quit to go back to selection back >>>")
+             
+        print("\nQuestions currently selected to tag :\n")
+        for string in Gestion.get_all_short_sel_str():
+            print(string)
+
+                
+
+        entry = input("Select how to choose what you want to tag : 'tag';'name';'id' :\n Or enter finish to finalize tag >>>")
+            
+    nomTag = input("Entrez un tag :").strip()
+    while(nomTag == ""):
+        nomTag = input("Entrez un tag:").strip()
+    Gestion.apply_tag_all(nomTag)
+    print("Tag "+nomTag+" appliqué aux question sélectionnées.")
+    Gestion.persist_db()
+    print("Base de donnée sauvegardée")
+    sys.exit()
 
 
 elif sys.argv[1] == "search":
