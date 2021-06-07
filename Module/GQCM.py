@@ -30,7 +30,7 @@ if(len(sys.argv) == 1):
     print("Voici la liste des commmandes disponibles :")
     print("    -import")
     print("    -export")
-    print("    -show (affiche toutes les questions contenues dans la base de donnée")
+    print("    -show (affiche toutes les questions contenues dans la base de donnée)")
     print("    -tag")
     print("    -search")
     sys.exit()
