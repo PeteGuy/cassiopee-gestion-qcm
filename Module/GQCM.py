@@ -38,10 +38,11 @@ if(len(sys.argv) == 1):
 # La suite de if elif else est très peu élégante -> faire un match case, ou bien passer par un dictionnaire comme dans CL.py ?
 
 
-if sys.argv[1] == "import":
+
+if sys.argv[1] == "import":#import commande
     Gestion.init()
-    if len(sys.argv) == 3:
-        #import rapide 
+    if len(sys.argv) == 3: #import rapide, tous les arguments sur la même ligne
+        
         try: 
             Gestion.parse_file(sys.argv[2])
         
@@ -74,10 +75,10 @@ if sys.argv[1] == "import":
         Gestion.persist_db()
         sys.exit()
         
-    elif(len(sys.argv) == 2):
-        entry = input("Enter the path of the file to import >>> ").strip()
+    elif(len(sys.argv) == 2):#import détaillé
+        entry = input("Enter the path of the file to import (relative path from the Module folder or absolute path)>>> ").strip()
         while(entry == ""):
-            entry = input("Enter the path of the file to import >>> ").strip()
+            entry = input("Enter the path of the file to import (relative path from the Module folder or absolute path)>>> ").strip()
         try:
             Gestion.parse_file(entry)
             for string in Gestion.get_all_short_buffer_str():
@@ -118,6 +119,7 @@ if sys.argv[1] == "import":
 elif sys.argv[1] == "export":
     Gestion.init()
     print("EXPORTING")
+    #On demande un critère d'import puis on entre la commande correspondante
     entry = input("Select how to choose what you want to export : 'tag';'name';'id';    enter finish to finalize export >>> ")
     while(entry != "finish"):
         
@@ -155,16 +157,16 @@ elif sys.argv[1] == "export":
                 
 
         entry = input("Select how to choose what you want to export : 'tag';'name';'id' :\n Or enter finish to finalize export >>>")
-            
+    #export
     nomFichier = input("Entrez un nom de fichier :").strip()
     while(nomFichier == ""):
         nomFichier = input("Entrez un nom de fichier :").strip()
-    Gestion.export_sel_latex(nomFichier + ".tex")
-    print("Fichier " + nomFichier + ".tex exporté")
+    Gestion.export_sel_latex("../Exports/"+nomFichier + ".tex")
+    print("Fichier " + nomFichier + ".tex exporté dans le dossier Exports")
     sys.exit()
 
 
-elif sys.argv[1] == "show":
+elif sys.argv[1] == "show":#On montre toutes les questions contenues dans la base de données
     Gestion.init()
     Gestion.select_all()
     for string in Gestion.get_all_short_sel_str():
@@ -174,6 +176,7 @@ elif sys.argv[1] == "show":
 elif sys.argv[1] == "tag":
     Gestion.init()
     
+    #On demande un critère de sélection 
     entry = input("Select how to choose what you want to tag : 'tag';'name';'id';    enter finish to finalize tag >>> ")
     while(entry != "finish"):
         
@@ -211,7 +214,8 @@ elif sys.argv[1] == "tag":
                 
 
         entry = input("Select how to choose what you want to tag : 'tag';'name';'id' :\n Or enter finish to finalize tag >>>")
-            
+    
+    #Tagging        
     nomTag = input("Entrez un tag :").strip()
     while(nomTag == ""):
         nomTag = input("Entrez un tag:").strip()
@@ -222,9 +226,9 @@ elif sys.argv[1] == "tag":
     sys.exit()
 
 
-elif sys.argv[1] == "search":
+elif sys.argv[1] == "search":#Commande search pour chercher une certaine question
     Gestion.init()
-    if len(sys.argv) == 2:
+    if len(sys.argv) == 2:#recherche détaillée
         searchtype = input("Select searching method ('tag', 'name' or 'id') or press enter to abort >>> ").strip()
         while(searchtype not in ["tag", "name", "id", ""]):
             searchtype = input("Select searching method ('tag', 'name' or 'id') or press enter to abort >>> ").strip()
@@ -232,7 +236,7 @@ elif sys.argv[1] == "search":
             sys.exit()
 
 
-    if len(sys.argv) < 4:
+    if len(sys.argv) < 4:#recherche rapide
         if len(sys.argv) == 3:
             searchtype = sys.argv[2]
         message = "Input the " + searchtype + "s of the questions you're searching for, or press enter to abort >>> "
